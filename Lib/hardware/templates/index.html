@@ -1,0 +1,362 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ByteBudget - Temukan Komponen PC Terbaik</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            'fade-in': 'fadeIn 1s ease-in-out',
+            'slide-up': 'slideUp 0.8s ease-out',
+            'bounce-subtle': 'bounceSubtle 2s infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': {
+                transform: 'translateY(30px)',
+                opacity: '0',
+              },
+              '100%': {
+                transform: 'translateY(0)',
+                opacity: '1',
+              },
+            },
+            bounceSubtle: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-5px)' },
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <script src="{% static 'script.js' %}"></script>
+
+</head>
+
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <nav class="bg-white shadow-xl sticky top-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <div class="text-2xl font-bold logo-text">ByteBudget</div>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#" class="text-gray-700 hover:text-blue-600 transition">Beranda</a>
+          <div class="relative group">
+            <button class="text-gray-700 hover:text-blue-600 flex items-center space-x-1">
+              <span>Kategori</span>
+              <svg class="w-4 h-4 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+              </svg>
+            </button>
+            <div
+              class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transform scale-95 group-hover:scale-100 transition-all">
+              <div class="py-2">
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Processor</a>
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">RAM</a>
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">VGA</a>
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">PSU</a>
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">SSD/HDD</a>
+              </div>
+            </div>
+          </div>
+          <a href="#" class="text-gray-700 hover:text-blue-600 transition">Tentang Kami</a>
+          <a href="#" class="text-gray-700 hover:text-blue-600 transition">Kontak</a>
+        </div>
+
+        <!-- Mobile Button -->
+        <div class="md:hidden">
+          <button id="mobileMenuBtn" class="text-gray-700 hover:text-blue-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="md:hidden hidden">
+        <div class="px-2 pt-2 pb-3 bg-white border-t border-gray-200">
+          <a href="#" class="block px-3 py-3 text-gray-700 hover:text-blue-600">Beranda</a>
+          <div class="px-3 py-3">
+            <button id="mobileCategoryBtn" class="flex justify-between w-full text-gray-700 hover:text-blue-600">
+              <span>Kategori</span>
+              <svg id="mobileCategoryIcon" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="mobileCategoryMenu" class="hidden mt-2 pl-4">
+              <a href="#" class="block py-1 text-gray-600 hover:text-blue-600">Processor</a>
+              <a href="#" class="block py-1 text-gray-600 hover:text-blue-600">RAM</a>
+              <a href="#" class="block py-1 text-gray-600 hover:text-blue-600">VGA</a>
+              <a href="#" class="block py-1 text-gray-600 hover:text-blue-600">PSU</a>
+              <a href="#" class="block py-1 text-gray-600 hover:text-blue-600">SSD/HDD</a>
+            </div>
+          </div>
+          <a href="#" class="block px-3 py-3 text-gray-700 hover:text-blue-600">Tentang Kami</a>
+          <a href="#" class="block px-3 py-3 text-gray-700 hover:text-blue-600">Kontak</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero-section relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600"></div>
+    <div class="absolute inset-0 bg-black bg-opacity-20 z-10"></div>
+    <div class="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:px-8 z-20">
+      <div class="text-center animate-fade-in">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          Temukan Rekomendasi Komponen Komputer <span class="hero-highlight">Sesuai Budget Anda</span>
+        </h1>
+        <p class="text-xl sm:text-2xl text-blue-200 mb-8 max-w-3xl mx-auto animate-slide-up">
+          Website ini akan membantumu menemukan kombinasi terbaik processor, RAM, VGA, dan komponen lainnya untuk build
+          PC impianmu.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up">
+          <button onclick="scrollToSearch()"
+            class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg transition hover:bg-blue-50 hover:scale-105 shadow-xl">
+            Mulai Sekarang
+          </button>
+          <button
+            class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg transition bg-transparent hover:bg-white hover:text-blue-600 hover:scale-105">
+            Pelajari Lebih Lanjut
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Mengapa Memilih ByteBudget?</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Kami menyediakan rekomendasi komponen PC terbaik yang sesuai
+          dengan budget dan kebutuhan Anda</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Rekomendasi Akurat</h3>
+          <p class="text-gray-600">Dapatkan rekomendasi komponen yang tepat berdasarkan budget dan kebutuhan spesifik
+            Anda</p>
+        </div>
+
+        <div class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+              </path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Hemat Budget</h3>
+          <p class="text-gray-600">Temukan kombinasi komponen terbaik dengan harga yang sesuai dengan kantong Anda</p>
+        </div>
+
+        <div class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow">
+          <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+              </path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Performa Optimal</h3>
+          <p class="text-gray-600">Dapatkan performa maksimal dari setiap komponen yang Anda pilih</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="search-section" class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Cari Komponen PC Anda</h2>
+        <p class="text-xl text-gray-600">Masukkan budget dan kebutuhan Anda untuk mendapatkan rekomendasi terbaik</p>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-xl p-8">
+        <form method="POST" class="space-y-6" action="{% url 'rekomendasi' %}">
+          {% csrf_token %}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="budget" class="block text-sm font-medium text-gray-700 mb-2">Budget (Rp)</label>
+              <input type="number" id="budget" name="budget" placeholder="Contoh: 5000000" required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+
+            <div>
+              <label for="usage" class="block text-sm font-medium text-gray-700 mb-2">Kegunaan</label>
+              <select id="usage" name="usage"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="">Pilih kegunaan</option>
+                <option value="gaming">Gaming</option>
+                <option value="office">Office/Kerja</option>
+                <option value="design">Design/Video Editing</option>
+                <option value="programming">Programming</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="custom_usage" class="block text-sm font-medium text-gray-700 mb-2">Kebutuhan Spesifik</label>
+            <textarea id="custom_usage" name="custom_usage" rows="3"
+              placeholder="Contoh: digunakan untuk bermain game FPS berat atau editing video 4K"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+          </div>
+
+          <div>
+            <label for="components" class="block text-sm font-medium text-gray-700 mb-2">Komponen yang
+              Dibutuhkan</label>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <label class="flex items-center">
+                <input type="checkbox" name="components" value="processor" class="mr-2 text-blue-600">
+                <span class="text-sm">Processor</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" name="components" value="ram" class="mr-2 text-blue-600">
+                <span class="text-sm">RAM</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" name="components" value="vga" class="mr-2 text-blue-600">
+                <span class="text-sm">VGA</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" name="components" value="motherboard" class="mr-2 text-blue-600">
+                <span class="text-sm">Motherboard</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" name="components" value="psu" class="mr-2 text-blue-600">
+                <span class="text-sm">PSU</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" name="components" value="storage" class="mr-2 text-blue-600">
+                <span class="text-sm">Storage</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <button type="submit"
+              class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors">
+              Cari Rekomendasi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-gray-50 py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-12 animate-fade-in">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">Tentang Kami</h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Kami adalah tim profesional yang berdedikasi untuk menyediakan solusi teknologi inovatif, berkualitas tinggi,
+          dan terpercaya untuk semua kebutuhan Anda.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-10 animate-slide-up">
+        <!-- Misi -->
+        <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition duration-300">
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">Misi Kami</h3>
+          <p class="text-gray-600">
+            Memberikan layanan terbaik dan solusi digital yang mendorong kesuksesan klien melalui pendekatan inovatif
+            dan teknologi terkini.
+          </p>
+        </div>
+
+        <!-- Visi -->
+        <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition duration-300">
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">Visi Kami</h3>
+          <p class="text-gray-600">
+            Menjadi perusahaan teknologi terdepan di Asia yang dipercaya untuk menciptakan masa depan digital yang
+            cemerlang.
+          </p>
+        </div>
+
+        <!-- Nilai -->
+        <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition duration-300">
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">Nilai Utama</h3>
+          <p class="text-gray-600">
+            Integritas, kolaborasi, dan inovasi adalah fondasi kami dalam membangun hubungan jangka panjang dengan klien
+            dan mitra bisnis.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="text-2xl font-bold mb-4">ByteBudget</div>
+          <p class="text-gray-300">Platform terpercaya untuk menemukan komponen PC terbaik sesuai budget Anda.</p>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Kategori</h4>
+          <ul class="space-y-2 text-gray-300">
+            <li><a href="{% url 'processor' %}" class="hover:text-white transition">Processor</a></li>
+            <li><a href="#" class="hover:text-white transition">RAM</a></li>
+            <li><a href="#" class="hover:text-white transition">VGA</a></li>
+            <li><a href="#" class="hover:text-white transition">PSU</a></li>
+            <li><a href="#" class="hover:text-white transition">Storage</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Perusahaan</h4>
+          <ul class="space-y-2 text-gray-300">
+            <li><a href="#" class="hover:text-white transition">Tentang Kami</a></li>
+            <li><a href="#" class="hover:text-white transition">Karir</a></li>
+            <li><a href="#" class="hover:text-white transition">Blog</a></li>
+            <li><a href="#" class="hover:text-white transition">Press</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Kontak</h4>
+          <ul class="space-y-2 text-gray-300">
+            <li>📧 info@bytebudget.com</li>
+            <li>📞 +62 821 3456 7890</li>
+            <li>📍 Jakarta, Indonesia</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; 2024 ByteBudget. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

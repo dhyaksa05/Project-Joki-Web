@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteBudget - Pelajari Lebih Lanjut</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #3d0063 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #b794f6;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .nav-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 60px 0;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #b794f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: #e2e8f0;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Feature Sections */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #b794f6 0%, #9f7aea 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .feature-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #b794f6;
+        }
+
+        .feature-description {
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        /* Component Categories */
+        .components-section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #b794f6;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .component-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .component-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #b794f6;
+            transform: scale(1.05);
+        }
+
+        .component-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #b794f6;
+        }
+
+        .component-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .component-description {
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin-bottom: 60px;
+        }
+
+        .cta-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .cta-description {
+            font-size: 18px;
+            color: #e2e8f0;
+            margin-bottom: 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #b794f6 0%, #9f7aea 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(183, 148, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid #b794f6;
+        }
+
+        .btn-secondary:hover {
+            background: #b794f6;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0aec0;
+        }
+
+        /* Guide Section */
+        .guide-section {
+            margin-bottom: 80px;
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .guide-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-5px);
+            border-color: #b794f6;
+        }
+
+        .guide-number {
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background: linear-gradient(135deg, #b794f6 0%, #9f7aea 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .guide-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            color: #b794f6;
+        }
+
+        .guide-description {
+            color: #e2e8f0;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .guide-tips {
+            list-style: none;
+            padding: 0;
+        }
+
+        .guide-tips li {
+            color: #cbd5e0;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .guide-tips li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #b794f6;
+            font-weight: bold;
+        }
+
+        /* Budget Section */
+        .budget-section {
+            margin-bottom: 80px;
+        }
+
+        .budget-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .budget-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .budget-card.featured {
+            border-color: #b794f6;
+            transform: scale(1.05);
+            background: rgba(183, 148, 246, 0.1);
+        }
+
+        .budget-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .budget-card.featured:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        .budget-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: linear-gradient(135deg, #b794f6 0%, #9f7aea 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .budget-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .budget-header h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .budget-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #b794f6;
+        }
+
+        .budget-specs {
+            margin-bottom: 25px;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .spec-label {
+            color: #a0aec0;
+            font-weight: 500;
+        }
+
+        .spec-value {
+            color: #e2e8f0;
+            font-weight: 600;
+            text-align: right;
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .budget-performance {
+            text-align: center;
+        }
+
+        .budget-performance p {
+            color: #b794f6;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Tips Section */
+        .tips-section {
+            margin-bottom: 80px;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .tip-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tip-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .tip-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .tip-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #b794f6;
+        }
+
+        .tip-description {
+            color: #e2e8f0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin-bottom: 80px;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .faq-question h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #e2e8f0;
+        }
+
+        .faq-toggle {
+            font-size: 24px;
+            font-weight: bold;
+            color: #b794f6;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-answer {
+            padding: 0 25px 25px 25px;
+            display: none;
+            color: #cbd5e0;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            margin-bottom: 80px;
+        }
+
+        .newsletter-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .newsletter-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #b794f6;
+        }
+
+        .newsletter-description {
+            color: #e2e8f0;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto 30px auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+        }
+
+        .newsletter-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .newsletter-btn {
+            white-space: nowrap;
+            padding: 15px 25px;
+        }
+
+        .newsletter-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .benefit-item {
+            color: #cbd5e0;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .components-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .guide-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-card.featured {
+                transform: none;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-content {
+                padding: 30px 20px;
+            }
+
+            .newsletter-benefits {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+    </style>
+
+
+    <main class="main-content container">
+        <section class="hero-section">
+            <h1 class="hero-title">Panduan Lengkap Membangun PC</h1>
+            <p class="hero-subtitle">Temukan semua yang perlu Anda ketahui tentang komponen PC, kompatibilitas, dan tips membangun sistem impian Anda dengan budget yang tepat.</p>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">Rekomendasi Personal</h3>
+                <p class="feature-description">Algoritma cerdas kami menganalisis kebutuhan dan budget Anda untuk memberikan rekomendasi komponen yang paling sesuai. Dapatkan saran yang dipersonalisasi untuk setiap build.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚖️</div>
+                <h3 class="feature-title">Perbandingan Harga</h3>
+                <p class="feature-description">Bandingkan harga dari berbagai toko online terpercaya dalam satu platform. Temukan deal terbaik dan hemat lebih banyak untuk build PC Anda.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3 class="feature-title">Cek Kompatibilitas</h3>
+                <p class="feature-description">Sistem otomatis mengecek kompatibilitas antar komponen untuk memastikan semua parts bekerja dengan sempurna. Hindari masalah kompatibilitas yang merugikan.</p>
+            </div>
+        </section>
+
+        <section class="components-section">
+            <h2 class="section-title">Kategori Komponen</h2>
+            <div class="components-grid">
+                <div class="component-card">
+                    <div class="component-icon">🖥️</div>
+                    <h3 class="component-title">Processor (CPU)</h3>
+                    <p class="component-description">Intel & AMD terbaru dengan berbagai range harga</p>
+                </div>
+                <div class="component-card">
+                    <div class="component-icon">🎮</div>
+                    <h3 class="component-title">Graphics Card (VGA)</h3>
+                    <p class="component-description">NVIDIA & AMD untuk gaming dan produktivitas</p>
+                </div>
+                <div class="component-card">
+                    <div class="component-icon">🧠</div>
+                    <h3 class="component-title">Memory (RAM)</h3>
+                    <p class="component-description">DDR4 & DDR5 dengan kecepatan optimal</p>
+                </div>
+                <div class="component-card">
+                    <div class="component-icon">💾</div>
+                    <h3 class="component-title">Storage</h3>
+                    <p class="component-description">SSD NVMe, SATA, dan HDD untuk kebutuhan apapun</p>
+                </div>
+                <div class="component-card">
+                    <div class="component-icon">⚡</div>
+                    <h3 class="component-title">Motherboard</h3>
+                    <p class="component-description">Socket Intel & AMD dengan fitur lengkap</p>
+                </div>
+                <div class="component-card">
+                    <div class="component-icon">🔋</div>
+                    <h3 class="component-title">Power Supply</h3>
+                    <p class="component-description">PSU 80+ certified dengan watt yang sesuai</p>
+                </div>
+                <div class="component-card">
+                    <div class="component-icon">❄️</div>
+                    <h3 class="component-title">Cooling</h3>
+                    <p class="component-description">Air cooler & liquid cooling untuk suhu optimal</p>
+                </div>
+                <div class="component-card">
+                    <div class="component-icon">📦</div>
+                    <h3 class="component-title">PC Case</h3>
+                    <p class="component-description">Mini ITX hingga Full Tower dengan airflow baik</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="guide-section">
+            <h2 class="section-title">Panduan Lengkap Build PC</h2>
+            <div class="guide-grid">
+                <div class="guide-card">
+                    <div class="guide-number">01</div>
+                    <h3 class="guide-title">Tentukan Budget & Kebutuhan</h3>
+                    <p class="guide-description">Mulai dengan menentukan budget total dan penggunaan utama PC (gaming, editing, office work, dll). Ini akan menentukan alokasi budget untuk setiap komponen.</p>
+                    <ul class="guide-tips">
+                        <li>Gaming: 40% budget untuk VGA, 25% CPU</li>
+                        <li>Editing: 35% CPU, 30% RAM, 20% VGA</li>
+                        <li>Office: 40% CPU, 30% RAM, budget VGA minimal</li>
+                    </ul>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-number">02</div>
+                    <h3 class="guide-title">Pilih Processor & Motherboard</h3>
+                    <p class="guide-description">CPU adalah jantung sistem. Pilih antara Intel atau AMD, lalu tentukan motherboard yang kompatibel dengan fitur yang dibutuhkan.</p>
+                    <ul class="guide-tips">
+                        <li>Intel: Cocok untuk gaming dan single-thread</li>
+                        <li>AMD: Value terbaik untuk multi-thread</li>
+                        <li>Perhatikan socket dan chipset motherboard</li>
+                    </ul>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-number">03</div>
+                    <h3 class="guide-title">Tentukan Graphics Card</h3>
+                    <p class="guide-description">Untuk gaming atau rendering, VGA adalah komponen terpenting. Sesuaikan dengan resolusi dan target FPS yang diinginkan.</p>
+                    <ul class="guide-tips">
+                        <li>1080p gaming: RTX 4060 / RX 7600 XT</li>
+                        <li>1440p gaming: RTX 4070 / RX 7700 XT</li>
+                        <li>4K gaming: RTX 4080+ / RX 7800 XT+</li>
+                    </ul>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-number">04</div>
+                    <h3 class="guide-title">Memory & Storage</h3>
+                    <p class="guide-description">RAM mempengaruhi multitasking, sementara storage menentukan kecepatan loading. Kombinasi SSD + HDD optimal untuk value.</p>
+                    <ul class="guide-tips">
+                        <li>Gaming: 16GB DDR4/DDR5, SSD 1TB</li>
+                        <li>Editing: 32GB+ RAM, SSD NVMe cepat</li>
+                        <li>Gunakan HDD untuk storage tambahan</li>
+                    </ul>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-number">05</div>
+                    <h3 class="guide-title">Power Supply & Cooling</h3>
+                    <p class="guide-description">PSU yang stabil dan cooling yang adequate memastikan sistem berjalan optimal dan awet dalam jangka panjang.</p>
+                    <ul class="guide-tips">
+                        <li>Hitung total watt + 20% headroom</li>
+                        <li>Pilih PSU 80+ Gold minimum</li>
+                        <li>Air cooler cukup untuk CPU non-OC</li>
+                    </ul>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-number">06</div>
+                    <h3 class="guide-title">Case & Assembly</h3>
+                    <p class="guide-description">Pilih case dengan airflow baik dan ukuran sesuai komponen. Pastikan semua parts muat dengan proper cable management.</p>
+                    <ul class="guide-tips">
+                        <li>Perhatikan clearance CPU cooler & VGA</li>
+                        <li>Minimal 2 intake, 1 exhaust fan</li>
+                        <li>Cable management untuk airflow optimal</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="budget-section">
+            <h2 class="section-title">Rekomendasi Budget Build</h2>
+            <div class="budget-cards">
+                <div class="budget-card">
+                    <div class="budget-header">
+                        <h3>Entry Level</h3>
+                        <div class="budget-price">8-12 Juta</div>
+                    </div>
+                    <div class="budget-specs">
+                        <div class="spec-item">
+                            <span class="spec-label">CPU:</span>
+                            <span class="spec-value">Ryzen 5 5600 / i5-12400F</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">VGA:</span>
+                            <span class="spec-value">GTX 1660S / RX 6500 XT</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">RAM:</span>
+                            <span class="spec-value">16GB DDR4-3200</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Storage:</span>
+                            <span class="spec-value">500GB SSD NVMe</span>
+                        </div>
+                    </div>
+                    <div class="budget-performance">
+                        <p>🎮 1080p Medium-High 60fps</p>
+                        <p>📊 Office & Light Editing</p>
+                    </div>
+                </div>
+                
+                <div class="budget-card featured">
+                    <div class="budget-badge">Most Popular</div>
+                    <div class="budget-header">
+                        <h3>Mid Range</h3>
+                        <div class="budget-price">15-20 Juta</div>
+                    </div>
+                    <div class="budget-specs">
+                        <div class="spec-item">
+                            <span class="spec-label">CPU:</span>
+                            <span class="spec-value">Ryzen 5 7600X / i5-13600KF</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">VGA:</span>
+                            <span class="spec-value">RTX 4060 Ti / RX 7600 XT</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">RAM:</span>
+                            <span class="spec-value">16GB DDR5-5600</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Storage:</span>
+                            <span class="spec-value">1TB SSD NVMe Gen4</span>
+                        </div>
+                    </div>
+                    <div class="budget-performance">
+                        <p>🎮 1440p High 60fps+</p>
+                        <p>🎬 4K Video Editing</p>
+                    </div>
+                </div>
+
+                <div class="budget-card">
+                    <div class="budget-header">
+                        <h3>High End</h3>
+                        <div class="budget-price">25-35 Juta</div>
+                    </div>
+                    <div class="budget-specs">
+                        <div class="spec-item">
+                            <span class="spec-label">CPU:</span>
+                            <span class="spec-value">Ryzen 7 7800X3D / i7-13700KF</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">VGA:</span>
+                            <span class="spec-value">RTX 4070 Super / RX 7800 XT</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">RAM:</span>
+                            <span class="spec-value">32GB DDR5-6000</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Storage:</span>
+                            <span class="spec-value">2TB SSD NVMe Gen4</span>
+                        </div>
+                    </div>
+                    <div class="budget-performance">
+                        <p>🎮 4K High 60fps+</p>
+                        <p>🎬 Professional Workstation</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tips-section">
+            <h2 class="section-title">Tips & Trik Membangun PC</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">💡</div>
+                    <h3 class="tip-title">Riset Mendalam</h3>
+                    <p class="tip-description">Selalu riset review dan benchmark sebelum membeli. Cek kompatibilitas di website resmi manufacturer dan forum komunitas.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🛠️</div>
+                    <h3 class="tip-title">Tools yang Diperlukan</h3>
+                    <p class="tip-description">Siapkan screwdriver Phillips, anti-static wrist strap, thermal paste, dan cable ties untuk assembly yang proper.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">📺</div>
+                    <h3 class="tip-title">Test Sebelum Install</h3>
+                    <p class="tip-description">Test POST dan boot ke BIOS dulu sebelum memasang ke case. Ini memudahkan troubleshooting jika ada masalah.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🌡️</div>
+                    <h3 class="tip-title">Monitor Temperature</h3>
+                    <p class="tip-description">Install software monitoring seperti HWiNFO64 atau MSI Afterburner untuk memantau suhu dan performa komponen.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🔄</div>
+                    <h3 class="tip-title">Update Driver & BIOS</h3>
+                    <p class="tip-description">Selalu update driver VGA, chipset, dan BIOS ke versi terbaru untuk performa dan stabilitas optimal.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">💾</div>
+                    <h3 class="tip-title">Backup & Recovery</h3>
+                    <p class="tip-description">Buat system image setelah install OS dan software penting. Siapkan USB bootable untuk emergency recovery.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Apakah lebih baik beli pre-built atau rakit sendiri?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Rakit sendiri memberikan value terbaik dan kontrol penuh atas komponen. Pre-built cocok jika Anda tidak punya waktu atau pengalaman, namun biasanya lebih mahal untuk spek yang sama.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Berapa lama PC gaming bertahan sebelum perlu upgrade?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>PC mid-range biasanya bertahan 3-5 tahun untuk gaming 1080p. High-end build bisa 5-7 tahun. VGA biasanya yang pertama perlu upgrade, diikuti CPU dan RAM.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Apakah perlu membeli semua komponen sekaligus?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sebaiknya ya, untuk memastikan kompatibilitas dan warranty period yang sama. Jika bertahap, beli motherboard, CPU, RAM dulu sebagai foundation.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Bagaimana cara mengetahui PSU yang cukup untuk sistem saya?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Gunakan PSU calculator online, tambahkan 20% headroom dari hasil perhitungan. Pilih PSU 80+ Gold minimum untuk efisiensi dan kualitas yang baik.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Apakah overclocking diperlukan untuk gaming?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Tidak wajib untuk gaming modern. CPU dan VGA saat ini sudah cukup powerful pada clock default. OC lebih berguna untuk workload khusus atau enthusiast yang ingin performa maksimal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter-section">
+            <div class="newsletter-content">
+                <h2 class="newsletter-title">Dapatkan Update Terbaru</h2>
+                <p class="newsletter-description">Subscribe newsletter kami untuk mendapatkan informasi terbaru tentang komponen PC, deals terbaik, dan panduan build terkini.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Masukkan email Anda" class="newsletter-input">
+                    <button class="btn btn-primary newsletter-btn">Subscribe</button>
+                </div>
+                <div class="newsletter-benefits">
+                    <div class="benefit-item">✅ Update harga komponen mingguan</div>
+                    <div class="benefit-item">✅ Panduan build PC terbaru</div>
+                    <div class="benefit-item">✅ Notifikasi deals dan diskon</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling untuk navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Animasi hover untuk component cards
+        document.querySelectorAll('.component-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05) translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1) translateY(0)';
+            });
+        });
+
+        // Animasi scroll reveal
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // FAQ Toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const faqItem = this.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Newsletter form
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('.newsletter-input').value;
+            if (email) {
+                alert('Terima kasih! Anda akan segera menerima update dari ByteBudget.');
+                this.querySelector('.newsletter-input').value = '';
+            }
+        });
+
+        // Budget card interactions
+        document.querySelectorAll('.budget-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Add ripple effect or navigate to build configurator
+                console.log('Navigate to build with this budget range');
+            });
+        });
+    </script>
+</body>
+</html>

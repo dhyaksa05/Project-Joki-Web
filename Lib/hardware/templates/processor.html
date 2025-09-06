@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Processor | Web System</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen">
+  <header class="bg-gray-800 p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">Web System</h1>
+      <nav>
+        <ul class="flex space-x-4 text-gray-300">
+          <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+          <li><a href="processor.html" class="text-white font-semibold">Processor</a></li>
+          <li><a href="#" class="hover:text-white transition">RAM</a></li>
+          <li><a href="#" class="hover:text-white transition">VGA</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6">Daftar Processor Terbaik</h2>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <div class="bg-gray-800 rounded-xl p-4 shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold mb-2">Intel Core i9 13900K</h3>
+        <p class="text-gray-300 text-sm mb-4">24-Core, 32-thread | 5.8GHz Boost | Socket LGA1700</p>
+        <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">Rp10.000.000</span>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-gray-800 rounded-xl p-4 shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold mb-2">AMD Ryzen 9 7950X</h3>
+        <p class="text-gray-300 text-sm mb-4">16-Core, 32-thread | 5.7GHz Boost | Socket AM5</p>
+        <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">Rp9.500.000</span>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-gray-800 rounded-xl p-4 shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold mb-2">Intel Core i7 13700F</h3>
+        <p class="text-gray-300 text-sm mb-4">16-Core, 24-thread | 5.2GHz Boost | Value Option</p>
+        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">Rp5.800.000</span>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
