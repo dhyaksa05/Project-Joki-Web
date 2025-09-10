@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -355,28 +356,9 @@
         }
     </style>
 </head>
+
 <body>
-    <nav class="navbar">
-        <div class="logo">ByteBudget</div>
-        <div class="nav-links">
-            <a href="index.html">Beranda</a>
-            <div class="dropdown">
-                <a href="#" style="display: flex; align-items: center; gap: 0.5rem;">
-                    Kategori 
-                    <span style="font-size: 0.8rem;">▼</span>
-                </a>
-                <div class="dropdown-content">
-                    <a href="processor.html">Processor</a>
-                    <a href="ram.html">RAM</a>
-                    <a href="vga.html">VGA</a>
-                    <a href="psu.html">PSU</a>
-                    <a href="ssd.html">SSD/HDD</a>
-                </div>
-            </div>
-            <a href="#">Tentang Kami</a>
-            <a href="#">Kontak</a>
-        </div>
-    </nav>
+    {% include "partials/navbar.html" %}
 
     <div class="container">
         <div class="page-header">
@@ -438,7 +420,8 @@
         <div class="products-grid">
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/VGA/NVIDIA-RTX-4090-24GB.jpg" alt="NVIDIA-RTX-4090-24GB" style="max-width: 200px; height: auto;">
+                    <img src="image/VGA/NVIDIA-RTX-4090-24GB.jpg" alt="NVIDIA-RTX-4090-24GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-flagship">Flagship</div>
                 <h3 class="product-title">NVIDIA RTX 4090 <span class="vram-badge">24GB</span></h3>
@@ -474,12 +457,14 @@
                     <span class="rating-text">4.8 (198 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 32.999.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail vga/NVIDIA RTX 4090.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='details/vga/NVIDIA RTX 4090.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/VGA/NVIDIA-RTX-4070-Ti-12GB.jpg" alt="NVIDIA-RTX-4070-Ti-12GB" style="max-width: 200px; height: auto;">
+                    <img src="image/VGA/NVIDIA-RTX-4070-Ti-12GB.jpg" alt="NVIDIA-RTX-4070-Ti-12GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">NVIDIA RTX 4070 Ti <span class="vram-badge">12GB</span></h3>
@@ -515,12 +500,14 @@
                     <span class="rating-text">4.7 (324 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 16.999.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail vga/AMD RX 7800 XT.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='details/vga/AMD RX 7800 XT.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/VGA/AMD-RX-7800-XT-16GB.jpg" alt="AMD-RX-7800-XT-16GB" style="max-width: 200px; height: auto;">
+                    <img src="image/VGA/AMD-RX-7800-XT-16GB.jpg" alt="AMD-RX-7800-XT-16GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">AMD RX 7800 XT <span class="vram-badge">16GB</span></h3>
@@ -556,12 +543,14 @@
                     <span class="rating-text">4.6 (267 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 13.999.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail vga/AMD RX 7800 XT.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='details/vga/AMD RX 7800 XT.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/VGA/NVIDIA-RTX-4060-Ti-8GB.jpg" alt="NVIDIA-RTX-4060-Ti-8GB" style="max-width: 200px; height: auto;">
+                    <img src="image/VGA/NVIDIA-RTX-4060-Ti-8GB.jpg" alt="NVIDIA-RTX-4060-Ti-8GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-medium">1440p Gaming</div>
                 <h3 class="product-title">NVIDIA RTX 4060 Ti <span class="vram-badge">8GB</span></h3>
@@ -597,12 +586,14 @@
                     <span class="rating-text">4.5 (412 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 8.999.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail vga/NVIDIA RTX 4060 Ti.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='details/vga/NVIDIA RTX 4060 Ti.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/VGA/AMD-RX-6600-XT-8GB.jpg" alt="AMD-RX-6600-XT-8GB" style="max-width: 200px; height: auto;">
+                    <img src="image/VGA/AMD-RX-6600-XT-8GB.jpg" alt="AMD-RX-6600-XT-8GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-medium">1080p Gaming</div>
                 <h3 class="product-title">AMD RX 6600 XT <span class="vram-badge">8GB</span></h3>
@@ -638,12 +629,14 @@
                     <span class="rating-text">4.4 (356 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 5.999.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail vga/AMD RX 6600 XT.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='details/vga/AMD RX 6600 XT.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/VGA/NVIDIA-GTX-1660-Super-6GB.jpg" alt="NVIDIA-GTX-1660-Super-6GB" style="max-width: 200px; height: auto;">
+                    <img src="image/VGA/NVIDIA-GTX-1660-Super-6GB.jpg" alt="NVIDIA-GTX-1660-Super-6GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-budget">Budget Gaming</div>
                 <h3 class="product-title">NVIDIA GTX 1660 Super <span class="vram-badge">6GB</span></h3>
@@ -679,10 +672,12 @@
                     <span class="rating-text">4.3 (521 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 3.799.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail vga/NVIDIA GTX 1660 Super.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='details/vga/NVIDIA GTX 1660 Super.html'">Lihat
+                    Detail</button>
             </div>
-            
+
         </div>
     </div>
 </body>
+
 </html>

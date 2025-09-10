@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -331,28 +332,9 @@
         }
     </style>
 </head>
+
 <body>
-    <nav class="navbar">
-        <div class="logo">ByteBudget</div>
-        <div class="nav-links">
-            <a href="index.html">Beranda</a>
-            <div class="dropdown">
-                <a href="#" style="display: flex; align-items: center; gap: 0.5rem;">
-                    Kategori 
-                    <span style="font-size: 0.8rem;">▼</span>
-                </a>
-                <div class="dropdown-content">
-                    <a href="processor.html">Processor</a>
-                    <a href="ram.html">RAM</a>
-                    <a href="vga.html">VGA</a>
-                    <a href="psu.html">PSU</a>
-                    <a href="ssd.html">SSD/HDD</a>
-                </div>
-            </div>
-            <a href="#">Tentang Kami</a>
-            <a href="#">Kontak</a>
-        </div>
-    </nav>
+    {% include "partials/navbar.html" %}
 
     <div class="container">
         <div class="page-header">
@@ -417,7 +399,8 @@
         <div class="products-grid">
             <div class="product-card">
                 <div class="product-image">
-                     <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">G.Skill Trident Z5 RGB <span class="capacity-badge">32GB</span></h3>
@@ -449,12 +432,14 @@
                     <span class="rating-text">4.8 (267 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 4.299.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail ram/G.Skill Trident Z5 RGB.html'">Lihat Detail</button>
+                <button class="btn-primary"
+                    onclick="window.location.href='detail ram/G.Skill Trident Z5 RGB.html'">Lihat Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/RAM/Corsair-Dominator-Platinum-RGB-32GB.jpg" alt="Corsair Dominator Platinum RGB 32GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/Corsair-Dominator-Platinum-RGB-32GB.jpg"
+                        alt="Corsair Dominator Platinum RGB 32GB" style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">Corsair Dominator Platinum RGB <span class="capacity-badge">32GB</span></h3>
@@ -486,12 +471,15 @@
                     <span class="rating-text">4.7 (189 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 4.799.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail ram/Corsair Dominator Platinum RGB.html'">Lihat Detail</button>
+                <button class="btn-primary"
+                    onclick="window.location.href='detail ram/Corsair Dominator Platinum RGB.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/RAM/Corsair Vengeance LPX 16GB.jpg" alt="Corsair Vengeance LPX 16GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/Corsair Vengeance LPX 16GB.jpg" alt="Corsair Vengeance LPX 16GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-medium">Gaming Ready</div>
                 <h3 class="product-title">Corsair Vengeance LPX <span class="capacity-badge">16GB</span></h3>
@@ -523,12 +511,14 @@
                     <span class="rating-text">4.6 (542 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 1.899.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail ram/Corsair Vengeance LPX.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='detail ram/Corsair Vengeance LPX.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/RAM/Kingston-Fury-Beast-RGB-16GB.jpg" alt="Kingston Fury Beast RGB 16GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/Kingston-Fury-Beast-RGB-16GB.jpg" alt="Kingston Fury Beast RGB 16GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-medium">Gaming Ready</div>
                 <h3 class="product-title">Kingston Fury Beast RGB <span class="capacity-badge">16GB</span></h3>
@@ -560,12 +550,14 @@
                     <span class="rating-text">4.5 (378 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 1.699.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail ram/Kingston Fury Beast RGB.html'">Lihat Detail</button>
+                <button class="btn-primary"
+                    onclick="window.location.href='detail ram/Kingston Fury Beast RGB.html'">Lihat Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/RAM/Crucial-Ballistix-16GB.jpg" alt="Crucial Ballistix 16GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/Crucial-Ballistix-16GB.jpg" alt="Crucial Ballistix 16GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-budget">Budget Friendly</div>
                 <h3 class="product-title">Crucial Ballistix <span class="capacity-badge">16GB</span></h3>
@@ -597,12 +589,14 @@
                     <span class="rating-text">4.4 (423 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 1.399.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail ram/Crucial Ballistix.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='detail ram/Crucial Ballistix.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/RAM/Team Group T-Force Vulcan Z 8GB.jpg" alt="Team Group T-Force Vulcan Z 8GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/Team Group T-Force Vulcan Z 8GB.jpg" alt="Team Group T-Force Vulcan Z 8GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-budget">Budget Friendly</div>
                 <h3 class="product-title">Team Group T-Force Vulcan Z <span class="capacity-badge">8GB</span></h3>
@@ -634,12 +628,14 @@
                     <span class="rating-text">4.3 (298 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 899.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail ram/Team Group T-Force Vulcan Z.html'">Lihat Detail</button>
+                <button class="btn-primary"
+                    onclick="window.location.href='detail ram/Team Group T-Force Vulcan Z.html'">Lihat Detail</button>
             </div>
-            
-             <div class="product-card">
+
+            <div class="product-card">
                 <div class="product-image">
-                     <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">G.Skill Trident Z5 RGB <span class="capacity-badge">32GB</span></h3>
@@ -674,9 +670,10 @@
                 <button class="btn-primary">Lihat Detail</button>
             </div>
 
-             <div class="product-card">
+            <div class="product-card">
                 <div class="product-image">
-                     <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">G.Skill Trident Z5 RGB <span class="capacity-badge">32GB</span></h3>
@@ -711,9 +708,10 @@
                 <button class="btn-primary">Lihat Detail</button>
             </div>
 
-             <div class="product-card">
+            <div class="product-card">
                 <div class="product-image">
-                     <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">G.Skill Trident Z5 RGB <span class="capacity-badge">32GB</span></h3>
@@ -748,9 +746,10 @@
                 <button class="btn-primary">Lihat Detail</button>
             </div>
 
-             <div class="product-card">
+            <div class="product-card">
                 <div class="product-image">
-                     <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">G.Skill Trident Z5 RGB <span class="capacity-badge">32GB</span></h3>
@@ -785,9 +784,10 @@
                 <button class="btn-primary">Lihat Detail</button>
             </div>
 
-             <div class="product-card">
+            <div class="product-card">
                 <div class="product-image">
-                     <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">G.Skill Trident Z5 RGB <span class="capacity-badge">32GB</span></h3>
@@ -822,9 +822,10 @@
                 <button class="btn-primary">Lihat Detail</button>
             </div>
 
-             <div class="product-card">
+            <div class="product-card">
                 <div class="product-image">
-                     <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB" style="max-width: 200px; height: auto;">
+                    <img src="image/RAM/G.Skill-Trident-Z5-RGB-32GB.jpg" alt="G.Skill Trident Z5 RGB 32GB"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <h3 class="product-title">G.Skill Trident Z5 RGB <span class="capacity-badge">32GB</span></h3>
@@ -859,8 +860,9 @@
                 <button class="btn-primary">Lihat Detail</button>
             </div>
 
-            
+
         </div>
     </div>
 </body>
+
 </html>

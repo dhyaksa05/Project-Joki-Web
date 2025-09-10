@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -399,28 +400,9 @@
         }
     </style>
 </head>
+
 <body>
-    <nav class="navbar">
-        <div class="logo">ByteBudget</div>
-        <div class="nav-links">
-            <a href="index.html">Beranda</a>
-            <div class="dropdown">
-                <a href="#" style="display: flex; align-items: center; gap: 0.5rem;">
-                    Kategori 
-                    <span style="font-size: 0.8rem;">▼</span>
-                </a>
-                <div class="dropdown-content">
-                    <a href="processor.html">Processor</a>
-                    <a href="ram.html">RAM</a>
-                    <a href="vga.html">VGA</a>
-                    <a href="psu.html">PSU</a>
-                    <a href="ssd.html">SSD/HDD</a>
-                </div>
-            </div>
-            <a href="#">Tentang Kami</a>
-            <a href="#">Kontak</a>
-        </div>
-    </nav>
+    {% include "partials/navbar.html" %}
 
     <div class="container">
         <div class="page-header">
@@ -487,7 +469,8 @@
         <div class="products-grid">
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/PSU/Corsair-HX1000i-1000W.jpg" alt="Corsair-HX1000i-1000W" style="max-width: 200px; height: auto;">
+                    <img src="image/PSU/Corsair-HX1000i-1000W.jpg" alt="Corsair-HX1000i-1000W"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-enthusiast">Enthusiast</div>
                 <div class="modular-badge fully-modular">Fully Modular</div>
@@ -528,12 +511,14 @@
                     <span class="rating-text">4.8 (156 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 4.429.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail psu/Corsair HX1000i.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='detail psu/Corsair HX1000i.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/PSU/Seasonic-Focus-GX-850-850W.jpg" alt="Seasonic-Focus-GX-850-850W" style="max-width: 200px; height: auto;">
+                    <img src="image/PSU/Seasonic-Focus-GX-850-850W.jpg" alt="Seasonic-Focus-GX-850-850W"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">High Performance</div>
                 <div class="modular-badge fully-modular">Fully Modular</div>
@@ -574,12 +559,14 @@
                     <span class="rating-text">4.7 (298 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 2.577.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail psu/SeasonicFocusGX-850.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='detail psu/SeasonicFocusGX-850.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/PSU/Corsair-RM750x-750W.jpg" alt="Corsair-RM750x-750W" style="max-width: 200px; height: auto;">
+                    <img src="image/PSU/Corsair-RM750x-750W.jpg" alt="Corsair-RM750x-750W"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-high">Gaming Ready</div>
                 <div class="modular-badge semi-modular">Semi Modular</div>
@@ -620,12 +607,14 @@
                     <span class="rating-text">4.6 (423 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 2.260.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail psu/Corsair RM750x.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='detail psu/Corsair RM750x.html'">Lihat
+                    Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/PSU/Cooler-Master-MWE-Gold-650-650W.jpg" alt="Cooler-Master-MWE-Gold-650-650W" style="max-width: 200px; height: auto;">
+                    <img src="image/PSU/Cooler-Master-MWE-Gold-650-650W.jpg" alt="Cooler-Master-MWE-Gold-650-650W"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-medium">Mid Range</div>
                 <div class="modular-badge semi-modular">Semi Modular</div>
@@ -666,12 +655,14 @@
                     <span class="rating-text">4.5 (367 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 1.510.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail psu/Cooler Master MWE Gold 650.html'">Lihat Detail</button>
+                <button class="btn-primary"
+                    onclick="window.location.href='detail psu/Cooler Master MWE Gold 650.html'">Lihat Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/PSU/Thermaltake-Smart-BX1-RGB-550W.jpg" alt="Thermaltake-Smart-BX1-RGB-550W" style="max-width: 200px; height: auto;">
+                    <img src="image/PSU/Thermaltake-Smart-BX1-RGB-550W.jpg" alt="Thermaltake-Smart-BX1-RGB-550W"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-medium">Value Gaming</div>
                 <div class="modular-badge non-modular">Non Modular</div>
@@ -712,12 +703,14 @@
                     <span class="rating-text">4.3 (289 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 1.195.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail psu/Thermaltake Smart BX1 RGB.html'">Lihat Detail</button>
+                <button class="btn-primary"
+                    onclick="window.location.href='detail psu/Thermaltake Smart BX1 RGB.html'">Lihat Detail</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    <img src="image/PSU/Antec-VP500P-Plus-500W.jpg" alt="Antec-VP500P-Plus-500W" style="max-width: 200px; height: auto;">
+                    <img src="image/PSU/Antec-VP500P-Plus-500W.jpg" alt="Antec-VP500P-Plus-500W"
+                        style="max-width: 200px; height: auto;">
                 </div>
                 <div class="performance-badge performance-budget">Budget Friendly</div>
                 <div class="modular-badge non-modular">Non Modular</div>
@@ -758,9 +751,11 @@
                     <span class="rating-text">4.1 (198 ulasan)</span>
                 </div>
                 <div class="product-price">Rp 610.000</div>
-                <button class="btn-primary" onclick="window.location.href='detail psu/Antec VP500P PLUS.html'">Lihat Detail</button>
+                <button class="btn-primary" onclick="window.location.href='detail psu/Antec VP500P PLUS.html'">Lihat
+                    Detail</button>
             </div>
         </div>
     </div>
 </body>
+
 </html>

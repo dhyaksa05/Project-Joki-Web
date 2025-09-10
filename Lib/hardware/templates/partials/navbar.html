@@ -1,0 +1,21 @@
+<nav class="navbar">
+    <div class="logo">ByteBudget</div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Beranda</a>
+        <div class="dropdown">
+            <a href="#" style="display: flex; align-items: center; gap: 0.5rem;">
+                Kategori
+                <span style="font-size: 0.8rem;">▼</span>
+            </a>
+            <div class="dropdown-content">
+                <a href="{% url 'processor' %}">Processor</a>
+                <a href="{% url 'ram' %}">RAM</a>
+                <a href="{% url 'vga' %}">VGA</a>
+                <a href="{% url 'psu' %}">PSU</a>
+                <a href="{% url 'ssd' %}">SSD/HDD</a>
+            </div>
+        </div>
+        <a href="{% url 'home' %}#tentang">Tentang Kami</a>
+        <a href="{% url 'home' %}#kontak">Kontak</a>
+    </div>
+</nav>
