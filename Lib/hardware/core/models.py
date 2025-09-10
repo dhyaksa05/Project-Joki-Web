@@ -13,3 +13,15 @@ class Produk(models.Model):
 
     def __str__(self):
         return f"{self.nama} ({self.kategori})"
+
+class Spesifikasi(models.Model):
+    nama = models.CharField(max_length=100)
+    detail = models.TextField()
+    produk = models.ForeignKey(
+        Produk,
+        on_delete=models.CASCADE,   # kalau produk dihapus, spesifikasi ikut terhapus
+        related_name="spesifikasi"  # supaya bisa diakses lewat produk.spesifikasi.all()
+    )
+
+    def __str__(self):
+        return f"{self.nama} - {self.produk.nama}"

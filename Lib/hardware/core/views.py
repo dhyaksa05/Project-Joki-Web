@@ -12,6 +12,18 @@ def home(request):
 def processor(request):
     return render(request, 'processor.html')
 
+def ram(request):
+    return render(request, 'ram.html')
+
+def vga(request):
+    return render(request, 'vga.html')
+
+def psu(request):
+    return render(request, 'psu.html')
+
+def ssd(request):
+    return render(request, 'ssd.html')
+
 def rekomendasi_view(request):
     results = []
     budget = ''

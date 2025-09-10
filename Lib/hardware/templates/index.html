@@ -69,11 +69,12 @@
             <div
               class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transform scale-95 group-hover:scale-100 transition-all">
               <div class="py-2">
-                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Processor</a>
-                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">RAM</a>
-                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">VGA</a>
-                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">PSU</a>
-                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">SSD/HDD</a>
+                <a href="{% url 'processor' %}"
+                  class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Processor</a>
+                <a href="{% url 'ram' %}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">RAM</a>
+                <a href="{% url 'vga' %}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">VGA</a>
+                <a href="{% url 'psu' %}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">PSU</a>
+                <a href="{% url 'ssd' %}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">SSD/HDD</a>
               </div>
             </div>
           </div>
