@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMD Ryzen 7 7700X - Detail Produk</title>
+    <title>Intel Core i9-14900K - Detail Produk</title>
     <style>
         * {
             margin: 0;
@@ -128,9 +128,8 @@
             border: 2px dashed #ccc;
         }
 
-
         .performance-badge {
-            background: #ff6b35;
+            background: #ff0000;
             color: white;
             padding: 8px 16px;
             border-radius: 20px;
@@ -160,7 +159,7 @@
         .price {
             font-size: 32px;
             font-weight: bold;
-            color: #ff6b35;
+            color: #764ba2;
             margin: 20px 0;
         }
 
@@ -192,7 +191,7 @@
             background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
-            border-left: 4px solid #ff6b35;
+            border-left: 4px solid #667eea;
             transition: transform 0.2s ease;
         }
 
@@ -274,23 +273,23 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
 
         .btn-secondary {
             background: white;
-            color: #ff6b35;
-            border: 2px solid #ff6b35;
+            color: #667eea;
+            border: 2px solid #667eea;
         }
 
         .btn-secondary:hover {
-            background: #ff6b35;
+            background: #667eea;
             color: white;
             transform: translateY(-2px);
         }
@@ -323,14 +322,14 @@
         }
 
         .feature-item:hover {
-            border-color: #ff6b35;
-            box-shadow: 0 3px 10px rgba(255, 107, 53, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.1);
         }
 
         .feature-icon {
             width: 20px;
             height: 20px;
-            background: #ff6b35;
+            background: #667eea;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -365,7 +364,7 @@
             padding: 20px;
             background: white;
             border-radius: 10px;
-            border-left: 4px solid #ff6b35;
+            border-left: 4px solid #667eea;
         }
 
         .gaming-intro p {
@@ -417,7 +416,7 @@
         .fps-value {
             font-size: 20px;
             font-weight: bold;
-            color: #ff6b35;
+            color: #667eea;
             margin-bottom: 10px;
         }
 
@@ -433,7 +432,7 @@
             width: 100%;
             max-width: 600px;
             height: 280px;
-            border: 3px solid #ff6b35;
+            border: 3px solid #667eea;
             border-radius: 12px;
             overflow: hidden;
             margin: 0 auto;
@@ -463,7 +462,7 @@
 
         .bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            background: linear-gradient(90deg, #00c851, #667eea);
             border-radius: 4px;
             transition: width 0.8s ease;
         }
@@ -505,7 +504,7 @@
         .resolution-fps {
             font-size: 20px;
             font-weight: bold;
-            color: #ff6b35;
+            color: #667eea;
             margin-bottom: 15px;
         }
 
@@ -556,8 +555,8 @@
 
         .workload-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.2);
-            border-color: #ff6b35;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
         }
 
         .workload-card::before {
@@ -567,7 +566,7 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            background: linear-gradient(90deg, #667eea, #764ba2);
         }
 
         .workload-header {
@@ -601,8 +600,8 @@
         }
 
         .workload-image-frame:hover {
-            border-color: #ff6b35;
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
         }
 
         .workload-image {
@@ -616,9 +615,21 @@
             transform: scale(1.1);
         }
 
-        .workload-image-placeholder::before {
+        .workload-image-placeholder {
+            color: #999;
+            font-size: 12px;
+            text-align: center;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
 
-            font-size: px;
+        .workload-image-placeholder::before {
+            content: '📁';
+            font-size: 24px;
             margin-bottom: 8px;
             display: block;
         }
@@ -662,7 +673,7 @@
         }
 
         .detail-item span {
-            color: #ff6b35;
+            color: #667eea;
             font-weight: 600;
         }
 
@@ -813,431 +824,360 @@
 </head>
 
 <body>
+    {% include "partials/navbar.html" %}
     <div class="container">
-        <div class="header">
-            <button class="back-btn" onclick="window.location.href='../processor.html'">← Kembali</button>
+        {% load humanize %}
 
+        <div class="header">
+            <button class="back-btn" onclick="window.history.back()">← Kembali</button>
             <h1>Detail Produk</h1>
         </div>
 
         <div class="main-content">
             <div class="product-image-section">
                 <div class="product-frame">
-                    <img src="../image/Processor/AMD-Ryzen-7-7700X.jpg" alt="amd ryzen 7 7700x" class="product-image">
-                    <!-- AMD Processor Image Placeholder -->
-                    <div>
-                    </div>
+                    <img src="{{ produk.image_path }}" alt="{{ produk.nama }}" class="product-image">
                 </div>
-                <div class="performance-badge">High Performance </div>
+                <div class="performance-badge">{{ produk.badge|default:"High Performance" }}</div>
             </div>
 
             <div class="product-info">
-                <h2 class="product-title">AMD Ryzen 7 7700X</h2>
-                <p class="brand">AMD</p>
+                <h2 class="product-title">{{ produk.nama }}</h2>
+                <p class="brand">
+                    {{ produk.deskripsi }}
+                </p>
 
-                <div class="price">Rp 4.899.000</div>
+
+                <div class="price">Rp {{ produk.harga|floatformat:0|intcomma }}</div>
 
                 <div class="rating">
-                    <div class="stars">★★★★★</div>
-                    <span class="rating-text">4.7 (256 ulasan)</span>
-                </div>
+                    <div class="stars">
+                        {% for i in "12345"|make_list %}
+                        {% if forloop.counter <= produk.rating %} ★ {% else %} ☆ {% endif %} {% endfor %} </div>
+                            <span class="rating-text">{{ produk.rating }} ({{ produk.jumlah_ulasan }} ulasan)</span>
+                    </div>
 
-                <div class="specs-grid">
-                    <div class="spec-card">
-                        <div class="spec-label">Core/Thread</div>
-                        <div class="spec-value">8/16</div>
-                    </div>
-                    <div class="spec-card">
-                        <div class="spec-label">Base Clock</div>
-                        <div class="spec-value">4.5 GHz</div>
-                    </div>
-                    <div class="spec-card">
-                        <div class="spec-label">Max Boost Clock</div>
-                        <div class="spec-value">5.4 GHz</div>
-                    </div>
-                    <div class="spec-card">
-                        <div class="spec-label">Socket</div>
-                        <div class="spec-value">AM5</div>
+                    <div class="specs-grid">
+                        {% for spec in produk.spesifikasi.all|slice:"1:" %}
+                        <div class="spec-card">
+                            <div class="spec-label">{{ spec.nama }}</div>
+                            <div class="spec-value">{{ spec.detail }}</div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="detailed-specs">
-            <h3>Spesifikasi Lengkap</h3>
-            <div class="spec-table">
-                <div class="spec-row">
-                    <span class="spec-name">Nama Produk</span>
-                    <span class="spec-detail">AMD Ryzen 7 7700X</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Kode Produk</span>
-                    <span class="spec-detail">100-100000591WOF</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Generasi</span>
-                    <span class="spec-detail">AMD Ryzen 7000 Series (Zen 4)</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Cores</span>
-                    <span class="spec-detail">8 Cores</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Threads</span>
-                    <span class="spec-detail">16 Threads</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Base Clock</span>
-                    <span class="spec-detail">4.5 GHz</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Max Boost Clock</span>
-                    <span class="spec-detail">5.4 GHz</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Cache L2</span>
-                    <span class="spec-detail">8 MB</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Cache L3</span>
-                    <span class="spec-detail">32 MB</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">TDP</span>
-                    <span class="spec-detail">105 W; Maximum Turbo Power: ±152 W</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Socket</span>
-                    <span class="spec-detail">Socket AM5</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Memori yang Didukung</span>
-                    <span class="spec-detail">DDR5-5200 (JEDEC)</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Max Memory Size</span>
-                    <span class="spec-detail">128 GB</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">PCI Express</span>
-                    <span class="spec-detail">PCIe 5.0 </span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Graphics</span>
-                    <span class="spec-detail">AMD Radeon Graphics (2 CU, iGPU RDNA 2)</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Manufacturing Process</span>
-                    <span class="spec-detail">TSMC 5nm FinFET</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-name">Unlocked</span>
-                    <span class="spec-detail">Yes (Overclockable)</span>
+            <div class="detailed-specs">
+                <h3>Spesifikasi Lengkap</h3>
+                <div class="spec-table">
+                    {% for spec in produk.spesifikasi.all %}
+                    <div class="spec-row">
+                        <span class="spec-name">{{ spec.nama }}</span>
+                        <span class="spec-detail">{{ spec.detail }}</span>
+                    </div>
+                    {% empty %}
+                    <p>Belum ada spesifikasi detail.</p>
+                    {% endfor %}
                 </div>
             </div>
-        </div>
-
-        <div class="gaming-performance">
-            <h3>Performa Gaming</h3>
-            <div class="gaming-intro">
-                <p>AMD Ryzen 7 7700X dengan arsitektur Zen 4 dan teknologi 5nm memberikan performa gaming yang luar
-                    biasa. Didesain untuk gaming enthusiast dengan efisiensi daya yang optimal.</p>
-            </div>
-
-            <div class="gaming-benchmarks">
-                <h4>Benchmark Gaming (1080p Ultra Settings)</h4>
-                <div class="benchmark-grid">
-                    <div class="benchmark-card">
-                        <div class="game-content">
-                            <div class="game-name">Wuthering Waves</div>
-                            <div class="fps-value">60 FPS Max From Game</div>
-                            <div class="performance-bar">
-                                <div class="bar-fill" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div class="game-screenshot-placeholder">
-                            <div style="color: #999; text-align: center;">
-                                <img src="../game/wuwa.jpg" alt="wuwa" class="game-screenshot">
 
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="benchmark-card">
-                        <div class="game-content">
-                            <div class="game-name">Marvel Rivals</div>
-                            <div class="fps-value">125-144FPS</div>
-                            <div class="performance-bar">
-                                <div class="bar-fill" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="game-screenshot-placeholder">
-                            <div style="color: #999; text-align: center;">
-                                <img src="../game/marvelrivals.jpg" alt="marvel rivals" class="game-screenshot">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="benchmark-card">
-                        <div class="game-content">
-                            <div class="game-name">Ghost of Tsushima</div>
-                            <div class="fps-value">250-300+ FPS</div>
-                            <div class="performance-bar">
-                                <div class="bar-fill" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div class="game-screenshot-placeholder">
-                            <div style="color: #999; text-align: center;">
-                                <img src="../game/ghostoftsushima.jpg" alt="Ghost of Tsushima" class="game-screenshot">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="benchmark-card">
-                        <div class="game-content">
-                            <div class="game-name">Efootball</div>
-                            <div class="fps-value">60 FPS Max from Game</div>
-                            <div class="performance-bar">
-                                <div class="bar-fill" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div class="game-screenshot-placeholder">
-                            <div style="color: #999; text-align: center;">
-                                <img src="../game/efootball.jpg" alt="Efootball" class="game-screenshot">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="benchmark-card">
-                        <div class="game-content">
-                            <div class="game-name">Tekken 8</div>
-                            <div class="fps-value">60 fps MAX from Game</div>
-                            <div class="performance-bar">
-                                <div class="bar-fill" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div class="game-screenshot-placeholder">
-                            <div style="color: #999; text-align: center;">
-                                <img src="../game/tekken8.jpg" alt="tekken8" class="game-screenshot">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="benchmark-card">
-                        <div class="game-content">
-                            <div class="game-name">Dota 2</div>
-                            <div class="fps-value">240++ FPS</div>
-                            <div class="performance-bar">
-                                <div class="bar-fill" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div class="game-screenshot-placeholder">
-                            <div style="color: #999; text-align: center;">
-                                <img src="../game/dota.jpg" alt="dota" class="game-screenshot">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="benchmark-card">
-                        <div class="game-content">
-                            <div class="game-name">Overall Performance</div>
-                            <div class="fps-value">Excellent Gaming Performance</div>
-                            <div class="performance-bar">
-                                <div class="bar-fill" style="width: 95%"></div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="gaming-performance">
+                <h3>Performa Gaming</h3>
+                <div class="gaming-intro">
+                    <p>Intel Core i9-14900K dirancang khusus untuk gaming enthusiast dan content creator. Dengan
+                        arsitektur
+                        hybrid Raptor Lake, prosesor ini memberikan performa gaming yang luar biasa di semua resolusi.
+                    </p>
                 </div>
 
-                <div class="professional-workloads">
-                    <h4>Performa untuk Professional Workloads</h4>
-                    <div class="workload-grid">
-                        <div class="workload-card">
-                            <div class="workload-header">
-                                <div class="workload-icon">💻</div>
-                                <div class="workload-image-frame">
-                                    <div class="workload-image-placeholder">
+                <div class="gaming-benchmarks">
+                    <h4>Benchmark Gaming (1080p Ultra Settings)</h4>
+                    <div class="benchmark-grid">
+                        <div class="benchmark-card">
+                            <div class="game-content">
+                                <div class="game-name">The Last of Us Part II </div>
+                                <div class="fps-value">120-200+ FPS</div>
+                                <div class="performance-bar">
+                                    <div class="bar-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="game-screenshot-placeholder">
+                                <img src="../game/tlou2.jpg" alt="tlou2" class="game-screenshot">
+                            </div>
+                        </div>
+                        <div class="benchmark-card">
+                            <div class="game-content">
+                                <div class="game-name">Grand Theft Auto V</div>
+                                <div class="fps-value">140-200+ FPS</div>
+                                <div class="performance-bar">
+                                    <div class="bar-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="game-screenshot-placeholder">
+                                <img src="../game/gtav.jpg" alt="gtav" class="game-screenshot">
+                            </div>
+                        </div>
+                        <div class="benchmark-card">
+                            <div class="game-content">
+                                <div class="game-name">Delta Force</div>
+                                <div class="fps-value">180-280+ FPS</div>
+                                <div class="performance-bar">
+                                    <div class="bar-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="game-screenshot-placeholder">
+                                <img src="../game/deltaforce.jpg" alt="deltaforce" class="game-screenshot">
+                            </div>
+                        </div>
+                        <div class="benchmark-card">
+                            <div class="game-content">
+                                <div class="game-name">Valorant</div>
+                                <div class="fps-value">300+ FPS MAX</div>
+                                <div class="performance-bar">
+                                    <div class="bar-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="game-screenshot-placeholder">
+                                <img src="../game/valorant.jpg" alt="valorant" class="game-screenshot">
+                            </div>
+                        </div>
+                        <div class="benchmark-card">
+                            <div class="game-content">
+                                <div class="game-name">Genshin Impact</div>
+                                <div class="fps-value">60 fps MAX from Game</div>
+                                <div class="performance-bar">
+                                    <div class="bar-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="game-screenshot-placeholder">
+                                <img src="../game/genshinimpact.jpg" alt="genshinimpact" class="game-screenshot">
+                            </div>
+                        </div>
+                        <div class="benchmark-card">
+                            <div class="game-content">
+                                <div class="game-name">Indiana Jones and the Great Circle</div>
+                                <div class="fps-value">280-329 FPS with Ray Tracing</div>
+                                <div class="performance-bar">
+                                    <div class="bar-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="game-screenshot-placeholder">
+                                <img src="../game/indianajones.jpg" alt="indianajones" class="game-screenshot">
+                            </div>
+                        </div>
+
+                        <div class="benchmark-card">
+                            <div class="game-content">
+                                <div class="game-name">Overall Performance</div>
+                                <div class="fps-value">100% Stability Performance</div>
+                                <div class="performance-bar">
+                                    <div class="bar-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="professional-workloads">
+                        <h4>Performa untuk Professional Workloads</h4>
+                        <div class="workload-grid">
+                            <div class="workload-card">
+                                <div class="workload-header">
+                                    <div class="workload-icon">💻</div>
+                                    <div class="workload-image-frame">
                                         <img src="../workloads/coding.jpg" alt="Programming and Development"
                                             class="workload-image">
+                                        <!-- Alternative placeholder if image doesn't load -->
+                                        <!-- <div class="workload-image-placeholder">
+                                        <div>Programming Image</div>
+                                    </div> -->
+                                    </div>
+                                </div>
+                                <div class="workload-content">
+                                    <h5>Programming & Development</h5>
+                                    <div class="workload-score">Excellent</div>
+                                    <div class="workload-details">
+                                        <div class="detail-item">Compile Time: <span>40% faster</span></div>
+                                        <div class="detail-item">IDE Performance: <span>Smooth</span></div>
+                                        <div class="detail-item">Multi-tasking: <span>Superior</span></div>
+                                    </div>
+                                    <div class="performance-bar">
+                                        <div class="bar-fill" style="width: 100%"></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="workload-content">
-                                <h5>Programming & Development</h5>
-                                <div class="workload-score">Excellent</div>
-                                <div class="workload-details">
-                                    <div class="detail-item">Compile Time: <span>35% faster</span></div>
-                                    <div class="detail-item">IDE Performance: <span>Very Smooth</span></div>
-                                    <div class="detail-item">Multi-tasking: <span>Excellent</span></div>
-                                </div>
-                                <div class="performance-bar">
-                                    <div class="bar-fill" style="width: 95%"></div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="workload-card">
-                            <div class="workload-header">
-                                <div class="workload-icon">🎨</div>
-                                <div class="workload-image-frame">
-                                    <div class="workload-image-placeholder">
+                            <div class="workload-card">
+                                <div class="workload-header">
+                                    <div class="workload-icon">🎨</div>
+                                    <div class="workload-image-frame">
                                         <img src="../workloads/Graphicdesigner.jpg" alt="Graphic Designer"
                                             class="workload-image">
+                                        <!-- Alternative placeholder if image doesn't load -->
+                                        <!-- <div class="workload-image-placeholder">
+                                        <div>Design Image</div>
+                                    </div> -->
+                                    </div>
+                                </div>
+                                <div class="workload-content">
+                                    <h5>Graphic Design</h5>
+                                    <div class="workload-score">Very Good</div>
+                                    <div class="workload-details">
+                                        <div class="detail-item">Photoshop: <span>Fast rendering</span></div>
+                                        <div class="detail-item">Illustrator: <span>Smooth workflow</span></div>
+                                        <div class="detail-item">After Effects: <span>Good preview</span></div>
+                                    </div>
+                                    <div class="performance-bar">
+                                        <div class="bar-fill" style="width: 100%"></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="workload-content">
-                                <h5>Graphic Design</h5>
-                                <div class="workload-score">Very Good</div>
-                                <div class="workload-details">
-                                    <div class="detail-item">Photoshop: <span>Smooth rendering</span></div>
-                                    <div class="detail-item">Illustrator: <span>Fast workflow</span></div>
-                                    <div class="detail-item">After Effects: <span>Good performance</span></div>
-                                </div>
-                                <div class="performance-bar">
-                                    <div class="bar-fill" style="width: 88%"></div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="workload-card">
-                            <div class="workload-header">
-                                <div class="workload-icon">🏗️</div>
-                                <div class="workload-image-frame">
-                                    <div class="workload-image-placeholder">
+                            <div class="workload-card">
+                                <div class="workload-header">
+                                    <div class="workload-icon">🏗️</div>
+                                    <div class="workload-image-frame">
                                         <img src="../workloads/3dmodeling.jpg" alt="3D Modeling" class="workload-image">
+                                        <!-- Alternative placeholder if image doesn't load -->
+                                        <!-- <div class="workload-image-placeholder">
+                                        <div>3D Modeling Image</div>
+                                    </div> -->
+                                    </div>
+                                </div>
+                                <div class="workload-content">
+                                    <h5>3D Modeling & Rendering</h5>
+                                    <div class="workload-score">Excellent</div>
+                                    <div class="workload-details">
+                                        <div class="detail-item">Blender: <span>Fast viewport</span></div>
+                                        <div class="detail-item">Maya: <span>Smooth animation</span></div>
+                                        <div class="detail-item">Rendering: <span>Quick cycles</span></div>
+                                    </div>
+                                    <div class="performance-bar">
+                                        <div class="bar-fill" style="width: 100%"></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="workload-content">
-                                <h5>3D Modeling & Rendering</h5>
-                                <div class="workload-score">Good</div>
-                                <div class="workload-details">
-                                    <div class="detail-item">Blender: <span>Good viewport</span></div>
-                                    <div class="detail-item">Maya: <span>Smooth animation</span></div>
-                                    <div class="detail-item">Rendering: <span>Decent speed</span></div>
-                                </div>
-                                <div class="performance-bar">
-                                    <div class="bar-fill" style="width: 80%"></div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="workload-card">
-                            <div class="workload-header">
-                                <div class="workload-icon">🎬</div>
-                                <div class="workload-image-frame">
-                                    <div class="workload-image-placeholder">
+                            <div class="workload-card">
+                                <div class="workload-header">
+                                    <div class="workload-icon">🎬</div>
+                                    <div class="workload-image-frame">
                                         <img src="../workloads/videoediting.jpg" alt="Video Editing"
                                             class="workload-image">
+                                        <!-- Alternative placeholder if image doesn't load -->
+                                        <!-- <div class="workload-image-placeholder">
+                                        <div>Video Editing Image</div>
+                                    </div> -->
+                                    </div>
+                                </div>
+                                <div class="workload-content">
+                                    <h5>Video Editing</h5>
+                                    <div class="workload-score">Excellent</div>
+                                    <div class="workload-details">
+                                        <div class="detail-item">Premiere Pro: <span>Real-time editing</span></div>
+                                        <div class="detail-item">DaVinci Resolve: <span>Smooth grading</span></div>
+                                        <div class="detail-item">Export Speed: <span>Very fast</span></div>
+                                    </div>
+                                    <div class="performance-bar">
+                                        <div class="bar-fill" style="width: 100%"></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="workload-content">
-                                <h5>Video Editing</h5>
-                                <div class="workload-score">Very Good</div>
-                                <div class="workload-details">
-                                    <div class="detail-item">Premiere Pro: <span>Smooth editing</span></div>
-                                    <div class="detail-item">DaVinci Resolve: <span>Good grading</span></div>
-                                    <div class="detail-item">Export Speed: <span>Fast</span></div>
-                                </div>
-                                <div class="performance-bar">
-                                    <div class="bar-fill" style="width: 90%"></div>
-                                </div>
+                        </div>
+                    </div>
+
+                    <div class="resolution-performance">
+                        <h4>Performa Multi-Resolusi</h4>
+                        <div class="resolution-grid">
+                            <div class="resolution-card">
+                                <div class="resolution-name">1080p (Full HD)</div>
+                                <div class="resolution-desc">Performa Maksimal</div>
+                                <div class="resolution-fps">144+ FPS rata-rata</div>
+                                <div class="resolution-status excellent">Excellent</div>
+                            </div>
+                            <div class="resolution-card">
+                                <div class="resolution-name">1440p (2K)</div>
+                                <div class="resolution-desc">High Performance</div>
+                                <div class="resolution-fps">200+ FPS rata-rata</div>
+                                <div class="resolution-status very-good">Very Good</div>
+                            </div>
+                            <div class="resolution-card">
+                                <div class="resolution-name">4K (Ultra HD)</div>
+                                <div class="resolution-desc">Smooth Gaming</div>
+                                <div class="resolution-fps">60+ FPS rata-rata</div>
+                                <div class="resolution-status good">Good</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="resolution-performance">
-                    <h4>Performa Multi-Resolusi</h4>
-                    <div class="resolution-grid">
-                        <div class="resolution-card">
-                            <div class="resolution-name">1080p (Full HD)</div>
-                            <div class="resolution-desc">Performa Optimal</div>
-                            <div class="resolution-fps">120+ FPS rata-rata</div>
-                            <div class="resolution-status excellent">Excellent</div>
+                <div class="gaming-features">
+                    <h4>Keunggulan untuk Gaming</h4>
+                    <div class="gaming-feature-grid">
+                        <div class="gaming-feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <div class="feature-content">
+                                <h5>Low Latency Gaming</h5>
+                                <p>Frame time yang konsisten dan input lag minimal untuk competitive gaming</p>
+                            </div>
                         </div>
-                        <div class="resolution-card">
-                            <div class="resolution-name">1440p (2K)</div>
-                            <div class="resolution-desc">High Performance</div>
-                            <div class="resolution-fps">90+ FPS rata-rata</div>
-                            <div class="resolution-status very-good">Very Good</div>
+                        <div class="gaming-feature-card">
+                            <div class="feature-icon">🔥</div>
+                            <div class="feature-content">
+                                <h5>Thermal Management</h5>
+                                <p>Performa stabil dalam sesi gaming panjang dengan manajemen thermal yang baik</p>
+                            </div>
                         </div>
-                        <div class="resolution-card">
-                            <div class="resolution-name">4K (Ultra HD)</div>
-                            <div class="resolution-desc">Playable Gaming</div>
-                            <div class="resolution-fps">45+ FPS rata-rata</div>
-                            <div class="resolution-status good">Good</div>
+                        <div class="gaming-feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <div class="feature-content">
+                                <h5>Overclocking Potential</h5>
+                                <p>Dapat di-overclock hingga 5.8+ GHz untuk performa gaming maksimal</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="gaming-features">
-                <h4>Keunggulan untuk Gaming</h4>
-                <div class="gaming-feature-grid">
-                    <div class="gaming-feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <div class="feature-content">
-                            <h5>Zen 4 Architecture</h5>
-                            <p>Arsitektur terbaru dengan IPC yang meningkat untuk performa gaming optimal</p>
+                        <div class="gaming-feature-card">
+                            <div class="feature-icon">🎵</div>
+                            <div class="feature-content">
+                                <h5>Streaming Ready</h5>
+                                <p>Gaming + streaming bersamaan tanpa drop FPS yang signifikan</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="gaming-feature-card">
-                        <div class="feature-icon">🔥</div>
-                        <div class="feature-content">
-                            <h5>5nm Process Technology</h5>
-                            <p>Efisiensi daya yang baik dengan performa tinggi dan thermal yang terkontrol</p>
+                    <div class="button-container-wrapper">
+                        <h3>Beli Disini</h3>
+                        <div class="button-container">
+                            <a href="" target="_blank" class="ecom-button shopee-button">
+                                <img src="../shopee.png" alt="Shopee Logo" width="24" height="24">
+                                Shopee
+                            </a>
+                            <a href="https://www.tokopedia.com/warwel/official-intel-core-i9-14900k-lga-1700-gen14-processor-official?extParam=ivf%3Dfalse%26keyword%3Dintel+core+i9+14900k%26search_id%3D20250813125943320722549D1751067PR8%26src%3Dsearch"
+                                target="_blank" class="ecom-button tokopedia-button">
+                                <img src="../tokopedia.png" alt="Tokopedia Logo" width="24" height="24">
+                                Tokopedia
+                            </a>
                         </div>
-                    </div>
-                    <div class="gaming-feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <div class="feature-content">
-                            <h5>DDR5 Support</h5>
-                            <p>Dukungan memori DDR5 untuk bandwidth yang lebih tinggi dalam gaming</p>
-                        </div>
-                    </div>
-                    <div class="gaming-feature-card">
-                        <div class="feature-icon">🎵</div>
-                        <div class="feature-content">
-                            <h5>PCIe 5.0 Ready</h5>
-                            <p>Siap untuk GPU dan storage terbaru dengan PCIe 5.0</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="button-container-wrapper">
-                    <h3>Beli Disini</h3>
-                    <div class="button-container">
-                        <a href="https://shopee.co.id/product/31995121/23287663420?gads_t_sig=VTJGc2RHVmtYMTlxTFVSVVRrdENkVzBLS2xuUGZzMlQ5NjlFWklmRkZjUTR6c3VjcjNrRk1ienZqK0pRVlhqUEo3WlJaQ1M1aDJaZVkydzcvbVJsNjUvVUhxYVM0MWxQSUZUZ1A0UWVXNlpMRmxkU0k1T3V5TVBoMkRuZ2h4Szc"
-                            target="_blank" class="ecom-button shopee-button">
-                            <img src="../shopee.png" alt="Shopee Logo" width="24" height="24">
-                            Shopee
-                        </a>
-                        <a href="https://www.tokopedia.com/emedia-official-store/amd-ryzen-9-7950x3d-am5-16-cores-32-threads"
-                            target="_blank" class="ecom-button tokopedia-button">
-                            <img src="../tokopedia.png" alt="Tokopedia Logo" width="24" height="24">
-                            Tokopedia
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
+        <script>
+            function goBack() {
+                window.history.back();
+            }
 
-        // Add smooth scroll animation for performance bars
-        window.addEventListener('load', function () {
-            const bars = document.querySelectorAll('.bar-fill');
-            bars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 500);
+            // Add smooth scroll animation for performance bars
+            window.addEventListener('load', function () {
+                const bars = document.querySelectorAll('.bar-fill');
+                bars.forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 500);
+                });
             });
-        });
-    </script>
+        </script>
 </body>
 
 </html>
