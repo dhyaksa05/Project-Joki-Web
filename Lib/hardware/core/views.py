@@ -11,14 +11,17 @@ def home(request):
 
 
 def processor(request):
-    return render(request, "processor.html")
+    # ambil hanya produk yang kegunaannya Processor
+    produk_list = Produk.objects.filter(kegunaan="Processor")
+
+    context = {"produk_list": produk_list}
+    return render(request, "processor.html", context)
 
 
-def processor_detail(request, nama):
-    produk = get_object_or_404(
-        Produk, nama__iexact=nama, kategori="Processor"  # case-insensitive
-    )
-    return render(request, "processor_detail.html", {"produk": produk})
+def processor_detail(request, slug):
+    produk = get_object_or_404(Produk, slug=slug)
+    return render(request, "details/processor/index.html", {"produk": produk})
+
 
 def ram(request):
     return render(request, "ram.html")

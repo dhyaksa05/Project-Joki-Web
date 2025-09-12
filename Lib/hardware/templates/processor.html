@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Processor - ByteBudget</title>
+    {% load humanize %}
     <style>
         * {
             margin: 0;
@@ -211,11 +212,21 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
             border: 1px solid rgba(255, 255, 255, 0.2);
+
+            /* tambahan biar footer nempel bawah */
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-footer {
+            margin-top: auto;
+            /* dorong ke bawah */
         }
 
         .product-image {
@@ -423,569 +434,46 @@
 
     <div class="products-grid">
 
+        {% for produk in produk_list %}
         <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Core-i9-14900.jpg" alt="Core-i9-14900K"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-high">Super High Performance</div>
-            <h3 class="product-title">Intel Core i9-14900K</h3>
-            <p class="product-brand">Intel</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">24/32</span>
+            <div class="product-content">
+                {% load static %}
+                <div class="product-image">
+                    {% load static %}
+                    <img src="{% static produk.image_path %}" alt="{{ produk.nama }}"
+                        style="max-width:200px; height:auto;">
                 </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.2 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">6.0 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">LGA 1700</span>
+                <h3 class="product-title">{{ produk.nama }}</h3>
+                <p class="product-brand">{{ produk.kategori }}</p>
+                <div class="product-specs">
+                    {% for spec in produk.spesifikasi.all|slice:":5" %}
+                    <div class="spec-item">
+                        <span class="spec-label">{{ spec.nama }}:</span>
+                        <span class="spec-value">{{ spec.detail|truncatechars:100 }}</span>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.8 (324 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 12.519.000</div>
-            <a href="{% url 'processor_detail' nama='AMD Ryzen 5 5600X' %}" class="btn-primary">
-                Lihat Detail
-            </a>
 
+            <!-- Bagian bawah -->
+            <div class="product-footer">
+                <div class="product-price">Rp {{ produk.harga|floatformat:0|intcomma }}</div>
+                <div class="product-rating">
+                    <div class="stars">
+                        {% for i in "12345"|slice:":produk.rating"|make_list %}
+                        <span>&#9733;</span>
+                        {% endfor %}
+                        {% for i in "12345"|slice:"produk.rating:"|make_list %}
+                        <span>&#9734;</span>
+                        {% endfor %}
+                    </div>
+                    <div class="rating-text">({{ produk.rating }})</div>
+                </div>
+                <a href="{% url 'processor_detail' slug=produk.slug %}" class="btn-primary">Lihat Detail</a>
+            </div>
         </div>
+        {% endfor %}
 
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Core i9-13900KS.jpg" alt="Core-i9-13900K"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-high">Super High Performance</div>
-            <h3 class="product-title">Intel Core i9-13900K</h3>
-            <p class="product-brand">Intel</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">24/32</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.0 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.8 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">LGA 1700</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.8 (324 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 12.519.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/corei913900k.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Ryzen 9 7950X3D.jpg" alt="Ryzen 9 7950X3D"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-high">Super High Performance</div>
-            <h3 class="product-title">AMD Ryzen 9 7950X3D</h3>
-            <p class="product-brand">AMD</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">16/32</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">4.2 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.7 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">AM5</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.8 (324 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 12.519.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/amdryzen97950.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Ryzen Threadripper PRO 7995WX.jpg" alt="Ryzen Threadripper PRO 7995WX"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-high">Super High Performance</div>
-            <h3 class="product-title">AMD Ryzen Threadripper PRO 7995WX</h3>
-            <p class="product-brand">AMD</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">96/192</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">2.5 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.1 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">sTR5</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.8 (324 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 12.519.000</div>
-            <button class="btn-primary"
-                onclick="window.location.href='detail processor/amdryzenthreadripper.html'">Lihat Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Core i7-14700K.jpg" alt="Core i7-14700K"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-high">High Performance</div>
-            <h3 class="product-title">Intel Core i7-14700K</h3>
-            <p class="product-brand">Intel</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">20/28</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.4 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.6 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">LGA 1700</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.8 (324 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 12.519.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/corei714700k.html'">Lihat
-                Detail</button>
-        </div>
-
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/intel-i7-13700k.jpg" alt="Intel i7 13700K"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-high">High Performance</div>
-            <h3 class="product-title">Intel Core i7-13700K</h3>
-            <p class="product-brand">Intel</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">16/24</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.4 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.4 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">LGA 1700</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.8 (324 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 7.187.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/corei713700k.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Ryzen 9 7900X.jpg" alt="Ryzen 9 7900X"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-high">High Performance</div>
-            <h3 class="product-title">AMD Ryzen 9 7900X</h3>
-            <p class="product-brand">AMD</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">12/24</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">4.7 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.6 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">AM5</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.8 (324 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 7.187.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/amdryzen97900x.html'">Lihat
-                Detail</button>
-
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/AMD-Ryzen-7-7700X.jpg" alt="AMD Ryzen 7 7700X"
-                    style="max-width: 205px; height: auto;">
-            </div>
-            <div class="performance-badge performance-high">High Performance</div>
-            <h3 class="product-title">AMD Ryzen 7 7700X</h3>
-            <p class="product-brand">AMD</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">8/16</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">4.5 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.4 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">AM5</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.7 (289 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 5.899.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/amdryzen7700x.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Intel-Core-I5-14600KF.jpg" alt="Intel-Core-I5-14600KF"
-                    style="max-width: 205px; height: auto;">
-            </div>
-            <div class="performance-badge performance-medium">Mid Range</div>
-            <h3 class="product-title">Intel Core i5-14600KF</h3>
-            <p class="product-brand">Intel</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">14/20</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.5 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.3 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">LGA 1700</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.7 (289 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 5.899.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/corei514600kf.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Intel-Core-i5-13600K.jpg" alt="Intel Core i5 13600K"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-medium">Mid Range</div>
-            <h3 class="product-title">Intel Core i5-13600K</h3>
-            <p class="product-brand">Intel</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">14/20</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.5 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.1 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">LGA 1700</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★☆</div>
-                <span class="rating-text">4.6 (412 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 4.599.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/corei513600k.html'">Lihat
-                Detail</button>
-
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/AMD-Ryzen-5-7600X.jpg" alt="AMD Ryzen 5 7600X"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-medium">Mid Range</div>
-            <h3 class="product-title">AMD Ryzen 5 7600X</h3>
-            <p class="product-brand">AMD</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">6/12</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">4.7 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">5.3 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">AM5</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★☆</div>
-                <span class="rating-text">4.5 (356 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 4.199.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/amdryzen57600x.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/AMD-Ryzen-5-5600.jpg" alt="AMD Ryzen 5 5600X"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-budget">Budget Friendly</div>
-            <h3 class="product-title">AMD Ryzen 5 5600</h3>
-            <p class="product-brand">AMD</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">6/12</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.5 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">4.4 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">AM4</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★☆</div>
-                <span class="rating-text">4.4 (521 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 2.199.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/amdryzen55600.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/amd_100_100000510box_ryzen_3_4100_3_5_1695221.jpg" alt="Ryzen 3 4100"
-                    style="max-width: 205px; height: auto;">
-            </div>
-            <div class="performance-badge performance-budget">Budget Friendly</div>
-            <h3 class="product-title">AMD Ryzen 3 4100</h3>
-            <p class="product-brand">AMD</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">4/8</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.8 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">4.0 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">AM4</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.7 (289 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 5.899.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/amdryzen34100.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/13100.jpg" alt="Core i3 13100F" style="max-width: 205px; height: auto;">
-            </div>
-            <div class="performance-badge performance-budget">Budget Friendly</div>
-            <h3 class="product-title">Intel Core i3-13100</h3>
-            <p class="product-brand">Intel</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">4/8</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.4 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">4.5 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">LGA 1700</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.7 (289 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 5.899.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/corei313100.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Intel-Core-i3-12100F.jpg" alt="Intel Core i3 12100F"
-                    style="max-width: 200px; height: auto;">
-            </div>
-            <div class="performance-badge performance-budget">Budget Friendly</div>
-            <h3 class="product-title">Intel Core i3-12100F</h3>
-            <p class="product-brand">Intel</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">4/8</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.3 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">4.3 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">LGA 1700</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★☆</div>
-                <span class="rating-text">4.3 (298 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 1.899.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/corei312100f.html'">Lihat
-                Detail</button>
-        </div>
-
-        <div class="product-card">
-            <div class="product-image">
-                <img src="image/Processor/Intel-Pentium-Gold.jpg" alt="Intel-Pentium-Gold"
-                    style="max-width: 205px; height: auto;">
-            </div>
-            <div class="performance-badge performance-budget">Budget Friendly</div>
-            <h3 class="product-title">Intel Pentium Gold G7400</h3>
-            <p class="product-brand">Intel</p>
-            <div class="product-specs">
-                <div class="spec-item">
-                    <span class="spec-label">Core/Thread:</span>
-                    <span class="spec-value">2/4</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Base Clock:</span>
-                    <span class="spec-value">3.7 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Boost Clock:</span>
-                    <span class="spec-value">3.7 GHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Socket:</span>
-                    <span class="spec-value">LGA 1700</span>
-                </div>
-            </div>
-            <div class="product-rating">
-                <div class="stars">★★★★★</div>
-                <span class="rating-text">4.7 (289 ulasan)</span>
-            </div>
-            <div class="product-price">Rp 5.899.000</div>
-            <button class="btn-primary" onclick="window.location.href='detail processor/pentiumgold.html'">Lihat
-                Detail</button>
-        </div>
     </div>
     </div>
 </body>

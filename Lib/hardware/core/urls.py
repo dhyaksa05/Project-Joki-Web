@@ -5,7 +5,9 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("processor/", views.processor, name="processor"),
     path(
-        "details/processor/<str:nama>/", views.processor_detail, name="processor_detail"
+        "details/processor/<slug:slug>/",
+        views.processor_detail,
+        name="processor_detail",
     ),
     path("ram/", views.ram, name="ram"),
     path("vga/", views.vga, name="vga"),
