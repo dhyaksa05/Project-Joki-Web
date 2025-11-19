@@ -66,6 +66,18 @@ def fallback_parse_cards(soup):
             })
     return products
 
+def scrape_for_django(query):
+    try:
+        return scrape_query(
+            query,
+            headless=True,
+            max_clicks=5,
+            delay_range=(1.5, 2.5)
+        )
+    except Exception as e:
+        logger.error(f"Scraper Django error: {e}")
+        return []
+
 
 @retry(tries=3, delay=2, backoff=1.8, logger=logger)
 def scrape_query(query, headless=True, max_clicks=25, delay_range=(2.0, 4.0)):

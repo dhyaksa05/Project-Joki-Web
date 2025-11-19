@@ -4,7 +4,7 @@ from .models import Produk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-from scrapper_app.scrape_tokopedia import scrape_query
+from scrapper_app.scrape_tokopedia import scrape_query,scrape_for_django
 
 
 def home(request):
@@ -60,7 +60,7 @@ def rekomendasi_view(request):
         # === 1️⃣ Jalankan scraper Tokopedia ===
         try:
             # from scrapper_app.scraper_tokped import scrape_query
-            scraped_data = scrape_query(query_text, headless=True, max_clicks=3)
+            scraped_data = scrape_for_django(query_text)
             # Simpan data scraping ke variabel yang akan dikirim ke template
             scraped_results = scraped_data
         except Exception as e:
