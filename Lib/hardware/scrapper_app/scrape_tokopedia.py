@@ -1,6 +1,7 @@
 import os
 os.environ['PLAYWRIGHT_EXPERIMENTAL_NO_ASYNCIO'] = '1'
-
+import asyncio
+import concurrent.futures
 import argparse
 import json # Pastikan ini di-import
 import time
@@ -16,6 +17,8 @@ from .utils import (
     get_random_user_agent,
     build_playwright_context_options,
 )
+
+executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
 
 BASE_SEARCH_URL = "https://www.tokopedia.com/search?st=product&q={q}"
 # Baris ini tidak lagi terpakai, bisa dihapus atau diabaikan
@@ -67,16 +70,21 @@ def fallback_parse_cards(soup):
     return products
 
 def scrape_for_django(query):
+    """
+    Wrapper aman untuk dipanggil dari Django (WSGI/ASGI).
+    Playwright (sync) dijalankan di thread terpisah.
+    """
     try:
-        return scrape_query(
-            query,
-            headless=True,
-            max_clicks=5,
-            delay_range=(1.5, 2.5)
-        )
-    except Exception as e:
-        logger.error(f"Scraper Django error: {e}")
-        return []
+        loop = asyncio.get_event_loop()
+        # Jika async, jalankan via thread executor
+        if loop.is_running():
+            return loop.run_in_executor(executor, scrape_query, query)
+    except RuntimeError:
+        # Tidak ada event loop → berarti WSGI sync → aman langsung execute
+        return scrape_query(query)
+
+    # Fallback (sync)
+    return scrape_query(query)
 
 
 @retry(tries=3, delay=2, backoff=1.8, logger=logger)
