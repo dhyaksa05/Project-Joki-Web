@@ -1,137 +1,199 @@
 {% load humanize %}
-
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hasil Rekomendasi</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .discount-badge {
+            background: linear-gradient(135deg, #ff4444, #ff6b6b);
+            color: white;
+        }
+    </style>
 </head>
-
 <body class="bg-gray-50 text-gray-900 min-h-screen">
-    <div class="max-w-5xl mx-auto px-6 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
-        <div class="text-center mb-10">
-            <h1 class="text-3xl font-bold text-blue-700 mb-2">Hasil Rekomendasi Perangkat Keras</h1>
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold text-blue-700 mb-2">Hasil Rekomendasi Perangkat Keras</h1>
             <p class="text-gray-600">Berdasarkan kebutuhan dan budget yang kamu masukkan</p>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Data Input Anda</h2>
-            <p><strong>💰 Budget:</strong> Rp {{ budget|intcomma }}</p>
-            <p><strong>🎯 Kegunaan:</strong> {{ usage|title }}</p>
-            <p><strong>📝 Kebutuhan Spesifik:</strong>
-                {% if custom_usage %}
-                {{ custom_usage }}
-                {% else %}
-                <span class="text-gray-500">Tidak ada input spesifik</span>
-                {% endif %}
-            </p>
-            <p class="mt-2"><strong>🛠️ Komponen Dipilih:</strong>
-                {% for c in komponen %}
-                <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm mr-2">{{ c }}</span>
-                {% empty %}
-                <span class="text-gray-500">Tidak ada komponen dipilih</span>
-                {% endfor %}
-            </p>
+        <!-- Data Input -->
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6 mb-6">
+            <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-3">Data Input Anda</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <p><strong>💰 Budget:</strong> {% if budget %}Rp {{ budget|intcomma }}{% else %}Tidak diisi{% endif %}</p>
+                <p><strong>🎯 Kegunaan:</strong> {{ usage|default:"Tidak dipilih"|title }}</p>
+                <p class="sm:col-span-2"><strong>📝 Kebutuhan Spesifik:</strong>
+                    {% if custom_usage %}
+                    {{ custom_usage }}
+                    {% else %}
+                    <span class="text-gray-500">Tidak ada input spesifik</span>
+                    {% endif %}
+                </p>
+                <p class="sm:col-span-2"><strong>🛠️ Komponen Dipilih:</strong>
+                    {% for c in komponen %}
+                    <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs sm:text-sm mr-2 mt-1">{{ c }}</span>
+                    {% empty %}
+                    <span class="text-gray-500">Tidak ada komponen dipilih</span>
+                    {% endfor %}
+                </p>
+            </div>
         </div>
 
-        <!-- Section Rekomendasi dari Database -->
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Rekomendasi Produk dari Database</h2>
-
-            {% for item in results %}
-            <div class="bg-white rounded-lg shadow p-6 mb-5 hover:shadow-lg transition">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ item.nama }}</h3>
-                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Rp {{ item.harga|intcomma }}</span>
-                </div>
-                <p class="text-sm text-gray-600 mb-2"><strong>Kategori:</strong> {{ item.kategori }}</p>
-                <p class="text-gray-700">{{ item.deskripsi }}</p>
-            </div>
-            {% empty %}
-            <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded">
-                Tidak ada hasil rekomendasi dari database sesuai kriteria Anda.
-            </div>
-            {% endfor %}
-        </div>
-
-        <!-- Section Hasil Scraping dari Tokopedia -->
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Hasil Pencarian dari Tokopedia</h2>
+        <!-- Section Rekomendasi dari Data JSON -->
+        <div class="mb-8">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">🛒 Rekomendasi dari Tokopedia</h2>
             
-            {% if scraped_results %}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for product in scraped_results %}
-                <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+            {% if json_recommendations %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {% for product in json_recommendations %}
+                <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden border border-gray-200">
                     <!-- Gambar Produk -->
-                    {% if product.image %}
-                    <div class="h-48 bg-gray-200 overflow-hidden">
-                        <img src="{{ product.image }}" 
+                    {% if product.image_url %}
+                    <div class="h-40 sm:h-48 bg-gray-200 overflow-hidden relative">
+                        <img src="{{ product.image_url }}" 
                              alt="{{ product.name }}" 
                              class="w-full h-full object-cover hover:scale-105 transition duration-300"
-                             onerror="this.style.display='none'">
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="hidden h-40 sm:h-48 bg-gray-200 items-center justify-center">
+                            <span class="text-gray-500 text-sm">Gambar tidak tersedia</span>
+                        </div>
+                        
+                        <!-- Badge Kategori -->
+                        {% if product.category %}
+                        <div class="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded text-xs">
+                            {{ product.category }}
+                        </div>
+                        {% endif %}
                     </div>
                     {% else %}
-                    <div class="h-48 bg-gray-200 flex items-center justify-center">
-                        <span class="text-gray-500">Gambar tidak tersedia</span>
+                    <div class="h-40 sm:h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500 text-sm">Gambar tidak tersedia</span>
                     </div>
                     {% endif %}
                     
                     <!-- Info Produk -->
-                    <div class="p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2">{{ product.name }}</h3>
+                    <div class="p-3 sm:p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm sm:text-base" title="{{ product.name }}">
+                            {{ product.name }}
+                        </h3>
                         
-                        <div class="mb-3">
-                            <span class="text-lg font-bold text-green-600">{{ product.price }}</span>
+                        <!-- Harga -->
+                        <div class="mb-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-base sm:text-lg font-bold text-green-600">Rp {{ product.price|intcomma }}</span>
+                                {% if product.original_price and product.original_price > product.price %}
+                                <span class="text-xs sm:text-sm text-gray-500 line-through">Rp {{ product.original_price|intcomma }}</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Badge Diskon -->
+                            {% if product.original_price and product.original_price > product.price %}
+                            {% widthratio product.original_price|add:"-"|add:product.price product.original_price 100 as discount_percent %}
+                            <div class="discount-badge px-2 py-1 rounded text-xs font-semibold mt-1 inline-block">
+                                Hemat {{ discount_percent|floatformat:0 }}%
+                            </div>
+                            {% endif %}
                         </div>
                         
-                        <div class="text-sm text-gray-600 space-y-1">
-                            {% if product.shop %}
-                            <p><strong>Toko:</strong> {{ product.shop }}</p>
+                        <!-- Info Tambahan -->
+                        <div class="text-xs sm:text-sm text-gray-600 space-y-1 mb-2">
+                            {% if product.shop_name %}
+                            <p><strong>🏪 Toko:</strong> {{ product.shop_name }}</p>
                             {% endif %}
                             
-                            {% if product.location %}
-                            <p><strong>Lokasi:</strong> {{ product.location }}</p>
+                            {% if product.shop_city %}
+                            <p><strong>📍 Lokasi:</strong> {{ product.shop_city }}</p>
                             {% endif %}
                             
                             {% if product.rating %}
-                            <p><strong>Rating:</strong> ⭐ {{ product.rating }}</p>
-                            {% endif %}
-                            
-                            {% if product.sold %}
-                            <p><strong>Terjual:</strong> {{ product.sold }}</p>
+                            <div class="flex items-center">
+                                <strong>⭐ Rating:</strong> 
+                                <span class="ml-1">{{ product.rating }}</span>
+                                {% if product.review_count %}
+                                <span class="ml-1 text-gray-500">({{ product.review_count }} ulasan)</span>
+                                {% endif %}
+                            </div>
                             {% endif %}
                         </div>
                         
                         <!-- Link ke Tokopedia -->
-                        {% if product.link %}
-                        <a href="{{ product.link }}" 
+                        {% if product.url %}
+                        <a href="{{ product.url }}" 
                            target="_blank" 
                            rel="noopener noreferrer"
-                           class="mt-3 inline-block w-full bg-blue-600 text-white text-center py-2 px-4 rounded hover:bg-blue-700 transition">
-                            Lihat di Tokopedia
+                           class="mt-2 inline-block w-full bg-orange-500 text-white text-center py-2 px-3 rounded hover:bg-orange-600 transition font-medium text-sm">
+                            🛍️ Beli di Tokopedia
                         </a>
                         {% endif %}
                     </div>
                 </div>
                 {% endfor %}
             </div>
+            
+            <!-- Info jumlah hasil -->
+            <div class="mt-4 text-center text-gray-600 text-sm">
+                Menampilkan {{ json_recommendations|length }} rekomendasi dari data JSON
+            </div>
             {% else %}
             <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-4 rounded">
-                Tidak ada hasil pencarian dari Tokopedia. Coba dengan kata kunci yang berbeda.
+                <p class="font-semibold">⚠️ Tidak ada rekomendasi yang ditemukan</p>
+                <p class="text-sm mt-1">Kemungkinan penyebab:</p>
+                <ul class="text-sm mt-1 list-disc list-inside">
+                    <li>Budget tidak sesuai dengan produk yang tersedia</li>
+                    <li>Kategori/komponen yang dipilih tidak cocok</li>
+                    <li>File data JSON kosong atau tidak ditemukan</li>
+                </ul>
             </div>
             {% endif %}
         </div>
 
-        <div class="mt-8 text-center">
-            <a href="/" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition">
+        <!-- Section Rekomendasi dari Database (jika ada) -->
+        {% if results %}
+        <div class="mb-8">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">📊 Rekomendasi dari Database Lokal</h2>
+            <div class="space-y-4">
+                {% for item in results %}
+                <div class="bg-white rounded-lg shadow p-4 hover:shadow-lg transition">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-0">{{ item.nama }}</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm w-fit">Rp {{ item.harga|intcomma }}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2"><strong>Kategori:</strong> {{ item.kategori }}</p>
+                    <p class="text-gray-700 text-sm">{{ item.deskripsi }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Action Buttons -->
+        <div class="mt-8 text-center space-y-3 sm:space-y-0 sm:space-x-4">
+            <a href="/" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition text-sm sm:text-base">
                 🔙 Kembali ke Pencarian
             </a>
+            
+            <!-- Info Data Source -->
+            <div class="inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm">
+                📅 Data diperbarui: 
+                {% if json_recommendations.0.last_updated %}
+                    {{ json_recommendations.0.last_updated|slice:":10" }}
+                {% else %}
+                    Terbaru
+                {% endif %}
+            </div>
         </div>
     </div>
 </body>
-
 </html>
