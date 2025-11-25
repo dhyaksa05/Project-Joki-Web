@@ -14,4 +14,6 @@ urlpatterns = [
     path("psu/", views.psu, name="psu"),
     path("ssd/", views.ssd, name="ssd"),
     path("rekomendasi/", views.rekomendasi_view, name="rekomendasi"),
+    path('run-scraper/', views.run_scraper, name='run_scraper'),
+    path('download-excel/', views.download_excel, name='download_excel'),
 ]

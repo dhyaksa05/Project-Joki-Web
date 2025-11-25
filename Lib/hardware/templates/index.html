@@ -821,6 +821,27 @@
             </div>
           </form>
         </div>
+        <div class="flex flex-col sm:flex-row gap-4 mt-6">
+          <!-- Tombol Jalankan Scraper -->
+          <button
+            id="runScraperBtn"
+            type="button"
+            class="px-6 py-3 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700"
+          >
+            🔄 Jalankan Scraping
+          </button>
+
+          <!-- Tombol Download Excel -->
+          <a
+            href="{% url 'download_excel' %}"
+            class="px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 text-center"
+          >
+            ⬇️ Download Excel
+          </a>
+        </div>
+
+        <!-- Status Message -->
+        <div id="scraperStatus" class="mt-4 text-sm font-medium"></div>
       </div>
     </section>
 
@@ -1257,6 +1278,27 @@
         // Initial viewport height calculation
         const vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty("--vh", `${vh}px`);
+      });
+
+      document.getElementById("runScraperBtn").addEventListener("click", function () {
+        const status = document.getElementById("scraperStatus");
+        status.innerHTML = "⏳ Menjalankan scraping...";
+
+        fetch("{% url 'run_scraper' %}")
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === "success") {
+              status.innerHTML = "✅ " + data.message;
+              status.className = "text-green-600 mt-2";
+            } else {
+              status.innerHTML = "❌ " + data.message;
+              status.className = "text-red-600 mt-2";
+            }
+          })
+          .catch(err => {
+            status.innerHTML = "❌ Gagal menjalankan scraper";
+            status.className = "text-red-600 mt-2";
+          });
       });
     </script>
   </body>
