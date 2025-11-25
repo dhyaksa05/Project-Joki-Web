@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from .models import Produk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -7,7 +7,11 @@ import numpy as np
 from scrapper_app.scrape_tokopedia import scrape_query,scrape_for_django
 import json
 import os
+from django.conf import settings
+import subprocess
 from django.shortcuts import render
+import sys
+
 
 def home(request):
     return render(request, "index.html")
@@ -235,8 +239,42 @@ def rekomendasi_view(request):
         'komponen': komponen,
     })
 
+def run_scraper(request):
+    # Path root project (tempat manage.py berada)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    # Path ke file scrapper.py
+    scraper_path = os.path.join(base_dir,'scrapper.py')
+
+    # Gunakan Python dari venv
+    python_path = sys.executable
+
+    # Jalankan scraper
+    subprocess.run([python_path, scraper_path])
+
+    return HttpResponse("✅ Scraper Tokopedia berhasil dijalankan")
+
+def download_excel(request):
+    base_dir = settings.BASE_DIR  # root project
+    file_path = os.path.join(base_dir, 'data', 'tokopedia_products_latest.xlsx')
+
+    print("Real path:", file_path)
+
+    if os.path.exists(file_path):
+        return FileResponse(
+            open(file_path, "rb"),
+            as_attachment=True,
+            filename="tokopedia_products_latest.xlsx"
+        )
+    else:
+        return JsonResponse({
+            "status": "error",
+            "message": f"File tidak ditemukan di: {file_path}"
+        })
+
 def pelajarilebihlanjut(request):
     return render(request, "pelajarilebihlanjut.html")
 
 def loginpage(request):
     return render(request, "loginpage.html")
+    
