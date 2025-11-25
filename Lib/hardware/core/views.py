@@ -238,4 +238,5 @@ def rekomendasi_view(request):
 def pelajarilebihlanjut(request):
     return render(request, "pelajarilebihlanjut.html")
 
-
+def loginpage(request):
+    return render(request, "loginpage.html")

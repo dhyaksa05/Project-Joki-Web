@@ -15,4 +15,5 @@ urlpatterns = [
     path("ssd/", views.ssd, name="ssd"),
     path("rekomendasi/", views.rekomendasi_view, name="rekomendasi"),
     path("pelajarilebihlanjut/", views.pelajarilebihlanjut, name="pelajarilebihlanjut"),
+    path("loginpage/", views.loginpage, name="loginpage"),
 ]
