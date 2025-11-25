@@ -14,4 +14,5 @@ urlpatterns = [
     path("psu/", views.psu, name="psu"),
     path("ssd/", views.ssd, name="ssd"),
     path("rekomendasi/", views.rekomendasi_view, name="rekomendasi"),
+    path("pelajarilebihlanjut/", views.pelajarilebihlanjut, name="pelajarilebihlanjut"),
 ]

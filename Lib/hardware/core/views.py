@@ -235,4 +235,7 @@ def rekomendasi_view(request):
         'komponen': komponen,
     })
 
+def pelajarilebihlanjut(request):
+    return render(request, "pelajarilebihlanjut.html")
+
 
