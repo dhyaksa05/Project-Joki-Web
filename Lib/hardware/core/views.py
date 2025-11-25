@@ -242,7 +242,6 @@ def run_scraper(request):
     # Path root project (tempat manage.py berada)
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-<<<<<<< HEAD
     # Path ke file scrapper.py
     scraper_path = os.path.join(base_dir,'scrapper.py')
 
@@ -271,9 +270,7 @@ def download_excel(request):
             "status": "error",
             "message": f"File tidak ditemukan di: {file_path}"
         })
-=======
 def pelajarilebihlanjut(request):
     return render(request, "pelajarilebihlanjut.html")
 
->>>>>>> 5d3c67796c229d917597e7b83307adbe00f6b259
 
