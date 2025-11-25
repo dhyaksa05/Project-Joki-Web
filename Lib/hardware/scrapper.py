@@ -387,28 +387,3 @@ def update_product_data():
 if __name__ == "__main__":
     # Update data produk
     all_products = update_product_data()
-    
-    # Test recommendations
-    print("\n" + "="*50)
-    print("TEST REKOMENDASI")
-    print("="*50)
-    
-    test_cases = [
-        (8000000, "Gaming"),
-        (5000000, "Office/Kerja"),
-        (10000000, "Programming"),
-        (15000000, "Design/Video Editing")
-    ]
-    
-    for budget, usage in test_cases:
-        print(f"\nTesting: Budget Rp {budget:,}, Usage: {usage}")
-        recommendations = get_recommendations(budget, usage)
-        
-        if recommendations:
-            print(f"Rekomendasi ditemukan: {len(recommendations)} produk")
-            for i, product in enumerate(recommendations[:3], 1):  # Show first 3
-                print(f"  {i}. {product['name']}")
-                print(f"     Harga: Rp {product['price']:,}")
-                print(f"     Rating: {product.get('rating', 'N/A')} ({product.get('review_count', 0)} reviews)")
-        else:
-            print("  Tidak ada rekomendasi yang ditemukan")
