@@ -725,7 +725,7 @@
           <h2
             class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4"
           >
-            Cari Komponen PC Anda
+            Cari Rekomendasi Laptop Anda
           </h2>
           <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
             Masukkan budget dan kebutuhan Anda untuk mendapatkan rekomendasi
@@ -859,6 +859,274 @@
         ></div>
       </div>
     </section>
+
+    <!--Filtering Hardware-->
+    <section
+  id="pccomponentfinder"
+  class="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2
+        class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4"
+      >
+        Cari Komponen PC Anda
+      </h2>
+      <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
+        Filter berdasarkan budget dan komponen yang Anda butuhkan
+      </p>
+    </div>
+
+    <div
+      class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 sm:p-8 transition-colors duration-300"
+    >
+      <form action="{% url 'rekomendasi' %}" method="POST" class="space-y-8">
+        {% csrf_token %}
+        
+        <!-- Budget Section -->
+        <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Budget
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label
+                for="minBudget"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                Budget Minimum (Rp)
+              </label>
+              <input
+                type="number"
+                id="minBudget"
+                name="min_budget"
+                placeholder="Contoh: 3000000"
+                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              />
+            </div>
+            <div>
+              <label
+                for="maxBudget"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                Budget Maximum (Rp)
+              </label>
+              <input
+                type="number"
+                id="maxBudget"
+                name="max_budget"
+                placeholder="Contoh: 8000000"
+                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Usage Section -->
+        <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Kegunaan
+          </h3>
+          <select
+            id="usageSelect"
+            name="usage"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+          >
+            <option value="">Semua Kegunaan</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Office/Kerja">Office/Kerja</option>
+            <option value="Design/Video Editing">Design/Video Editing</option>
+            <option value="Programming">Programming</option>
+            <option value="Rendering 3D">Rendering 3D</option>
+          </select>
+        </div>
+
+        <!-- Components Filter Section -->
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Filter Komponen
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- RAM -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
+              <label class="flex items-center cursor-pointer group">
+                <input
+                  type="checkbox"
+                  name="components"
+                  value="RAM"
+                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  RAM
+                </span>
+              </label>
+              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
+                Memory / DDR4 / DDR5
+              </p>
+            </div>
+
+            <!-- CPU -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
+              <label class="flex items-center cursor-pointer group">
+                <input
+                  type="checkbox"
+                  name="components"
+                  value="CPU"
+                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  CPU / Processor
+                </span>
+              </label>
+              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
+                Intel / AMD Ryzen
+              </p>
+            </div>
+
+            <!-- GPU -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
+              <label class="flex items-center cursor-pointer group">
+                <input
+                  type="checkbox"
+                  name="components"
+                  value="GPU"
+                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  GPU / VGA
+                </span>
+              </label>
+              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
+                NVIDIA / AMD Graphics
+              </p>
+            </div>
+
+            <!-- Motherboard -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
+              <label class="flex items-center cursor-pointer group">
+                <input
+                  type="checkbox"
+                  name="components"
+                  value="Motherboard"
+                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  Motherboard
+                </span>
+              </label>
+              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
+                Mainboard / Mobo
+              </p>
+            </div>
+
+            <!-- SSD -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
+              <label class="flex items-center cursor-pointer group">
+                <input
+                  type="checkbox"
+                  name="components"
+                  value="SSD"
+                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  SSD
+                </span>
+              </label>
+              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
+                NVMe / SATA SSD
+              </p>
+            </div>
+
+            <!-- HDD -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
+              <label class="flex items-center cursor-pointer group">
+                <input
+                  type="checkbox"
+                  name="components"
+                  value="HDD"
+                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  HDD
+                </span>
+              </label>
+              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
+                Hard Disk Drive
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div
+          id="errorMessage"
+          class="hidden bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg"
+        ></div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+          <button
+            type="submit"
+            class="flex-1 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-all hover:scale-105 hover:shadow-xl"
+            style="
+              background: linear-gradient(135deg, #000000 0%, #3d0063 100%);
+              box-shadow: 0 4px 15px rgba(61, 0, 99, 0.3);
+            "
+            onmouseover="this.style.background='linear-gradient(135deg, #1a1a1a 0%, #4a0070 100%)'"
+            onmouseout="this.style.background='linear-gradient(135deg, #000000 0%, #3d0063 100%)'"
+          >
+            🔍 Cari Rekomendasi
+          </button>
+          <button
+            type="reset"
+            class="sm:w-auto px-8 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-semibold text-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all"
+            onclick="document.getElementById('errorMessage').classList.add('hidden')"
+          >
+            Reset Filter
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Quick Budget Presets -->
+    <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <button
+        type="button"
+        onclick="setQuickBudget(0, 5000000)"
+        class="px-4 py-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
+      >
+        <p class="text-xs text-gray-500 dark:text-gray-400">Budget</p>
+        <p class="font-semibold text-gray-900 dark:text-white">< 5 Juta</p>
+      </button>
+      <button
+        type="button"
+        onclick="setQuickBudget(5000000, 10000000)"
+        class="px-4 py-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
+      >
+        <p class="text-xs text-gray-500 dark:text-gray-400">Budget</p>
+        <p class="font-semibold text-gray-900 dark:text-white">5-10 Juta</p>
+      </button>
+      <button
+        type="button"
+        onclick="setQuickBudget(10000000, 20000000)"
+        class="px-4 py-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
+      >
+        <p class="text-xs text-gray-500 dark:text-gray-400">Budget</p>
+        <p class="font-semibold text-gray-900 dark:text-white">10-20 Juta</p>
+      </button>
+      <button
+        type="button"
+        onclick="setQuickBudget(20000000, 999999999)"
+        class="px-4 py-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
+      >
+        <p class="text-xs text-gray-500 dark:text-gray-400">Budget</p>
+        <p class="font-semibold text-gray-900 dark:text-white">> 20 Juta</p>
+      </button>
+    </div>
+  </div>
+</section>
+
+
     <!-- Recommendations Section -->
     <section
       id="recommendationsSection"
@@ -1559,5 +1827,11 @@
             });
         });
     </script>
+    <script>
+  function setQuickBudget(min, max) {
+    document.getElementById('minBudget').value = min;
+    document.getElementById('maxBudget').value = max;
+  }
+</script>
   </body>
 </html>
