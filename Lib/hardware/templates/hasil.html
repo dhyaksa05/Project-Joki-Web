@@ -1,10 +1,11 @@
 {% load humanize %}
+{% load math_filters %} 
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Rekomendasi</title>
+    <title>{{ page_title|default:"Hasil Rekomendasi" }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .line-clamp-2 {
@@ -17,23 +18,67 @@
             background: linear-gradient(135deg, #ff4444, #ff6b6b);
             color: white;
         }
+        .pc-badge {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        .laptop-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
-        <!-- Header -->
+        <!-- Header dengan Badge Tipe Produk -->
         <div class="text-center mb-8">
-            <h1 class="text-2xl sm:text-3xl font-bold text-blue-700 mb-2">Hasil Rekomendasi Perangkat Keras</h1>
+            <div class="flex justify-center mb-3">
+                {% if product_type == 'pc' %}
+                <span class="pc-badge text-white px-4 py-1 rounded-full font-medium">PC COMPONENTS</span>
+                {% elif product_type == 'laptop' %}
+                <span class="laptop-badge text-white px-4 py-1 rounded-full font-medium">LAPTOP</span>
+                {% endif %}
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-blue-700 mb-2">{{ page_title|default:"Hasil Rekomendasi Perangkat Keras" }}</h1>
             <p class="text-gray-600">Berdasarkan kebutuhan dan budget yang kamu masukkan</p>
         </div>
 
-        <!-- Data Input -->
-        <div class="bg-white rounded-lg shadow p-4 sm:p-6 mb-6">
+             <div class="bg-white rounded-lg shadow p-4 sm:p-6 mb-6">
             <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-3">Data Input Anda</h2>
+            
+            {% if product_type == 'pc' %}
+            <!-- Data Input untuk PC -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <p><strong>💰 Budget:</strong> {% if budget %}Rp {{ budget|intcomma }}{% else %}Tidak diisi{% endif %}</p>
-                <p><strong>🎯 Kegunaan:</strong> {{ usage|default:"Tidak dipilih"|title }}</p>
+                <p><strong>💰 Budget Range:</strong> 
+                    {% if min_budget and max_budget %}
+                    Rp {{ min_budget|intcomma }} - Rp {{ max_budget|intcomma }}
+                    {% else %}
+                    <span class="text-gray-500">Tidak diisi</span>
+                    {% endif %}
+                </p>
+                <p><strong>🎯 Penggunaan:</strong> {{ usage|default:"Tidak dipilih"|title }}</p>
+                <p class="sm:col-span-2"><strong>🛠️ Komponen PC:</strong>
+                    {% for c in komponen %}
+                    <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs sm:text-sm mr-2 mt-1">{{ c }}</span>
+                    {% empty %}
+                    <span class="text-gray-500">Semua komponen</span>
+                    {% endfor %}
+                </p>
+            </div>
+            
+            {% elif product_type == 'laptop' %}
+            <!-- Data Input untuk Laptop -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <p><strong>💰 Budget:</strong> 
+                    {% if budget %}
+                    Rp {{ budget|intcomma }}
+                    <span class="text-xs text-gray-500 ml-2">
+                        (Range: Rp {{ budget_range_min|intcomma }} - Rp {{ budget_range_max|intcomma }})
+                    </span>
+                    {% else %}
+                    <span class="text-gray-500">Tidak diisi</span>
+                    {% endif %}
+                </p>
+                <p><strong>🎯 Kegunaan Utama:</strong> {{ usage|default:"Tidak dipilih"|title }}</p>
                 <p class="sm:col-span-2"><strong>📝 Kebutuhan Spesifik:</strong>
                     {% if custom_usage %}
                     {{ custom_usage }}
@@ -41,7 +86,21 @@
                     <span class="text-gray-500">Tidak ada input spesifik</span>
                     {% endif %}
                 </p>
-                <p class="sm:col-span-2"><strong>🛠️ Komponen Dipilih:</strong>
+                <p class="sm:col-span-2"><strong>🔧 Fitur Tambahan:</strong>
+                    {% for c in komponen %}
+                    <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs sm:text-sm mr-2 mt-1">{{ c }}</span>
+                    {% empty %}
+                    <span class="text-gray-500">Tidak ada fitur tambahan</span>
+                    {% endfor %}
+                </p>
+            </div>
+            
+            {% else %}
+            <!-- Fallback untuk semua tipe -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <p><strong>💰 Budget:</strong> {{ budget|default:"Tidak diisi" }}</p>
+                <p><strong>🎯 Kegunaan:</strong> {{ usage|default:"Tidak dipilih"|title }}</p>
+                <p class="sm:col-span-2"><strong>🛠️ Komponen:</strong>
                     {% for c in komponen %}
                     <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs sm:text-sm mr-2 mt-1">{{ c }}</span>
                     {% empty %}
@@ -49,11 +108,24 @@
                     {% endfor %}
                 </p>
             </div>
+            {% endif %}
         </div>
-
         <!-- Section Rekomendasi dari Data JSON -->
         <div class="mb-8">
-            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">🛒 Rekomendasi dari Tokopedia</h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-800">
+                    {% if product_type == 'pc' %}
+                    🛠️ Rekomendasi Komponen PC
+                    {% elif product_type == 'laptop' %}
+                    💻 Rekomendasi Laptop
+                    {% else %}
+                    🛒 Rekomendasi Produk
+                    {% endif %}
+                </h2>
+                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-lg text-sm">
+                    {{ json_recommendations|length }} produk ditemukan
+                </span>
+            </div>
             
             {% if json_recommendations %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -70,12 +142,18 @@
                             <span class="text-gray-500 text-sm">Gambar tidak tersedia</span>
                         </div>
                         
-                        <!-- Badge Kategori -->
-                        {% if product.category %}
-                        <div class="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded text-xs">
-                            {{ product.category }}
+                        <!-- Badge Tipe Produk -->
+                        <div class="absolute top-2 left-2 flex flex-col gap-1">
+                            {% if product.product_type == 'pc_component' %}
+                            <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">{{ product.component_type|default:"PC Part"|upper }}</span>
+                            {% elif product.product_type == 'laptop' %}
+                            <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">LAPTOP</span>
+                            {% endif %}
+                            
+                            {% if product.function %}
+                            <span class="bg-purple-500 text-white px-2 py-1 rounded text-xs">{{ product.function|upper }}</span>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
                     {% else %}
                     <div class="h-40 sm:h-48 bg-gray-200 flex items-center justify-center">
@@ -107,35 +185,54 @@
                             {% endif %}
                         </div>
                         
+                        <!-- Rating -->
+                        {% if product.rating %}
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= product.rating|floatformat:0|add:"0"|floatformat:0 %}
+                                        ★
+                                    {% else %}
+                                        ☆
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <span class="ml-2 text-sm font-medium">{{ product.rating }}</span>
+                            {% if product.review_count %}
+                            <span class="ml-2 text-xs text-gray-500">({{ product.review_count }} ulasan)</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        
                         <!-- Info Tambahan -->
                         <div class="text-xs sm:text-sm text-gray-600 space-y-1 mb-2">
                             {% if product.shop_name %}
-                            <p><strong>🏪 Toko:</strong> {{ product.shop_name }}</p>
+                            <p class="truncate"><strong>🏪 Toko:</strong> {{ product.shop_name }}</p>
                             {% endif %}
                             
                             {% if product.shop_city %}
                             <p><strong>📍 Lokasi:</strong> {{ product.shop_city }}</p>
                             {% endif %}
                             
-                            {% if product.rating %}
-                            <div class="flex items-center">
-                                <strong>⭐ Rating:</strong> 
-                                <span class="ml-1">{{ product.rating }}</span>
-                                {% if product.review_count %}
-                                <span class="ml-1 text-gray-500">({{ product.review_count }} ulasan)</span>
-                                {% endif %}
-                            </div>
+                            {% if product.category and product_type == 'pc' %}
+                            <p><strong>📦 Kategori:</strong> {{ product.category|title }}</p>
                             {% endif %}
                         </div>
                         
                         <!-- Link ke Tokopedia -->
                         {% if product.url %}
-                        <a href="{{ product.url }}" 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           class="mt-2 inline-block w-full bg-orange-500 text-white text-center py-2 px-3 rounded hover:bg-orange-600 transition font-medium text-sm">
-                            🛍️ Beli di Tokopedia
-                        </a>
+                        <div class="flex gap-2">
+                            <a href="{{ product.url }}" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="flex-1 bg-orange-500 text-white text-center py-2 px-3 rounded hover:bg-orange-600 transition font-medium text-sm">
+                                🛍️ Beli di Tokopedia
+                            </a>
+                            <button onclick="window.open('{{ product.url }}', '_blank')" 
+                                    class="bg-gray-200 text-gray-700 p-2 rounded hover:bg-gray-300 transition">
+                                ↗
+                            </button>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
@@ -143,18 +240,46 @@
             </div>
             
             <!-- Info jumlah hasil -->
-            <div class="mt-4 text-center text-gray-600 text-sm">
-                Menampilkan {{ json_recommendations|length }} rekomendasi dari data JSON
+            <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                <div class="flex flex-col sm:flex-row justify-between items-center">
+                    <div>
+                        <p class="font-medium text-blue-800">📊 Statistik Rekomendasi</p>
+                        <p class="text-sm text-blue-600">
+                            Menampilkan {{ json_recommendations|length }} produk terbaik dari {{ json_recommendations.0.last_updated|slice:":10"|default:"terbaru" }}
+                        </p>
+                    </div>
+                    <div class="mt-2 sm:mt-0">
+                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+                                class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
+                            ⬆ Kembali ke Atas
+                        </button>
+                    </div>
+                </div>
             </div>
             {% else %}
-            <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-4 rounded">
-                <p class="font-semibold">⚠️ Tidak ada rekomendasi yang ditemukan</p>
-                <p class="text-sm mt-1">Kemungkinan penyebab:</p>
-                <ul class="text-sm mt-1 list-disc list-inside">
-                    <li>Budget tidak sesuai dengan produk yang tersedia</li>
-                    <li>Kategori/komponen yang dipilih tidak cocok</li>
-                    <li>File data JSON kosong atau tidak ditemukan</li>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+                <div class="text-5xl mb-4">🤔</div>
+                <p class="font-semibold text-yellow-800 mb-2">Tidak ada rekomendasi yang ditemukan</p>
+                <p class="text-yellow-700 text-sm mb-4">Coba sesuaikan kriteria pencarian Anda:</p>
+                
+                {% if product_type == 'pc' %}
+                <ul class="text-sm text-yellow-700 mb-4 space-y-1">
+                    <li>• Perluas range budget Anda</li>
+                    <li>• Pilih komponen yang lebih umum</li>
+                    <li>• Coba pilih "Semua Kegunaan"</li>
                 </ul>
+                {% elif product_type == 'laptop' %}
+                <ul class="text-sm text-yellow-700 mb-4 space-y-1">
+                    <li>• Tingkatkan budget sedikit</li>
+                    <li>• Coba kegunaan yang berbeda</li>
+                    <li>• Kurangi spesifikasi yang diminta</li>
+                </ul>
+                {% endif %}
+                
+                <a href="{% if product_type == 'pc' %}{% url 'rekomendasi_pc' %}{% else %}{% url 'rekomendasi_laptop' %}{% endif %}" 
+                   class="inline-block bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-yellow-700 transition">
+                    🔄 Coba Kembali
+                </a>
             </div>
             {% endif %}
         </div>
@@ -163,15 +288,23 @@
         {% if results %}
         <div class="mb-8">
             <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">📊 Rekomendasi dari Database Lokal</h2>
-            <div class="space-y-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {% for item in results %}
                 <div class="bg-white rounded-lg shadow p-4 hover:shadow-lg transition">
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
-                        <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-0">{{ item.nama }}</h3>
-                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm w-fit">Rp {{ item.harga|intcomma }}</span>
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900">{{ item.nama }}</h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Rp {{ item.harga|intcomma }}</span>
                     </div>
-                    <p class="text-sm text-gray-600 mb-2"><strong>Kategori:</strong> {{ item.kategori }}</p>
-                    <p class="text-gray-700 text-sm">{{ item.deskripsi }}</p>
+                    <div class="mb-3">
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">{{ item.kategori }}</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-4">{{ item.deskripsi|truncatechars:150 }}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">ID: {{ item.id|default:"-" }}</span>
+                        <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            Detail →
+                        </button>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -179,20 +312,42 @@
         {% endif %}
 
         <!-- Action Buttons -->
-        <div class="mt-8 text-center space-y-3 sm:space-y-0 sm:space-x-4">
-            <a href="/" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition text-sm sm:text-base">
-                🔙 Kembali ke Pencarian
-            </a>
+        <div class="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex gap-3">
+                <a href="/" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition">
+                    🔙 Kembali ke Beranda
+                </a>
+                <a href="{% if product_type == 'pc' %}{% url 'rekomendasi_pc' %}{% else %}{% url 'rekomendasi_laptop' %}{% endif %}" 
+                   class="inline-block bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-medium hover:bg-gray-300 transition">
+                    🔄 Cari Lagi
+                </a>
+            </div>
             
             <!-- Info Data Source -->
-            <div class="inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm">
-                📅 Data diperbarui: 
-                {% if json_recommendations.0.last_updated %}
-                    {{ json_recommendations.0.last_updated|slice:":10" }}
-                {% else %}
-                    Terbaru
-                {% endif %}
+            <div class="text-center sm:text-right">
+                <div class="text-sm text-gray-600">
+                    <span class="font-medium">ℹ️ Data Source:</span>
+                    <span class="ml-2">
+                        {% if json_recommendations %}
+                        Tokopedia API 
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded ml-2">
+                            📅 {{ json_recommendations.0.last_updated|slice:":10"|default:"Terbaru" }}
+                        </span>
+                        {% else %}
+                        Database Lokal
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">
+                    {% if product_type == 'pc' %}Komponen PC{% elif product_type == 'laptop' %}Laptop{% endif %}
+                </div>
             </div>
+        </div>
+
+        <!-- Footer Note -->
+        <div class="mt-8 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
+            <p>💡 Tips: Klik "Beli di Tokopedia" untuk melihat detail produk lengkap dan membandingkan harga</p>
+            <p class="mt-1">Rekomendasi ini dihasilkan secara otomatis berdasarkan data terbaru dari Tokopedia</p>
         </div>
     </div>
 </body>

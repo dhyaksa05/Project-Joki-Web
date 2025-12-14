@@ -592,11 +592,7 @@
         <div
           class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 sm:p-8 transition-colors duration-300"
         >
-          <form
-            action="{% url 'rekomendasi' %}"
-            method="POST"
-            class="space-y-6"
-          >
+          <form action="{% url 'rekomendasi_laptop' %}" method="POST" class="space-y-6">
             {% csrf_token %}
             <div class="grid grid-cols-1 mobile-form-grid md:grid-cols-2 gap-6">
               <div>
@@ -736,7 +732,7 @@
     <div
       class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 sm:p-8 transition-colors duration-300"
     >
-      <form action="{% url 'rekomendasi' %}" method="POST" class="space-y-8">
+      <form action="{% url 'rekomendasi_pc' %}" method="POST" class="space-y-8">
         {% csrf_token %}
         
         <!-- Budget Section -->
@@ -1330,7 +1326,7 @@
             <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center text-2xl">
               🛡️
             </div>
-          </div>
+        </div>
           <div>
             <h4 class="font-bold text-gray-900 dark:text-white mb-2">Warranty Tracker</h4>
             <p class="text-gray-600 dark:text-gray-300 text-sm">

@@ -31,8 +31,6 @@ def download_image(url):
             ext = ".jpeg"
 
         filename = f"{uuid.uuid4().hex}{ext}"
-
-        # ABSOLUTE path untuk menyimpan file
         filepath = os.path.join(IMAGE_DIR, filename)
 
         headers = {
@@ -46,7 +44,6 @@ def download_image(url):
             with open(filepath, "wb") as f:
                 f.write(r.content)
 
-            # RETURN RELATIVE PATH
             relative = os.path.join("Lib", "hardware", "data", "images", filename)
             return relative
 
@@ -56,6 +53,7 @@ def download_image(url):
     return None
 
 TOKOPEDIA_API_URL = "https://gql.tokopedia.com/graphql/SearchProductQueryV4"
+
 def parse_price(value):
     """
     Konversi harga dari Tokopedia ke integer.
@@ -65,18 +63,13 @@ def parse_price(value):
         return 0
 
     try:
-        # Pastikan string
         value = str(value)
-
-        # Ambil hanya digit
         digits = ''.join(filter(str.isdigit, value))
-
         return int(digits) if digits else 0
     except:
         return 0
 
-
-def search_tokopedia(query: str, price_min: int = None, price_max: int = None, rows: int = 60, page: int = 1):
+def search_tokopedia(query: str, price_min: int = None, price_max: int = None, rows: int = 100, page: int = 1):
     """
     Cari produk di Tokopedia menggunakan API internal SearchProductQueryV4.
     """
@@ -84,7 +77,7 @@ def search_tokopedia(query: str, price_min: int = None, price_max: int = None, r
     params = {
         "device": "desktop",
         "navsource": "home",
-        "ob": 23,
+        "ob": 23,  # Sort by popularity
         "page": page,
         "q": query,
         "related": True,
@@ -171,7 +164,7 @@ def search_tokopedia(query: str, price_min: int = None, price_max: int = None, r
     }
 
     try:
-        response = requests.post(TOKOPEDIA_API_URL, headers=headers, json=graphql_query)
+        response = requests.post(TOKOPEDIA_API_URL, headers=headers, json=graphql_query, timeout=30)
         response.raise_for_status()
         
         data = response.json()
@@ -179,14 +172,24 @@ def search_tokopedia(query: str, price_min: int = None, price_max: int = None, r
         
         results = []
         for p in products:
-            # Konversi harga ke integer dengan handling yang aman
             price = parse_price(p.get("price"))
-            
             original_price = parse_price(p.get("originalPrice"))
             if original_price == 0:
                 original_price = None
+                
             image_url = p.get("imageUrl")
             local_image = download_image(image_url)
+            
+            # Dapatkan rating dengan default 0
+            rating = p.get("rating", 0)
+            if rating is None:
+                rating = 0
+                
+            # Dapatkan jumlah review dengan default 0
+            review_count = p.get("countReview", 0)
+            if review_count is None:
+                review_count = 0
+            
             results.append({
                 "id": p.get("id"),
                 "name": p.get("name"),
@@ -194,8 +197,8 @@ def search_tokopedia(query: str, price_min: int = None, price_max: int = None, r
                 "original_price": original_price,
                 "image_url": image_url,
                 "local_image": local_image,
-                "rating": p.get("rating"),
-                "review_count": p.get("countReview"),
+                "rating": rating,
+                "review_count": review_count,
                 "url": p.get("url"),
                 "shop_name": p.get("shop", {}).get("name"),
                 "shop_city": p.get("shop", {}).get("city"),
@@ -205,7 +208,7 @@ def search_tokopedia(query: str, price_min: int = None, price_max: int = None, r
         
         return results
     except Exception as e:
-        print(f"Error fetching data: {e}")
+        print(f"Error fetching data for '{query}': {e}")
         return []
 
 def save_products_to_json(products, filename=None):
@@ -214,9 +217,8 @@ def save_products_to_json(products, filename=None):
     """
     if filename is None:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"tokopedia_products_{timestamp}.json"
+        filename = f"tokopedia_products_latest.json"
     
-    # Buat directory data jika belum ada
     os.makedirs("data", exist_ok=True)
     filepath = os.path.join("data", filename)
     
@@ -226,41 +228,52 @@ def save_products_to_json(products, filename=None):
     print(f"Data berhasil disimpan ke: {filepath}")
     return filepath
 
-def save_products_to_excel(products, filename="tokopedia_products.xlsx"):
+def save_products_to_excel(products, filename="tokopedia_products_latest.xlsx"):
+    """
+    Simpan produk ke file Excel
+    """
     os.makedirs("data", exist_ok=True)
     filepath = os.path.join("data", filename)
 
     wb = Workbook()
     ws = wb.active
-    ws.title = "Tokopedia Products"
+    ws.title = "Hardware Products"
 
     # Header
     headers = [
-        "ID", "Name", "Price", "Original Price", "Rating",
-        "Review Count", "Shop", "City", "Image URL", "Local Image", "URL", "Category"
+        "ID", "Nama Produk", "Kategori", "Harga (Rp)", "Harga Asli (Rp)", 
+        "Rating (Bintang)", "Jumlah Review", "Toko", "Kota", 
+        "URL Gambar", "Gambar Lokal", "URL Produk", "Terakhir Update"
     ]
     ws.append(headers)
 
     # Data rows
     for p in products:
+        original_price = p.get("original_price")
+        if original_price and original_price > 0:
+            original_price_str = f"Rp {original_price:,}"
+        else:
+            original_price_str = "-"
+            
         ws.append([
-            p.get("id"),
-            p.get("name"),
-            p.get("price"),
-            p.get("original_price"),
-            p.get("rating"),
-            p.get("review_count"),
-            p.get("shop_name"),
-            p.get("shop_city"),
-            p.get("image_url"),
-            p.get("local_image"),
-            p.get("url"),
-            p.get("category")
+            p.get("id", "-"),
+            p.get("name", "-"),
+            p.get("category", "-").upper(),
+            f"Rp {p.get('price', 0):,}",
+            original_price_str,
+            p.get("rating", 0),
+            p.get("review_count", 0),
+            p.get("shop_name", "-"),
+            p.get("shop_city", "-"),
+            p.get("image_url", "-"),
+            p.get("local_image", "-"),
+            p.get("url", "-"),
+            p.get("last_updated", "-")
         ])
 
     wb.save(filepath)
     print(f"✅ Excel disimpan ke: {filepath}")
-
+    return filepath
 
 def load_products_from_json(filename):
     """
@@ -269,21 +282,6 @@ def load_products_from_json(filename):
     try:
         with open(filename, 'r', encoding='utf-8') as f:
             products = json.load(f)
-            
-            # Pastikan harga sudah dalam format integer
-            for product in products:
-                if isinstance(product.get('price'), str):
-                    try:
-                        product['price'] = int(product['price'].replace('.', '').replace(',', '').split('.')[0])
-                    except (ValueError, TypeError):
-                        product['price'] = 0
-                
-                if isinstance(product.get('original_price'), str):
-                    try:
-                        product['original_price'] = int(product['original_price'].replace('.', '').replace(',', '').split('.')[0])
-                    except (ValueError, TypeError):
-                        product['original_price'] = None
-            
             return products
     except FileNotFoundError:
         print(f"File {filename} tidak ditemukan")
@@ -292,17 +290,255 @@ def load_products_from_json(filename):
         print(f"Error loading JSON: {e}")
         return []
 
-def get_recommendations(budget, usage, required_components=None):
+def get_pc_components():
     """
-    Dapatkan rekomendasi berdasarkan kriteria
+    Ambil komponen PC: RAM, SSD, HDD, CPU, GPU, Motherboard
     """
-    # Load data dari file JSON terbaru
-    data_files = [f for f in os.listdir("data") if f.startswith("tokopedia_products") and f.endswith(".json")]
+    print("\n" + "="*60)
+    print("MENGAMBIL DATA KOMPONEN PC")
+    print("="*60)
+    
+    pc_queries = [
+        ("ram ddr4", "ram"),
+        ("ram ddr5", "ram"),
+        ("ssd m.2 nvme", "ssd"),
+        ("ssd sata", "ssd"),
+        ("hdd internal", "hdd"),
+        ("processor intel", "cpu"),
+        ("processor amd", "cpu"),
+        ("vga nvidia", "gpu"),
+        ("vga amd", "gpu"),
+        ("motherboard intel", "motherboard"),
+        ("motherboard amd", "motherboard"),
+        ("cpu cooler", "cpu cooler"),
+        ("power supply", "psu"),
+        ("casing pc", "casing")
+    ]
+    
+    all_components = []
+    
+    for query, category in pc_queries:
+        print(f"\n🔄 Mengambil {category.upper()}: {query}")
+        products = search_tokopedia(query, rows=100)
+        
+        # Tambahkan kategori spesifik ke setiap produk
+        for product in products:
+            product["component_type"] = category
+            product["product_type"] = "pc_component"
+        
+        all_components.extend(products)
+        print(f"✅ Berhasil: {len(products)} produk ({category})")
+    
+    return all_components
+
+def get_laptops():
+    """
+    Ambil laptop berdasarkan fungsi: editing, programming, gaming, office
+    """
+    print("\n" + "="*60)
+    print("MENGAMBIL DATA LAPTOP")
+    print("="*60)
+    
+    laptop_queries = [
+        ("laptop editing video", "editing"),
+        ("laptop adobe premiere", "editing"),
+        ("laptop programming", "programming"),
+        ("laptop developer", "programming"),
+        ("laptop gaming", "gaming"),
+        ("laptop rtx", "gaming"),
+        ("laptop office", "office"),
+        ("laptop bisnis", "office"),
+        ("laptop ultrabook", "office"),
+        ("laptop thinkpad", "office")
+    ]
+    
+    all_laptops = []
+    
+    for query, function in laptop_queries:
+        print(f"\n🔄 Mengambil laptop {function.upper()}: {query}")
+        products = search_tokopedia(query, rows=100)
+        
+        # Tambahkan fungsi spesifik ke setiap produk
+        for product in products:
+            product["function"] = function
+            product["product_type"] = "laptop"
+        
+        all_laptops.extend(products)
+        print(f"✅ Berhasil: {len(products)} produk (fungsi: {function})")
+    
+    return all_laptops
+
+def filter_and_clean_products(products):
+    """
+    Filter dan bersihkan data produk
+    """
+    filtered = []
+    seen_ids = set()
+    
+    for product in products:
+        # Skip jika tidak ada harga atau harga 0
+        if not product.get("price") or product["price"] == 0:
+            continue
+            
+        # Skip jika sudah ada (based on ID)
+        product_id = product.get("id")
+        if product_id in seen_ids:
+            continue
+            
+        seen_ids.add(product_id)
+        
+        # Pastikan rating ada
+        if product.get("rating") is None:
+            product["rating"] = 0
+            
+        # Pastikan review count ada
+        if product.get("review_count") is None:
+            product["review_count"] = 0
+            
+        filtered.append(product)
+    
+    return filtered
+
+def analyze_products(products):
+    """
+    Analisis statistik produk
+    """
+    if not products:
+        print("Tidak ada data untuk dianalisis")
+        return
+    
+    print("\n" + "="*60)
+    print("ANALISIS DATA PRODUK")
+    print("="*60)
+    
+    # Kelompokkan berdasarkan tipe produk
+    pc_components = [p for p in products if p.get("product_type") == "pc_component"]
+    laptops = [p for p in products if p.get("product_type") == "laptop"]
+    
+    print(f"\n📊 TOTAL PRODUK: {len(products)}")
+    print(f"• Komponen PC: {len(pc_components)}")
+    print(f"• Laptop: {len(laptops)}")
+    
+    if pc_components:
+        print(f"\n📦 KOMPONEN PC:")
+        components_by_type = {}
+        for p in pc_components:
+            comp_type = p.get("component_type", "unknown")
+            components_by_type[comp_type] = components_by_type.get(comp_type, 0) + 1
+        
+        for comp_type, count in sorted(components_by_type.items()):
+            print(f"  • {comp_type.upper()}: {count} produk")
+    
+    if laptops:
+        print(f"\n💻 LAPTOP:")
+        laptops_by_function = {}
+        for p in laptops:
+            function = p.get("function", "unknown")
+            laptops_by_function[function] = laptops_by_function.get(function, 0) + 1
+        
+        for function, count in sorted(laptops_by_function.items()):
+            print(f"  • {function.upper()}: {count} produk")
+    
+    # Statistik harga
+    if products:
+        prices = [p.get("price", 0) for p in products if p.get("price")]
+        if prices:
+            avg_price = sum(prices) / len(prices)
+            min_price = min(prices)
+            max_price = max(prices)
+            
+            print(f"\n💰 STATISTIK HARGA:")
+            print(f"  • Harga Rata-rata: Rp {avg_price:,.0f}")
+            print(f"  • Harga Terendah: Rp {min_price:,.0f}")
+            print(f"  • Harga Tertinggi: Rp {max_price:,.0f}")
+    
+    # Statistik rating
+    if products:
+        ratings = [p.get("rating", 0) for p in products if p.get("rating")]
+        if ratings:
+            avg_rating = sum(ratings) / len(ratings)
+            
+            print(f"\n⭐ STATISTIK RATING:")
+            print(f"  • Rating Rata-rata: {avg_rating:.2f}/5")
+            
+            # Hitung distribusi rating
+            rating_dist = {1:0, 2:0, 3:0, 4:0, 5:0}
+            for r in ratings:
+                if r >= 4.5:
+                    rating_dist[5] += 1
+                elif r >= 3.5:
+                    rating_dist[4] += 1
+                elif r >= 2.5:
+                    rating_dist[3] += 1
+                elif r >= 1.5:
+                    rating_dist[2] += 1
+                else:
+                    rating_dist[1] += 1
+            
+            print(f"  • Distribusi Rating:")
+            for stars, count in sorted(rating_dist.items(), reverse=True):
+                if count > 0:
+                    percentage = (count / len(ratings)) * 100
+                    print(f"    {stars} bintang: {count} produk ({percentage:.1f}%)")
+
+def update_hardware_data():
+    """
+    Fungsi utama untuk update data hardware
+    """
+    print("="*60)
+    print("MEMULAI UPDATE DATA HARDWARE")
+    print("="*60)
+    
+    # Ambil data komponen PC
+    pc_components = get_pc_components()
+    
+    # Ambil data laptop
+    laptops = get_laptops()
+    
+    # Gabungkan semua data
+    all_products = pc_components + laptops
+    
+    # Filter dan bersihkan data
+    filtered_products = filter_and_clean_products(all_products)
+    
+    # Analisis data
+    analyze_products(filtered_products)
+    
+    # Simpan data
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    # Simpan ke JSON
+    json_filename = f"tokopedia_products_latest.json"
+    json_filepath = save_products_to_json(filtered_products, json_filename)
+    
+    # Simpan ke Excel
+    excel_filename = f"tokopedia_products_latest.xlsx"
+    excel_filepath = save_products_to_excel(filtered_products, excel_filename)
+    
+    print("\n" + "="*60)
+    print("UPDATE SELESAI!")
+    print("="*60)
+    print(f"Total produk yang berhasil diambil: {len(filtered_products)}")
+    print(f"JSON tersimpan di: {json_filepath}")
+    print(f"Excel tersimpan di: {excel_filepath}")
+    
+    return filtered_products
+
+def get_recommendations(budget, usage_type, product_type="all"):
+    """
+    Dapatkan rekomendasi berdasarkan budget dan tipe penggunaan
+    
+    Parameters:
+    - budget: budget dalam Rupiah
+    - usage_type: 'gaming', 'editing', 'programming', 'office', 'all'
+    - product_type: 'pc_component', 'laptop', 'all'
+    """
+    # Load data terbaru
+    data_files = [f for f in os.listdir("data") if f.startswith("tokopedia_products_latest") and f.endswith(".json")]
     if not data_files:
-        print("Tidak ada data produk yang ditemukan")
+        print("Tidak ada data hardware yang ditemukan")
         return []
     
-    # Gunakan file terbaru
     latest_file = sorted(data_files)[-1]
     products = load_products_from_json(os.path.join("data", latest_file))
     
@@ -310,80 +546,85 @@ def get_recommendations(budget, usage, required_components=None):
         print("Tidak ada produk yang dapat dimuat")
         return []
     
-    # Filter berdasarkan budget
-    budget_min = budget * 0.8  # 80% dari budget
-    budget_max = budget * 1.2  # 120% dari budget
+    # Filter berdasarkan tipe produk
+    if product_type != "all":
+        products = [p for p in products if p.get("product_type") == product_type]
     
-    print(f"Budget range: {budget_min} - {budget_max}")
+    # Filter berdasarkan budget (range 70% - 130% dari budget)
+    budget_min = budget * 0.7
+    budget_max = budget * 1.3
+    
+    print(f"🔍 Mencari rekomendasi dengan:")
+    print(f"   • Budget: Rp {budget:,}")
+    print(f"   • Range: Rp {budget_min:,.0f} - Rp {budget_max:,.0f}")
+    print(f"   • Tipe Produk: {product_type}")
+    print(f"   • Penggunaan: {usage_type}")
     
     filtered_products = []
     for p in products:
-        price = p.get('price')
-        if price and isinstance(price, (int, float)):
-            if budget_min <= price <= budget_max:
-                filtered_products.append(p)
+        price = p.get('price', 0)
+        if budget_min <= price <= budget_max:
+            filtered_products.append(p)
     
-    print(f"Produk setelah filter budget: {len(filtered_products)}")
+    print(f"   • Ditemukan: {len(filtered_products)} produk dalam range budget")
     
-    # Filter berdasarkan usage/kegunaan
-    usage_keywords = {
-        "Gaming": ["gaming", "game", "rtx", "gtx", "gpu", "graphic", "nvidia", "amd", "rog", "predator", "tuf", "legion"],
-        "Office/Kerja": ["office", "kerja", "bisnis", "business", "ultrabook", "thinkpad", "latitude", "elitebook", "vivobook"],
-        "Design/Video Editing": ["design", "editing", "video", "creative", "render", "studio", "creator", "workstation"],
-        "Programming": ["programming", "developer", "code", "development", "ideapad", "thinkbook"]
-    }
-    
-    if usage in usage_keywords:
-        keywords = usage_keywords[usage]
+    # Filter berdasarkan penggunaan jika bukan 'all'
+    if usage_type != "all":
         usage_filtered = []
-        for p in filtered_products:
-            product_name = p.get('name', '').lower()
-            if any(keyword.lower() in product_name for keyword in keywords):
-                usage_filtered.append(p)
+        
+        if product_type == "laptop":
+            # Untuk laptop, filter berdasarkan fungsi
+            for p in filtered_products:
+                if p.get("function") == usage_type:
+                    usage_filtered.append(p)
+        elif product_type == "pc_component":
+            # Untuk komponen PC, prioritaskan berdasarkan usage
+            usage_priority = {
+                'gaming': ['gpu', 'cpu', 'ram', 'motherboard'],
+                'editing': ['cpu', 'ram', 'gpu', 'ssd'],
+                'programming': ['cpu', 'ram', 'ssd'],
+                'office': ['cpu', 'ram', 'ssd']
+            }
+            
+            priority_components = usage_priority.get(usage_type, [])
+            for p in filtered_products:
+                comp_type = p.get("component_type")
+                if comp_type in priority_components:
+                    usage_filtered.append(p)
         
         filtered_products = usage_filtered
-        print(f"Produk setelah filter usage '{usage}': {len(filtered_products)}")
+        print(f"   • Setelah filter penggunaan '{usage_type}': {len(filtered_products)} produk")
     
-    # Urutkan berdasarkan rating dan review count
+    # Urutkan berdasarkan rating dan jumlah review
     filtered_products.sort(key=lambda x: (
         x.get('rating', 0) or 0, 
-        x.get('review_count', 0) or 0
+        x.get('review_count', 0) or 0,
+        -x.get('price', 0)  # Harga lebih rendah lebih baik
     ), reverse=True)
     
-    # Return top 10 recommendations
-    recommendations = filtered_products[:10]
-    print(f"Rekomendasi final: {len(recommendations)} produk")
+    # Return top 15 recommendations
+    recommendations = filtered_products[:15]
+    
+    print(f"\n🎯 REKOMENDASI FINAL: {len(recommendations)} produk")
+    for i, rec in enumerate(recommendations[:5], 1):
+        print(f"{i}. {rec.get('name', 'N/A')[:50]}...")
+        print(f"   💰 Rp {rec.get('price', 0):,} | ⭐ {rec.get('rating', 0)}/5 | 📝 {rec.get('review_count', 0)} review")
     
     return recommendations
 
-def update_product_data():
-    """
-    Fungsi untuk update data produk secara berkala
-    """
-    print("Memulai update data produk...")
-    
-    queries = [
-        ("laptop gaming", 5000000, 20000000),
-        ("laptop office", 3000000, 10000000),
-        ("laptop programming", 4000000, 15000000),
-        ("laptop design", 8000000, 25000000)
-    ]
-    
-    all_products = []
-    for query, min_price, max_price in queries:
-        print(f"Mengambil data untuk: {query} (Rp {min_price:,} - Rp {max_price:,})")
-        products = search_tokopedia(query, price_min=min_price, price_max=max_price, rows=50)
-        all_products.extend(products)
-        print(f"Berhasil mengambil {len(products)} produk untuk {query}")
-    
-    filename = save_products_to_json(all_products, "tokopedia_products_latest.json")
-    save_products_to_excel(all_products, "tokopedia_products_latest.xlsx")
-    
-    print(f"\nTotal produk yang berhasil diambil: {len(all_products)}")
-    print(f"Data tersimpan di: {filename}")
-    
-    return all_products
-
 if __name__ == "__main__":
-    # Update data produk
-    all_products = update_product_data()
+    # Update data hardware
+    all_products = update_hardware_data()
+    
+    # Contoh penggunaan untuk rekomendasi
+    print("\n" + "="*60)
+    print("CONTOH REKOMENDASI:")
+    print("="*60)
+    
+    # Contoh 1: Rekomendasi laptop gaming dengan budget 15 juta
+    print("\n1. Rekomendasi Laptop Gaming (Rp 15.000.000):")
+    gaming_laptops = get_recommendations(15000000, "gaming", "laptop")
+    
+    # Contoh 2: Rekomendasi komponen PC untuk editing dengan budget 10 juta
+    print("\n2. Rekomendasi Komponen PC untuk Editing (Rp 10.000.000):")
+    editing_components = get_recommendations(10000000, "editing", "pc_component")

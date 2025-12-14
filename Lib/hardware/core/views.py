@@ -45,10 +45,10 @@ def psu(request):
 def ssd(request):
     return render(request, "ssd.html")
 
-
-def load_tokopedia_data():
+def load_tokopedia_data(product_type="all"):
     """
     Load data dari file JSON di folder data
+    product_type: 'pc_component', 'laptop', atau 'all'
     """
     try:
         # Path ke file JSON - sesuaikan dengan struktur project
@@ -72,172 +72,319 @@ def load_tokopedia_data():
         else:
             products = []
         
-        print(f"✅ Loaded {len(products)} products from JSON")
+        # Filter berdasarkan product_type jika bukan 'all'
+        if product_type != "all":
+            products = [p for p in products if p.get('product_type') == product_type]
+        
+        print(f"✅ Loaded {len(products)} {product_type} products from JSON")
         return products
         
     except Exception as e:
         print(f"❌ Error loading JSON data: {e}")
         return []
 
-def filter_products_by_criteria(products, budget, usage, komponen):
+def filter_products_by_criteria(products, product_type, min_budget=None, max_budget=None, usage=None, components=None):
     """
-    Filter produk berdasarkan kriteria budget, usage, dan komponen
+    Filter produk berdasarkan kriteria
     """
     if not products:
         return []
     
-    try:
-        budget = int(budget)
-    except (ValueError, TypeError):
-        return []
-    
-    # Filter berdasarkan budget (70% - 130% dari budget)
-    budget_min = int(budget * 0.7)
-    budget_max = int(budget * 1.3)
-    
-    print(f"💰 Filtering with budget: Rp {budget:,} (range: {budget_min:,} - {budget_max:,})")
-    
     filtered_products = []
-    for product in products:
-        price = product.get('price', 0)
-        if isinstance(price, (int, float)) and budget_min <= price <= budget_max:
-            filtered_products.append(product)
+    
+    # Filter berdasarkan budget jika diisi
+    if min_budget is not None and max_budget is not None:
+        try:
+            min_budget = int(min_budget)
+            max_budget = int(max_budget)
+            print(f"💰 Filtering with budget range: Rp {min_budget:,} - {max_budget:,}")
+            
+            for product in products:
+                price = product.get('price', 0)
+                if isinstance(price, (int, float)) and min_budget <= price <= max_budget:
+                    filtered_products.append(product)
+        except (ValueError, TypeError):
+            filtered_products = products
+    else:
+        filtered_products = products
     
     print(f"📊 After budget filter: {len(filtered_products)} products")
     
-    # Filter berdasarkan usage/kegunaan
-    usage_keywords = {
-        "Gaming": ["gaming", "game", "rtx", "gtx", "gpu", "graphic", "nvidia", "amd", "rog", "predator", "tuf", "legion"],
-        "Office/Kerja": ["office", "kerja", "bisnis", "business", "ultrabook", "thinkpad", "latitude", "elitebook", "vivobook"],
-        "Design/Video Editing": ["design", "editing", "video", "creative", "render", "studio", "creator", "workstation"],
-        "Programming": ["programming", "developer", "code", "development", "ideapad", "thinkbook"]
-    }
-    
-    if usage in usage_keywords:
-        keywords = usage_keywords[usage]
-        usage_filtered = []
-        for product in filtered_products:
-            product_name = product.get('name', '').lower()
-            product_category = product.get('category', '').lower()
+    # Filter berdasarkan usage/kegunaan (jika produk laptop)
+    if product_type == "laptop" and usage:
+        usage_keywords = {
+            "Gaming": ["gaming", "game", "rtx", "gtx", "gpu", "graphic", "nvidia", "amd", "rog", "predator", "tuf", "legion"],
+            "Office/Kerja": ["office", "kerja", "bisnis", "business", "ultrabook", "thinkpad", "latitude", "elitebook", "vivobook"],
+            "Design/Video Editing": ["design", "editing", "video", "creative", "render", "studio", "creator", "workstation"],
+            "Programming": ["programming", "developer", "code", "development", "ideapad", "thinkbook"]
+        }
+        
+        if usage in usage_keywords:
+            keywords = usage_keywords[usage]
+            usage_filtered = []
+            for product in filtered_products:
+                product_name = product.get('name', '').lower()
+                if any(keyword.lower() in product_name for keyword in keywords):
+                    usage_filtered.append(product)
             
-            # Cek di nama produk atau kategori
-            if any(keyword.lower() in product_name for keyword in keywords):
-                usage_filtered.append(product)
-            elif any(keyword.lower() in product_category for keyword in keywords):
-                usage_filtered.append(product)
-        
-        filtered_products = usage_filtered
-        print(f"🎯 After usage filter '{usage}': {len(filtered_products)} products")
+            filtered_products = usage_filtered
+            print(f"🎯 After usage filter '{usage}': {len(filtered_products)} products")
     
-    # Filter berdasarkan komponen
-    if komponen:
-        komponen_lower = [k.lower() for k in komponen]
-        komponen_filtered = []
+    # Filter berdasarkan komponen (jika produk PC component)
+    if product_type == "pc_component" and components:
+        components_lower = [c.lower() for c in components]
+        components_filtered = []
         
-        # Mapping komponen ke keyword
-        komponen_keywords = {
-            "storage": ["ssd", "hdd", "nvme", "hard disk", "solid state", "storage"],
-            "ram": ["ram", "memory", "ddr4", "ddr5", "sodimm"],
-            "processor": ["processor", "cpu", "intel", "amd", "ryzen", "core i", "core i3", "core i5", "core i7", "core i9"],
-            "gpu": ["gpu", "vga", "graphic card", "nvidia", "geforce", "rtx", "gtx", "radeon"],
-            "display": ["display", "monitor", "screen", "ips", "oled", "led", "144hz", "240hz"],
-            "battery": ["battery", "baterai", "power", "charging"]
+        # Mapping komponen PC
+        pc_components_keywords = {
+            "CPU": ["cpu", "processor", "intel", "amd", "ryzen", "core i"],
+            "GPU": ["gpu", "vga", "graphic card", "nvidia", "geforce", "rtx", "gtx", "radeon"],
+            "RAM": ["ram", "memory", "ddr4", "ddr5"],
+            "Motherboard": ["motherboard", "mainboard", "mobo"],
+            "SSD": ["ssd", "nvme", "solid state"],
+            "HDD": ["hdd", "hard disk"],
+            "PSU": ["psu", "power supply"],
+            "Casing": ["casing", "case", "chassis"]
         }
         
         for product in filtered_products:
             product_name = product.get('name', '').lower()
-            product_category = product.get('category', '').lower()
+            component_type = product.get('component_type', '').lower()
             
-            # Cek setiap komponen yang dipilih
-            for komp in komponen_lower:
-                if komp in komponen_keywords:
-                    keywords = komponen_keywords[komp]
+            # Cek berdasarkan nama komponen atau tipe komponen
+            for comp in components_lower:
+                if comp in pc_components_keywords:
+                    keywords = pc_components_keywords[comp]
                     if any(keyword in product_name for keyword in keywords):
-                        komponen_filtered.append(product)
+                        components_filtered.append(product)
                         break
-                # Jika komponen tidak ada di mapping, cari langsung
-                elif komp in product_name:
-                    komponen_filtered.append(product)
+                elif comp == component_type:
+                    components_filtered.append(product)
                     break
         
         # Hapus duplikat
-        komponen_filtered = list({p['id']: p for p in komponen_filtered}.values())
-        filtered_products = komponen_filtered
+        components_filtered = list({p['id']: p for p in components_filtered}.values())
+        filtered_products = components_filtered
         print(f"🔧 After components filter: {len(filtered_products)} products")
     
     # Urutkan berdasarkan rating dan review count
     filtered_products.sort(key=lambda x: (
         x.get('rating', 0) or 0, 
         x.get('review_count', 0) or 0,
-        -(x.get('price', 0))  # Murah ke mahal untuk rating yang sama
+        -(x.get('price', 0))
     ), reverse=True)
     
-    return filtered_products[:20]  # Return top 20
-
-def rekomendasi_view(request):
+    return filtered_products[:15]  # Return top 15
+def rekomendasi_pc_view(request):
+    """
+    View untuk rekomendasi PC components
+    """
     results = []
-    json_recommendations = []  # Data dari JSON file
+    json_recommendations = []
+    min_budget = ""
+    max_budget = ""
+    usage = ""
+    components = []
+    page_title = "Rekomendasi Komponen PC"
+    product_type = "pc"
+    
+    if request.method == "POST":
+        min_budget = request.POST.get("min_budget", "")
+        max_budget = request.POST.get("max_budget", "")
+        usage = request.POST.get("usage", "")
+        components = request.POST.getlist("components", [])
+        
+        print(f"🎯 PC Request: min_budget={min_budget}, max_budget={max_budget}, usage={usage}, components={components}")
+        
+        # === 1️⃣ Dapatkan rekomendasi dari data JSON (PC components) ===
+        if min_budget and max_budget:
+            try:
+                min_budget_int = int(min_budget)
+                max_budget_int = int(max_budget)
+                all_components = load_tokopedia_data("pc_component")
+                json_recommendations = filter_products_by_criteria(
+                    all_components, 
+                    "pc_component", 
+                    min_budget_int, 
+                    max_budget_int, 
+                    usage, 
+                    components
+                )
+                print(f"✅ PC JSON recommendations: {len(json_recommendations)} products")
+            except (ValueError, TypeError) as e:
+                print(f"❌ Error parsing budget: {e}")
+        else:
+            print("⚠️ Budget tidak lengkap, skip filtering JSON")
+        
+        # === 2️⃣ Sistem rekomendasi lokal (Produk PC di database) ===
+        try:
+            if min_budget and max_budget and components:
+                # Filter untuk komponen PC di database lokal
+                hardware_qs = Produk.objects.filter(
+                    harga__gte=min_budget,
+                    harga__lte=max_budget,
+                    kategori__in=components
+                )
+            elif min_budget and max_budget:
+                hardware_qs = Produk.objects.filter(
+                    harga__gte=min_budget,
+                    harga__lte=max_budget
+                )
+            else:
+                hardware_qs = Produk.objects.none()
+            
+            if hardware_qs.exists():
+                # Gabungkan semua untuk jadi keyword pencarian
+                query_text = (usage or "") + " " + " ".join(components)
+                
+                documents = [h.deskripsi for h in hardware_qs]
+                documents.append(query_text)
+                
+                vectorizer = TfidfVectorizer()
+                tfidf_matrix = vectorizer.fit_transform(documents)
+                cosine_sim = cosine_similarity(tfidf_matrix[-1], tfidf_matrix[:-1])
+                scores = cosine_sim[0]
+                
+                THRESHOLD = 0.15
+                ranked_idx = np.argsort(scores)[::-1]
+                
+                results = [hardware_qs[int(i)] for i in ranked_idx if scores[i] >= THRESHOLD]
+                print(f"✅ PC Database recommendations: {len(results)} products")
+                
+        except Exception as e:
+            print(f"❌ Error in PC local recommendation: {e}")
+            results = []
+    
+    return render(request, 'hasil.html', {
+        'results': results,
+        'json_recommendations': json_recommendations,
+        'budget': f"{min_budget} - {max_budget}" if min_budget and max_budget else "",
+        'min_budget': min_budget,
+        'max_budget': max_budget,
+        'usage': usage,
+        'komponen': components,
+        'product_type': product_type,
+        'page_title': page_title,
+    })
+
+def rekomendasi_laptop_view(request):
+    """
+    View untuk rekomendasi Laptop
+    """
+    results = []
+    json_recommendations = []
     budget = ""
     usage = ""
     custom_usage = ""
     komponen = []
-
+    page_title = "Rekomendasi Laptop"
+    product_type = "laptop"
+    
+    # Variabel untuk budget range
+    budget_range_min = 0
+    budget_range_max = 0
+    
     if request.method == "POST":
         budget = request.POST.get("budget", "")
         usage = request.POST.get("usage", "")
         custom_usage = request.POST.get("custom_usage", "")
         komponen = request.POST.getlist("components", [])
-
-        print(f"🎯 Request: budget={budget}, usage={usage}, komponen={komponen}")
-
-        # === 1️⃣ Dapatkan rekomendasi dari data JSON ===
-        if budget:  # Hanya filter jika budget diisi
-            all_products = load_tokopedia_data()
-            json_recommendations = filter_products_by_criteria(all_products, budget, usage, komponen)
-            print(f"✅ JSON recommendations: {len(json_recommendations)} products")
+        
+        print(f"🎯 Laptop Request: budget={budget}, usage={usage}, komponen={komponen}")
+        
+        # Hitung budget range untuk ditampilkan di template
+        if budget:
+            try:
+                budget_int = int(budget)
+                budget_range_min = int(budget_int * 0.7)
+                budget_range_max = int(budget_int * 1.3)
+                
+                # === Dapatkan rekomendasi dari data JSON (Laptop) ===
+                all_laptops = load_tokopedia_data("laptop")
+                json_recommendations = filter_products_by_criteria(
+                    all_laptops,
+                    "laptop",
+                    budget_range_min,
+                    budget_range_max,
+                    usage,
+                    None  # Komponen tidak berlaku untuk laptop
+                )
+                print(f"✅ Laptop JSON recommendations: {len(json_recommendations)} products")
+            except (ValueError, TypeError) as e:
+                print(f"❌ Error parsing budget: {e}")
         else:
-            print("⚠️  Budget tidak diisi, skip filtering JSON")
-
-        # === 2️⃣ Sistem rekomendasi lokal (Produk di database) ===
+            print("⚠️ Budget tidak diisi, skip filtering JSON")
+        
+        # === Sistem rekomendasi lokal (Produk Laptop di database) ===
         try:
-            if budget and komponen:
-                hardware_qs = Produk.objects.filter(harga__lte=budget, kategori__in=komponen)
-            elif budget:
-                hardware_qs = Produk.objects.filter(harga__lte=budget)
+            if budget:
+                budget_int = int(budget)
+                min_budget = int(budget_int * 0.7)
+                max_budget = int(budget_int * 1.3)
+                hardware_qs = Produk.objects.filter(
+                    harga__gte=min_budget,
+                    harga__lte=max_budget,
+                    kategori__icontains="laptop"
+                )
             else:
                 hardware_qs = Produk.objects.none()
-
+            
             if hardware_qs.exists():
                 # Gabungkan semua untuk jadi keyword pencarian
                 query_text = (usage or "") + " " + custom_usage + " " + " ".join(komponen)
                 
                 documents = [h.deskripsi for h in hardware_qs]
                 documents.append(query_text)
-
+                
                 vectorizer = TfidfVectorizer()
                 tfidf_matrix = vectorizer.fit_transform(documents)
                 cosine_sim = cosine_similarity(tfidf_matrix[-1], tfidf_matrix[:-1])
                 scores = cosine_sim[0]
-
+                
                 THRESHOLD = 0.15
                 ranked_idx = np.argsort(scores)[::-1]
-
+                
                 results = [hardware_qs[int(i)] for i in ranked_idx if scores[i] >= THRESHOLD]
-                print(f"✅ Database recommendations: {len(results)} products")
+                print(f"✅ Laptop Database recommendations: {len(results)} products")
                 
         except Exception as e:
-            print(f"❌ Error in local recommendation: {e}")
+            print(f"❌ Error in Laptop local recommendation: {e}")
             results = []
-
-    # Kirim semua data ke template
+    
     return render(request, 'hasil.html', {
         'results': results,
-        'json_recommendations': json_recommendations,  # Data dari JSON
+        'json_recommendations': json_recommendations,
         'budget': budget,
         'usage': usage,
         'custom_usage': custom_usage,
         'komponen': komponen,
+        'product_type': product_type,
+        'page_title': page_title,
+        'budget_range_min': budget_range_min,  # Budget range minimum
+        'budget_range_max': budget_range_max,  # Budget range maksimum
     })
+
+def rekomendasi_view(request):
+    """
+    View universal yang menentukan ke mana mengarahkan berdasarkan parameter
+    """
+    # Cek apakah ada parameter type di URL atau POST
+    product_type = request.GET.get('type', '')
+    
+    if request.method == "POST":
+        # Cek berdasarkan form yang dikirim
+        if 'min_budget' in request.POST and 'max_budget' in request.POST:
+            # Ini dari form PC components
+            return rekomendasi_pc_view(request)
+        else:
+            # Ini dari form Laptop
+            return rekomendasi_laptop_view(request)
+    else:
+        # Jika GET request dengan parameter type
+        if product_type == 'pc':
+            return render(request, 'rekomendasi_pc.html')
+        else:
+            return render(request, 'rekomendasi_laptop.html')
 
 def run_scraper(request):
     # Path root project (tempat manage.py berada)
