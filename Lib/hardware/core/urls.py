@@ -17,4 +17,5 @@ urlpatterns = [
     path('run-scraper/', views.run_scraper, name='run_scraper'),
     path('download-excel/', views.download_excel, name='download_excel'),
     path("pelajarilebihlanjut/", views.pelajarilebihlanjut, name="pelajarilebihlanjut"),
+    path("loginpage/", views.loginpage, name="loginpage"),
 ]

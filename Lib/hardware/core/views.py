@@ -238,6 +238,7 @@ def rekomendasi_view(request):
         'custom_usage': custom_usage,
         'komponen': komponen,
     })
+
 def run_scraper(request):
     # Path root project (tempat manage.py berada)
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -270,7 +271,10 @@ def download_excel(request):
             "status": "error",
             "message": f"File tidak ditemukan di: {file_path}"
         })
+
 def pelajarilebihlanjut(request):
     return render(request, "pelajarilebihlanjut.html")
 
-
+def loginpage(request):
+    return render(request, "loginpage.html")
+    
