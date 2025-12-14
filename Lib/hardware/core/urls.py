@@ -20,4 +20,5 @@ urlpatterns = [
     path('download-excel/', views.download_excel, name='download_excel'),
     path("pelajarilebihlanjut/", views.pelajarilebihlanjut, name="pelajarilebihlanjut"),
     path("loginpage/", views.loginpage, name="loginpage"),
+    path('local-image/', views.serve_local_image, name='serve_local_image'),
 ]
