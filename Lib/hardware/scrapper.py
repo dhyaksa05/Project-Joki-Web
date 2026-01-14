@@ -5,6 +5,7 @@ import math
 import uuid
 from datetime import datetime
 import os
+import time 
 from openpyxl import Workbook
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -69,147 +70,174 @@ def parse_price(value):
     except:
         return 0
 
-def search_tokopedia(query: str, price_min: int = None, price_max: int = None, rows: int = 100, page: int = 1):
+def search_tokopedia(query: str, price_min: int = None, price_max: int = None, 
+                     rows: int = 100, max_pages: int = 10):
     """
-    Cari produk di Tokopedia menggunakan API internal SearchProductQueryV4.
+    Cari produk di Tokopedia menggunakan multiple pages.
     """
-    # Variabel untuk GraphQL
-    params = {
-        "device": "desktop",
-        "navsource": "home",
-        "ob": 23,  # Sort by popularity
-        "page": page,
-        "q": query,
-        "related": True,
-        "rows": rows,
-        "safe_search": False,
-        "scheme": "https",
-        "shipping": "",
-        "source": "universe",
-        "srp_component_id": "01.02.01.01",
-        "st": "product",
-        "start": (page - 1) * rows,
-        "topads_bucket": True,
-        "unique_id": "some-unique-id",
-        "user_addressId": "",
-        "user_cityId": "",
-        "user_districtId": "",
-        "user_id": "",
-        "user_lat": "",
-        "user_long": "",
-        "user_postCode": "",
-        "user_warehouseId": "",
-        "variants": ""
-    }
+    import time
+    
+    all_products = []
+    seen_ids = set()
+    
+    for page in range(1, max_pages + 1):
+        print(f"  📄 Mengambil halaman {page}...")
+        
+        # Variabel untuk GraphQL
+        params = {
+            "device": "desktop",
+            "navsource": "home",
+            "ob": 23,
+            "page": page,
+            "q": query,
+            "related": True,
+            "rows": rows,
+            "safe_search": False,
+            "scheme": "https",
+            "shipping": "",
+            "source": "universe",
+            "srp_component_id": "01.02.01.01",
+            "st": "product",
+            "start": (page - 1) * rows,
+            "topads_bucket": True,
+            "unique_id": "some-unique-id",
+            "user_addressId": "",
+            "user_cityId": "",
+            "user_districtId": "",
+            "user_id": "",
+            "user_lat": "",
+            "user_long": "",
+            "user_postCode": "",
+            "user_warehouseId": "",
+            "variants": ""
+        }
+        
+        # Tambahkan filter harga
+        if price_min is not None or price_max is not None:
+            filt = []
+            if price_min is not None:
+                filt.append(f"price_min={price_min}")
+            if price_max is not None:
+                filt.append(f"price_max={price_max}")
+            param_str = "&".join([f"{k}={v}" for k, v in params.items()] + filt)
+        else:
+            param_str = "&".join([f"{k}={v}" for k, v in params.items()])
 
-    # Tambahkan filter harga
-    if price_min is not None or price_max is not None:
-        filt = []
-        if price_min is not None:
-            filt.append(f"price_min={price_min}")
-        if price_max is not None:
-            filt.append(f"price_max={price_max}")
-        param_str = "&".join([f"{k}={v}" for k, v in params.items()] + filt)
-    else:
-        param_str = "&".join([f"{k}={v}" for k, v in params.items()])
-
-    # Body GraphQL
-    graphql_query = {
-        "operationName": "SearchProductQueryV4",
-        "variables": {"params": param_str},
-        "query": """
-        query SearchProductQueryV4($params: String!) {
-          ace_search_product_v4(params: $params) {
-            header {
-              totalData
-              totalDataText
-              processTime
-              responseCode
-              errorMessage
-              additionalParams
-              keywordProcess
-              componentId
-            }
-            data {
-              products {
-                id
-                name
-                originalPrice
-                price
-                priceRange
-                imageUrl
-                rating
-                countReview
-                url
-                shop {
-                  name
-                  city
+        # Body GraphQL
+        graphql_query = {
+            "operationName": "SearchProductQueryV4",
+            "variables": {"params": param_str},
+            "query": """
+            query SearchProductQueryV4($params: String!) {
+              ace_search_product_v4(params: $params) {
+                header {
+                  totalData
+                  totalDataText
+                  processTime
+                  responseCode
+                  errorMessage
+                  additionalParams
+                  keywordProcess
+                  componentId
                 }
-                __typename
+                data {
+                  products {
+                    id
+                    name
+                    originalPrice
+                    price
+                    priceRange
+                    imageUrl
+                    rating
+                    countReview
+                    url
+                    shop {
+                      name
+                      city
+                    }
+                    __typename
+                  }
+                }
               }
             }
-          }
+            """
         }
-        """
-    }
 
-    headers = {
-        "authority": "gql.tokopedia.com",
-        "accept": "*/*",
-        "content-type": "application/json",
-        "origin": "https://www.tokopedia.com",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "sec-fetch-site": "same-site",
-    }
+        headers = {
+            "authority": "gql.tokopedia.com",
+            "accept": "*/*",
+            "content-type": "application/json",
+            "origin": "https://www.tokopedia.com",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "sec-fetch-site": "same-site",
+        }
 
-    try:
-        response = requests.post(TOKOPEDIA_API_URL, headers=headers, json=graphql_query, timeout=30)
-        response.raise_for_status()
-        
-        data = response.json()
-        products = data.get("data", {}).get("ace_search_product_v4", {}).get("data", {}).get("products", [])
-        
-        results = []
-        for p in products:
-            price = parse_price(p.get("price"))
-            original_price = parse_price(p.get("originalPrice"))
-            if original_price == 0:
-                original_price = None
-                
-            image_url = p.get("imageUrl")
-            local_image = download_image(image_url)
+        try:
+            response = requests.post(TOKOPEDIA_API_URL, headers=headers, json=graphql_query, timeout=30)
+            response.raise_for_status()
             
-            # Dapatkan rating dengan default 0
-            rating = p.get("rating", 0)
-            if rating is None:
-                rating = 0
-                
-            # Dapatkan jumlah review dengan default 0
-            review_count = p.get("countReview", 0)
-            if review_count is None:
-                review_count = 0
+            data = response.json()
+            products = data.get("data", {}).get("ace_search_product_v4", {}).get("data", {}).get("products", [])
             
-            results.append({
-                "id": p.get("id"),
-                "name": p.get("name"),
-                "price": price,
-                "original_price": original_price,
-                "image_url": image_url,
-                "local_image": local_image,
-                "rating": rating,
-                "review_count": review_count,
-                "url": p.get("url"),
-                "shop_name": p.get("shop", {}).get("name"),
-                "shop_city": p.get("shop", {}).get("city"),
-                "category": query.lower(),
-                "last_updated": datetime.now().isoformat()
-            })
-        
-        return results
-    except Exception as e:
-        print(f"Error fetching data for '{query}': {e}")
-        return []
+            if not products:
+                print(f"  ⚠️ Tidak ada produk lagi di halaman {page}, berhenti.")
+                break
+            
+            new_count = 0
+            for p in products:
+                product_id = p.get("id")
+                if product_id in seen_ids:
+                    continue
+                    
+                seen_ids.add(product_id)
+                
+                price = parse_price(p.get("price"))
+                original_price = parse_price(p.get("originalPrice"))
+                if original_price == 0:
+                    original_price = None
+                    
+                image_url = p.get("imageUrl")
+                local_image = download_image(image_url)
+                
+                rating = p.get("rating", 0)
+                if rating is None:
+                    rating = 0
+                    
+                review_count = p.get("countReview", 0)
+                if review_count is None:
+                    review_count = 0
+                
+                product_data = {
+                    "id": product_id,
+                    "name": p.get("name"),
+                    "price": price,
+                    "original_price": original_price,
+                    "image_url": image_url,
+                    "local_image": local_image,
+                    "rating": rating,
+                    "review_count": review_count,
+                    "url": p.get("url"),
+                    "shop_name": p.get("shop", {}).get("name"),
+                    "shop_city": p.get("shop", {}).get("city"),
+                    "category": query.lower(),
+                    "last_updated": datetime.now().isoformat()
+                }
+                
+                all_products.append(product_data)
+                new_count += 1
+            
+            print(f"  ✅ Halaman {page}: {len(products)} produk ({new_count} baru)")
+            
+            if page < max_pages:
+                time.sleep(1)  # Delay antar halaman
+            
+        except Exception as e:
+            print(f"  ❌ Error di halaman {page}: {e}")
+            break
+    
+    print(f"  📊 Total produk untuk '{query}': {len(all_products)}")
+    return all_products
 
 def save_products_to_json(products, filename=None):
     """
@@ -291,9 +319,6 @@ def load_products_from_json(filename):
         return []
 
 def get_pc_components():
-    """
-    Ambil komponen PC: RAM, SSD, HDD, CPU, GPU, Motherboard
-    """
     print("\n" + "="*60)
     print("MENGAMBIL DATA KOMPONEN PC")
     print("="*60)
@@ -319,22 +344,21 @@ def get_pc_components():
     
     for query, category in pc_queries:
         print(f"\n🔄 Mengambil {category.upper()}: {query}")
-        products = search_tokopedia(query, rows=100)
+        products = search_tokopedia(query, rows=100, max_pages=10)  # 100 × 10 = 1000 produk
         
-        # Tambahkan kategori spesifik ke setiap produk
         for product in products:
             product["component_type"] = category
             product["product_type"] = "pc_component"
         
         all_components.extend(products)
         print(f"✅ Berhasil: {len(products)} produk ({category})")
+        
+        # Delay antar kategori
+        time.sleep(2)
     
     return all_components
 
 def get_laptops():
-    """
-    Ambil laptop berdasarkan fungsi: editing, programming, gaming, office
-    """
     print("\n" + "="*60)
     print("MENGAMBIL DATA LAPTOP")
     print("="*60)
@@ -356,15 +380,17 @@ def get_laptops():
     
     for query, function in laptop_queries:
         print(f"\n🔄 Mengambil laptop {function.upper()}: {query}")
-        products = search_tokopedia(query, rows=100)
+        products = search_tokopedia(query, rows=100, max_pages=10)  # 100 × 10 = 1000 produk
         
-        # Tambahkan fungsi spesifik ke setiap produk
         for product in products:
             product["function"] = function
             product["product_type"] = "laptop"
         
         all_laptops.extend(products)
         print(f"✅ Berhasil: {len(products)} produk (fungsi: {function})")
+        
+        # Delay antar kategori
+        time.sleep(2)
     
     return all_laptops
 
