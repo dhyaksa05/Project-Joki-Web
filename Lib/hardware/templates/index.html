@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,14 +23,8 @@
                 "100%": { opacity: "1" },
               },
               slideUp: {
-                "0%": {
-                  transform: "translateY(30px)",
-                  opacity: "0",
-                },
-                "100%": {
-                  transform: "translateY(0)",
-                  opacity: "1",
-                },
+                "0%": { transform: "translateY(30px)", opacity: "0" },
+                "100%": { transform: "translateY(0)", opacity: "1" },
               },
               bounceSubtle: {
                 "0%, 100%": { transform: "translateY(0)" },
@@ -41,448 +35,90 @@
         },
       };
     </script>
-    <scrip src="{% static 'script.js' %}"></script>
+    <script src="{% static 'script.js' %}"></script>
 
-    <!-- MOBILE RESPONSIVE CSS ADDITIONS -->
     <style>
-      /* Mobile First Approach - Additional Responsive Styles */
-      @media (max-width: 640px) {
-        /* Mobile Navbar Improvements */
-        .mobile-menu-active {
-          display: block !important;
-        }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar { width: 10px; }
+      ::-webkit-scrollbar-track { background: #0f172a; } /* Slate-900 */
+      ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 5px; } /* Violet-600 */
+      ::-webkit-scrollbar-thumb:hover { background: #6d28d9; } /* Violet-700 */
 
-        /* Mobile Hero Section Enhancements */
-        .hero-mobile-padding {
-          padding-left: 1rem;
-          padding-right: 1rem;
-        }
-
-        .hero-mobile-text {
-          font-size: 1.875rem;
-          line-height: 2.25rem;
-        }
-
-        .hero-mobile-subtext {
-          font-size: 1.125rem;
-          line-height: 1.75rem;
-        }
-
-        /* Mobile Button Stack */
-        .mobile-button-stack {
-          flex-direction: column;
-          width: 100%;
-        }
-
-        .mobile-button-stack button,
-        .mobile-button-stack a button {
-          width: 100%;
-          margin-bottom: 0.75rem;
-        }
-
-        /* Mobile Form Improvements */
-        .mobile-form-grid {
-          grid-template-columns: 1fr;
-          gap: 1rem;
-        }
-
-        .mobile-checkbox-grid {
-          grid-template-columns: 1fr;
-          gap: 0.75rem;
-        }
-
-        /* Mobile Card Grid */
-        .mobile-card-grid {
-          grid-template-columns: 1fr;
-          gap: 1rem;
-        }
-
-        /* Mobile About Section */
-        .mobile-about-flex {
-          flex-direction: column;
-          gap: 2rem;
-        }
-
-        .mobile-about-cards {
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
-        }
-
-        /* Mobile Footer */
-        .mobile-footer-grid {
-          grid-template-columns: 1fr;
-          gap: 2rem;
-          text-align: center;
-        }
-
-        /* Mobile Profile Image */
-        .mobile-profile-image {
-          width: 12rem;
-          height: 12rem;
-        }
-
-        /* Mobile Social Links */
-        .mobile-social-links {
-          flex-direction: column;
-          width: 100%;
-        }
-
-        .mobile-social-links a {
-          width: 100%;
-          margin-bottom: 0.5rem;
-        }
-      }
-
-      /* Tablet Responsive (641px - 1024px) */
-      @media (min-width: 641px) and (max-width: 1024px) {
-        .tablet-grid-2 {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .tablet-hero-text {
-          font-size: 3rem;
-          line-height: 1.2;
-        }
-
-        .tablet-about-flex {
-          flex-direction: column;
-          gap: 3rem;
-        }
-      }
-
-      /* Touch Device Improvements */
-      @media (hover: none) and (pointer: coarse) {
-        .touch-button {
-          padding: 0.875rem 1.5rem;
-          min-height: 44px;
-        }
-
-        .touch-input {
-          padding: 0.875rem;
-          min-height: 44px;
-        }
-
-        .touch-checkbox {
-          transform: scale(1.2);
-          margin-right: 0.75rem;
-        }
-      }
-
-      /* High DPI Display Support */
-      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-        .high-dpi-image {
-          image-rendering: -webkit-optimize-contrast;
-          image-rendering: crisp-edges;
-        }
-      }
-
-      /* Animations for mobile - reduce motion for battery saving */
-      @media (prefers-reduced-motion: reduce) {
-        .animate-fade-in,
-        .animate-slide-up,
-        .animate-bounce-subtle {
-          animation: none;
-        }
-      }
-
-      /* Mobile scroll behavior */
-      @media (max-width: 640px) {
-        html {
-          scroll-behavior: smooth;
-        }
-
-        /* Fix for mobile viewport units */
-        .mobile-vh-fix {
-          height: calc(
-            100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)
-          );
-          min-height: -webkit-fill-available;
-        }
-      }
-
-      /* Wave animation remains unchanged */
+      /* Animations */
       @keyframes waveMove {
-        0% {
-          transform: translate3d(-90px, 0, 0);
-        }
-        100% {
-          transform: translate3d(85px, 0, 0);
-        }
+        0% { transform: translate3d(-90px, 0, 0); }
+        100% { transform: translate3d(85px, 0, 0); }
       }
-      .animate-wave-1 {
-        animation: waveMove 7s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-        animation-delay: -2s;
-      }
-      .animate-wave-2 {
-        animation: waveMove 10s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-        animation-delay: -3s;
-      }
-      .animate-wave-3 {
-        animation: waveMove 13s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-        animation-delay: -4s;
-      }
-      .animate-wave-4 {
-        animation: waveMove 20s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-        animation-delay: -5s;
-      }
-      /* Animasi smooth untuk mobile menu */
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-        }
-        
-        .mobile-menu.active {
-            max-height: 500px;
-        }
-        
-        /* Animasi hamburger */
-        .hamburger-line {
-            transition: all 0.3s ease-in-out;
-        }
-        
-        .hamburger.active .line1 {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        
-        .hamburger.active .line2 {
-            opacity: 0;
-        }
-        
-        .hamburger.active .line3 {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-           .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-        }
-        
-        .mobile-menu.active {
-            max-height: 500px;
-        }
-        
-        /* Animasi hamburger */
-        .hamburger-line {
-            transition: all 0.3s ease-in-out;
-        }
-        
-        .hamburger.active .line1 {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        
-        .hamburger.active .line2 {
-            opacity: 0;
-        }
-        
-        .hamburger.active .line3 {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        /* Wave Animation */
-        @keyframes wave1 {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        @keyframes wave2 {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        @keyframes wave3 {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        @keyframes wave4 {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-wave-1 { animation: wave1 12s linear infinite; }
-        .animate-wave-2 { animation: wave2 10s linear infinite; }
-        .animate-wave-3 { animation: wave3 8s linear infinite; }
-        .animate-wave-4 { animation: wave4 6s linear infinite; }
-
-        /* Fade in Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+      .animate-wave-1 { animation: waveMove 7s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite; animation-delay: -2s; }
+      .animate-wave-2 { animation: waveMove 10s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite; animation-delay: -3s; }
+      .animate-wave-3 { animation: waveMove 13s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite; animation-delay: -4s; }
+      .animate-wave-4 { animation: waveMove 20s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite; animation-delay: -5s; }
+      
+      .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; }
+      .mobile-menu.active { max-height: 500px; }
+      .hamburger-line { transition: all 0.3s ease-in-out; }
+      .hamburger.active .line1 { transform: rotate(45deg) translate(5px, 5px); }
+      .hamburger.active .line2 { opacity: 0; }
+      .hamburger.active .line3 { transform: rotate(-45deg) translate(7px, -6px); }
     </style>
   </head>
 
-  <body class="bg-gray-900">
-    <!-- Navbar -->
-    <nav class="shadow-xl sticky top-0 z-50 transition-all duration-300 relative"
-         style="background: linear-gradient(135deg, #000000 0%, #3d0063 100%);">
+  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
+    
+    <nav class="shadow-lg sticky top-0 z-50 transition-all duration-300 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <div class="text-xl sm:text-2xl font-bold text-white transition-colors">
+                    <div class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400">
                         ByteBudget
                     </div>
                 </div>
 
-                <!-- Desktop Menu -->
                 <div class="flex justify-between items-center h-16">
-                    <div class="flex-shrink-0"></div>
-
-                    <!-- Navbar links center -->
                     <div class="hidden md:flex items-center justify-center space-x-8 flex-1">
-                        <a href="index.html" class="text-white hover:text-gray-300 transition">
-                            Beranda
-                        </a>
-                        <div class="relative group">
-                            <button class="text-white hover:text-gray-300 flex items-center space-x-1">
-                                <span>Kategori</span>
-                                <svg class="w-4 h-4 group-hover:rotate-180 transition-transform"
-                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          stroke-width="2" d="m19 9-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div class="absolute top-full left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transform scale-95 group-hover:scale-100 transition-all border border-gray-700">
-                                <div class="py-2">
-                                    <a href="{% url 'processor' %}"
-                                       class="block px-4 py-2 text-gray-200 hover:bg-purple-700 hover:text-white transition">
-                                        Processor
-                                    </a>
-                                    <a href="{% url 'ram' %}"
-                                       class="block px-4 py-2 text-gray-200 hover:bg-purple-700 hover:text-white transition">
-                                        RAM
-                                    </a>
-                                    <a href="{% url 'vga' %}"
-                                       class="block px-4 py-2 text-gray-200 hover:bg-purple-700 hover:text-white transition">
-                                        VGA
-                                    </a>
-                                    <a href="{% url 'psu' %}"
-                                       class="block px-4 py-2 text-gray-200 hover:bg-purple-700 hover:text-white transition">
-                                        PSU
-                                    </a>
-                                    <a href="{% url 'ssd' %}"
-                                       class="block px-4 py-2 text-gray-200 hover:bg-purple-700 hover:text-white transition">
-                                        SSD/HDD
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#tentang" class="text-white hover:text-gray-300 transition">
-                            Tentang Kami
-                        </a>
-                        <a href="#kontak" class="text-white hover:text-gray-300 transition">
-                            Kontak
-                        </a>
+                        <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 transition font-medium">Beranda</a>
+                        <a href="#tentang" class="text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 transition font-medium">Tentang Kami</a>
+                        <a href="#kontak" class="text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 transition font-medium">Kontak</a>
                     </div>
                 </div>
 
-<!-- Theme Toggle Button (Desktop & Mobile) -->
-<div class="flex items-center space-x-2 relative z-[60]">
-    <button id="themeToggle" class="text-white hover:text-gray-300 p-2 rounded-lg transition-all cursor-pointer relative z-[60] hover:bg-white/10">
-        <!-- Sun Icon (Light Mode) -->
-        <svg id="sunIcon" class="w-6 h-6 hidden pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-        </svg>
-        <!-- Moon Icon (Dark Mode) -->
-        <svg id="moonIcon" class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-        </svg>
-    </button>
-    
-    <!-- Mobile Menu Button (Hamburger) -->
-    <button id="mobileMenuBtn" class="md:hidden text-white hover:text-gray-300 p-2 hamburger cursor-pointer relative z-[60] hover:bg-white/10 rounded-lg">
-        <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path class="hamburger-line line1 pointer-events-none" stroke-linecap="round" 
-                  stroke-linejoin="round" stroke-width="2" d="M4 6h16"/>
-            <path class="hamburger-line line2 pointer-events-none" stroke-linecap="round" 
-                  stroke-linejoin="round" stroke-width="2" d="M4 12h16"/>
-            <path class="hamburger-line line3 pointer-events-none" stroke-linecap="round" 
-                  stroke-linejoin="round" stroke-width="2" d="M4 18h16"/>
-        </svg>
-    </button>
-</div>
+                <div class="flex items-center space-x-2 relative z-[60]">
+                    <button id="themeToggle" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-lg transition-all cursor-pointer">
+                        <svg id="sunIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg id="moonIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <button id="mobileMenuBtn" class="md:hidden text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 hamburger cursor-pointer rounded-lg">
+                        <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path class="hamburger-line line1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"/><path class="hamburger-line line2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"/><path class="hamburger-line line3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"/></svg>
+                    </button>
+                </div>
+            </div>
 
-            <!-- Mobile Menu -->
             <div id="mobileMenu" class="md:hidden mobile-menu">
-                <div class="px-2 pt-2 pb-3 bg-gray-800 border-t border-gray-700">
-                    <a href="#"
-                       class="block px-3 py-3 text-gray-200 hover:text-purple-400 hover:bg-gray-700 rounded transition">
-                        Beranda
-                    </a>
-                    <div class="px-3 py-3">
-                        <button id="mobileCategoryBtn"
-                                class="flex justify-between w-full text-gray-200 hover:text-purple-400">
-                            <span>Kategori</span>
-                            <svg id="mobileCategoryIcon" class="w-4 h-4 transition-transform"
-                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      stroke-width="2" d="m19 9-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div id="mobileCategoryMenu" class="hidden mt-2 pl-4 space-y-1">
-                            <a href="#"
-                               class="block py-2 text-gray-300 hover:text-purple-400 transition">
-                                Processor
-                            </a>
-                            <a href="#"
-                               class="block py-2 text-gray-300 hover:text-purple-400 transition">
-                                RAM
-                            </a>
-                            <a href="#"
-                               class="block py-2 text-gray-300 hover:text-purple-400 transition">
-                                VGA
-                            </a>
-                            <a href="#"
-                               class="block py-2 text-gray-300 hover:text-purple-400 transition">
-                                PSU
-                            </a>
-                            <a href="#"
-                               class="block py-2 text-gray-300 hover:text-purple-400 transition">
-                                SSD/HDD
-                            </a>
-                        </div>
-                    </div>
-                    <a href="#tentang"
-                       class="block px-3 py-3 text-gray-200 hover:text-purple-400 hover:bg-gray-700 rounded transition">
-                        Tentang Kami
-                    </a>
-                    <a href="#kontak"
-                       class="block px-3 py-3 text-gray-200 hover:text-purple-400 hover:bg-gray-700 rounded transition">
-                        Kontak
-                    </a>
+                <div class="px-2 pt-2 pb-3 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 shadow-lg">
+                    <a href="#" class="block px-3 py-3 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition">Beranda</a>
+                    <a href="#tentang" class="block px-3 py-3 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition">Tentang Kami</a>
+                    <a href="#kontak" class="block px-3 py-3 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition">Kontak</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="relative h-[70vh] flex items-center justify-center overflow-hidden">
-        <!-- Gradient Background -->
-        <div class="absolute inset-0" style="background: linear-gradient(135deg, #000000 0%, #3d0063 100%); z-index: 10;"></div>
-
-        <!-- Content -->
+        <div class="absolute inset-0" style="background: linear-gradient(135deg, #020617 0%, #1e1b4b 100%); z-index: 10;"></div>
+        <div class="absolute inset-0 bg-slate-950/40 z-10"></div>
         <div class="relative max-w-4xl px-4 py-8 sm:py-16 text-center z-20">
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg animate-fade-in opacity-0"
-                style="animation: fadeIn 1s ease-out forwards 0.3s">
-                Temukan Rekomendasi Komponen Komputer
-                <span class="text-purple-400 animate-pulse">Sesuai Budget Anda</span>
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg animate-fade-in opacity-0" style="animation: fadeIn 1s ease-out forwards 0.3s">
+                Temukan Rekomendasi Komponen PC <span class="text-indigo-400 animate-pulse">Sesuai Budget Anda</span>
             </h1>
-            <p class="text-lg sm:text-2xl text-purple-200 mb-8 max-w-3xl mx-auto drop-shadow-md animate-slide-up opacity-0"
-               style="animation: slideUp 1s ease-out forwards 0.6s">
+            <p class="text-lg sm:text-2xl text-slate-200 mb-8 max-w-3xl mx-auto drop-shadow-md animate-slide-up opacity-0" style="animation: slideUp 1s ease-out forwards 0.6s">
                 Website ini akan membantumu menemukan kombinasi terbaik processor, RAM, VGA, dan komponen lainnya untuk build PC impianmu.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up opacity-0"
-                 style="animation: slideUp 1s ease-out forwards 0.9s">
-                <button onclick="document.getElementById('mulaisekarang').scrollIntoView({ behavior: 'smooth' })"
-                        class="bg-[#3d0063] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition hover:bg-purple-700 hover:scale-105 shadow-xl transform-gpu">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up opacity-0" style="animation: slideUp 1s ease-out forwards 0.9s">
+                <button onclick="document.getElementById('mulaisekarang').scrollIntoView({ behavior: 'smooth' })" class="bg-violet-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition hover:bg-violet-700 hover:scale-105 shadow-xl shadow-violet-900/20">
                     Mulai Sekarang
                 </button>
                 <a href="{% url 'pelajarilebihlanjut' %}#pelajari">
-                    <button class="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition bg-transparent hover:bg-[#3d0063] hover:text-white hover:scale-105 backdrop-blur-sm transform-gpu">
+                    <button class="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition hover:bg-white hover:text-slate-900 backdrop-blur-sm">
                         Pelajari Lebih Lanjut
                     </button>
                 </a>
@@ -490,1943 +126,421 @@
         </div>
     </section>
 
-    <div class="relative bg-gradient-to-br from-black to-[#3d0063]">
-        <!-- Waves -->
-        <svg class="relative w-full h-[15vh] min-h-[100px] max-h-[150px] -mb-[7px]"
-             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-             viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-            <defs>
-                <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/>
-                <linearGradient id="purple-black" gradientTransform="rotate(135)">
-                    <stop offset="0%" stop-color="#000000"/>
-                    <stop offset="100%" stop-color="#3d0063"/>
-                </linearGradient>
-            </defs>
+    <div class="relative bg-gradient-to-br from-[#020617] to-[#1e1b4b]">
+        <svg class="relative w-full h-[10vh] min-h-[80px] -mb-[1px]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+            <defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/></defs>
             <g class="parallax">
-                <use xlink:href="#gentle-wave" x="48" y="0" fill="url(#purple-black)" fill-opacity="1" class="animate-wave-1"/>
-                <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" class="animate-wave-2"/>
-                <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" class="animate-wave-3"/>
-                <use xlink:href="#gentle-wave" x="48" y="7" fill="#1f2937" class="animate-wave-4"/>
+                <use xlink:href="#gentle-wave" x="48" y="0" class="fill-slate-50 dark:fill-slate-950 opacity-70 animate-wave-1"/>
+                <use xlink:href="#gentle-wave" x="48" y="3" class="fill-slate-50 dark:fill-slate-950 opacity-50 animate-wave-2"/>
+                <use xlink:href="#gentle-wave" x="48" y="5" class="fill-slate-50 dark:fill-slate-950 opacity-30 animate-wave-3"/>
+                <use xlink:href="#gentle-wave" x="48" y="7" class="fill-slate-50 dark:fill-slate-950 animate-wave-4"/>
             </g>
         </svg>
-
-        <!-- Content -->
-        <div class="relative h-[20vh] flex justify-center items-center bg-gray-800 text-center">
-            <p class="text-sm tracking-wider text-gray-300 font-sans"></p>
-        </div>
     </div>
 
-    <!-- Features Section -->
-    <section class="py-16 bg-gray-800 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="mulaisekarang" class="py-16 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
-                    Mengapa Memilih <span class="text-purple-400">ByteBudget</span>?
-                </h2>
-                <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
-                    Kami menyediakan rekomendasi komponen PC terbaik yang sesuai dengan budget dan kebutuhan Anda
-                </p>
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">Cari Rekomendasi Laptop Anda</h2>
+                <p class="text-lg text-slate-600 dark:text-slate-400">Masukkan budget dan kebutuhan Anda untuk mendapatkan rekomendasi terbaik</p>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-                <div class="text-center p-6 rounded-lg hover:shadow-2xl transition-all bg-gray-700 border border-gray-600">
-                    <div class="w-16 h-16 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 sm:p-10 border border-slate-100 dark:border-slate-800 transition-colors duration-300">
+                <form action="{% url 'rekomendasi_laptop' %}" method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="budgetInput" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Budget (Rp)</label>
+                            <input type="number" id="budgetInput" name="budget" placeholder="Contoh: 5000000" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors shadow-sm" />
+                        </div>
+                        <div>
+                            <label for="usageSelect" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Kegunaan</label>
+                            <select id="usageSelect" name="usage" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors shadow-sm">
+                                <option value="">Pilih kegunaan</option>
+                                <option value="Gaming">Gaming</option>
+                                <option value="Office/Kerja">Office/Kerja</option>
+                                <option value="Design/Video Editing">Design/Video Editing</option>
+                                <option value="Programming">Programming</option>
+                            </select>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Rekomendasi Akurat</h3>
-                    <p class="text-gray-300">
-                        Dapatkan rekomendasi komponen yang tepat berdasarkan budget dan kebutuhan spesifik Anda
-                    </p>
-                </div>
-
-                <div class="text-center p-6 rounded-lg hover:shadow-2xl transition-all bg-gray-700 border border-gray-600">
-                    <div class="w-16 h-16 bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                        </svg>
+                    <div class="text-center pt-2">
+                        <button type="submit" class="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white px-8 py-3.5 rounded-xl font-bold text-lg transition-all hover:scale-[1.02] shadow-lg shadow-violet-500/30">
+                            🔍 Cari Rekomendasi
+                        </button>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Hemat Budget</h3>
-                    <p class="text-gray-300">
-                        Temukan kombinasi komponen terbaik dengan harga yang sesuai dengan kantong Anda
-                    </p>
-                </div>
-
-                <div class="text-center p-6 rounded-lg hover:shadow-2xl transition-all bg-gray-700 border border-gray-600">
-                    <div class="w-16 h-16 bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Performa Optimal</h3>
-                    <p class="text-gray-300">
-                        Dapatkan performa maksimal dari setiap komponen yang Anda pilih
-                    </p>
-                </div>
+                </form>
             </div>
+            <div class="flex justify-center mt-8">
+                <a href="{% url 'download_excel' %}" class="flex items-center gap-2 text-violet-600 dark:text-violet-400 font-semibold hover:underline transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    Download Database (Excel)
+                </a>
+            </div>
+            <div id="scraperStatus" class="mt-4 hidden text-center px-4 py-3 rounded-lg"></div>
         </div>
     </section>
 
-    <!-- Search Section -->
-    <section
-      id="mulaisekarang"
-      class="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
-    >
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="pccomponentfinder" class="py-16 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2
-            class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4"
-          >
-            Cari Rekomendasi Laptop Anda
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+             Cari Komponen PC Anda
           </h2>
-          <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
-            Masukkan budget dan kebutuhan Anda untuk mendapatkan rekomendasi
-            terbaik
+          <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-400">
+            Filter berdasarkan budget dan komponen yang Anda butuhkan
           </p>
         </div>
-
-        <div
-          class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 sm:p-8 transition-colors duration-300"
-        >
-          <form action="{% url 'rekomendasi_laptop' %}" method="POST" class="space-y-6">
+    
+        <div class="bg-white dark:bg-slate-900 rounded-lg shadow-xl p-6 sm:p-8 transition-colors duration-300 border border-slate-100 dark:border-slate-800">
+          <form action="{% url 'rekomendasi_pc' %}" method="POST" class="space-y-8">
             {% csrf_token %}
-            <div class="grid grid-cols-1 mobile-form-grid md:grid-cols-2 gap-6">
-              <div>
-                <label
-                  for="budgetInput"
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >Budget (Rp)</label
-                >
-                <input
-                  type="number"
-                  id="budgetInput"
-                  name="budget"
-                  placeholder="Contoh: 5000000"
-                  class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors touch-input"
-                />
-              </div>
-              <div>
-                <label
-                  for="usageSelect"
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >Kegunaan</label
-                >
-                <select
-                  id="usageSelect"
-                  name="usage"
-                  class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors touch-input"
-                >
-                  <option value="">Pilih kegunaan</option>
-                  <option value="Gaming">Gaming</option>
-                  <option value="Office/Kerja">Office/Kerja</option>
-                  <option value="Design/Video Editing">
-                    Design/Video Editing
-                  </option>
-                  <option value="Programming">Programming</option>
-                </select>
+            
+            <div class="border-b border-slate-200 dark:border-slate-800 pb-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Budget</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="minBudget" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Budget Minimum (Rp)</label>
+                  <input type="number" id="minBudget" name="min_budget" placeholder="Contoh: 3000000" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors" />
+                </div>
+                <div>
+                  <label for="maxBudget" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Budget Maximum (Rp)</label>
+                  <input type="number" id="maxBudget" name="max_budget" placeholder="Contoh: 8000000" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors" />
+                </div>
               </div>
             </div>
-
+    
+            <div class="border-b border-slate-200 dark:border-slate-800 pb-6">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Kegunaan</h3>
+              <select id="usageSelect" name="usage" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors">
+                <option value="">Semua Kegunaan</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Office/Kerja">Office/Kerja</option>
+                <option value="Design/Video Editing">Design/Video Editing</option>
+                <option value="Programming">Programming</option>
+                <option value="Rendering 3D">Rendering 3D</option>
+              </select>
+            </div>
+    
             <div>
-              <label
-                for="components"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                >Komponen yang Dibutuhkan</label
-              >
-              <div
-                class="grid grid-cols-1 mobile-checkbox-grid sm:grid-cols-2 md:grid-cols-3 gap-3"
-              >
-                <label class="flex items-center">
-                  <input
-                    type="checkbox"
-                    class="mr-2 touch-checkbox text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
-                  />
-                  <span class="text-sm text-gray-700 dark:text-gray-300"
-                    >Storage</span
-                  >
-                </label>
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Filter Komponen</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
+                  <label class="flex items-center cursor-pointer group">
+                    <input type="checkbox" name="components" value="RAM" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
+                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">RAM</span>
+                  </label>
+                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">Memory / DDR4 / DDR5</p>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
+                  <label class="flex items-center cursor-pointer group">
+                    <input type="checkbox" name="components" value="CPU" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
+                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">CPU / Processor</span>
+                  </label>
+                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">Intel / AMD Ryzen</p>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
+                  <label class="flex items-center cursor-pointer group">
+                    <input type="checkbox" name="components" value="GPU" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
+                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">GPU / VGA</span>
+                  </label>
+                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">NVIDIA / AMD Graphics</p>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
+                  <label class="flex items-center cursor-pointer group">
+                    <input type="checkbox" name="components" value="Motherboard" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
+                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">Motherboard</span>
+                  </label>
+                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">Mainboard / Mobo</p>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
+                  <label class="flex items-center cursor-pointer group">
+                    <input type="checkbox" name="components" value="SSD" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
+                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">SSD</span>
+                  </label>
+                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">NVMe / SATA SSD</p>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
+                  <label class="flex items-center cursor-pointer group">
+                    <input type="checkbox" name="components" value="HDD" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
+                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">HDD</span>
+                  </label>
+                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">Hard Disk Drive</p>
+                </div>
               </div>
             </div>
-
-            <!-- Error Message -->
-            <div
-              id="errorMessage"
-              class="hidden bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg"
-            ></div>
-
-            <div class="text-center">
-              <button
-                type="submit"
-                class="w-full sm:w-auto text-white px-6 sm:px-8 py-3 rounded-lg font-semibold text-lg transition-all hover:scale-105 touch-button"
-                style="
-                  background: linear-gradient(135deg, #000000 0%, #3d0063 100%);
-                  box-shadow: 0 4px 15px rgba(61, 0, 99, 0.3);
-                "
-                onmouseover="this.style.background='linear-gradient(135deg, #1a1a1a 0%, #4a0070 100%)'"
-                onmouseout="this.style.background='linear-gradient(135deg, #000000 0%, #3d0063 100%)'"
-              >
-                Cari Rekomendasi
+    
+            <div id="errorMessage" class="hidden bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg"></div>
+    
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
+              <button type="submit" class="flex-1 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-all hover:scale-105 hover:shadow-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 shadow-lg shadow-violet-500/20">
+                🔍 Cari Rekomendasi
+              </button>
+              <button type="reset" class="sm:w-auto px-8 py-3 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-lg font-semibold text-lg hover:bg-slate-300 dark:hover:bg-slate-700 transition-all" onclick="document.getElementById('errorMessage').classList.add('hidden')">
+                Reset Filter
               </button>
             </div>
           </form>
         </div>
-        <div class="flex flex-col sm:flex-row gap-4 mt-6 justify-center">
-          <!-- Tombol Jalankan Scraper -->
-          <button
-            id="runScraperBtn"
-            type="button"
-            class="w-full sm:w-auto text-white px-6 sm:px-8 py-3 rounded-lg font-semibold text-lg transition-all hover:scale-105 touch-button"
-            style="
-              background: linear-gradient(135deg, #000000 0%, #3d0063 100%);
-              box-shadow: 0 4px 15px rgba(61, 0, 99, 0.3);
-            "
-            onmouseover="this.style.background='linear-gradient(135deg, #1a1a1a 0%, #4a0070 100%)'"
-            onmouseout="this.style.background='linear-gradient(135deg, #000000 0%, #3d0063 100%)'"
-          >
-            Jalankan Scraping
+    
+        <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <button type="button" onclick="setQuickBudget(0, 5000000)" class="px-4 py-3 bg-white dark:bg-slate-900 rounded-lg shadow hover:shadow-lg transition-all border border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 group">
+            <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors">Budget</p>
+            <p class="font-semibold text-slate-900 dark:text-white">&lt; 5 Juta</p>
           </button>
-
-          <!-- Tombol Download Excel -->
-          <a
-            href="{% url 'download_excel' %}"
-            class="w-full sm:w-auto text-white px-6 sm:px-8 py-3 rounded-lg font-semibold text-lg transition-all hover:scale-105 touch-button text-center"
-            style="
-              background: linear-gradient(135deg, #000000 0%, #3d0063 100%);
-              box-shadow: 0 4px 15px rgba(61, 0, 99, 0.3);
-              display: inline-block;
-            "
-            onmouseover="this.style.background='linear-gradient(135deg, #1a1a1a 0%, #4a0070 100%)'"
-            onmouseout="this.style.background='linear-gradient(135deg, #000000 0%, #3d0063 100%)'"
-          >
-            Download Excel
-          </a>
+          <button type="button" onclick="setQuickBudget(5000000, 10000000)" class="px-4 py-3 bg-white dark:bg-slate-900 rounded-lg shadow hover:shadow-lg transition-all border border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 group">
+            <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors">Budget</p>
+            <p class="font-semibold text-slate-900 dark:text-white">5-10 Juta</p>
+          </button>
+          <button type="button" onclick="setQuickBudget(10000000, 20000000)" class="px-4 py-3 bg-white dark:bg-slate-900 rounded-lg shadow hover:shadow-lg transition-all border border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 group">
+            <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors">Budget</p>
+            <p class="font-semibold text-slate-900 dark:text-white">10-20 Juta</p>
+          </button>
+          <button type="button" onclick="setQuickBudget(20000000, 999999999)" class="px-4 py-3 bg-white dark:bg-slate-900 rounded-lg shadow hover:shadow-lg transition-all border border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 group">
+            <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors">Budget</p>
+            <p class="font-semibold text-slate-900 dark:text-white">&gt; 20 Juta</p>
+          </button>
         </div>
-        <div
-          id="scraperStatus"
-          class="mt-4 text-sm font-medium px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm hidden"
-        ></div>
       </div>
     </section>
 
-    <!--Filtering Hardware-->
-    <section
-  id="pccomponentfinder"
-  class="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
->
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-12">
-      <h2
-        class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4"
-      >
-        Cari Komponen PC Anda
-      </h2>
-      <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
-        Filter berdasarkan budget dan komponen yang Anda butuhkan
-      </p>
-    </div>
-
-    <div
-      class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 sm:p-8 transition-colors duration-300"
-    >
-      <form action="{% url 'rekomendasi_pc' %}" method="POST" class="space-y-8">
-        {% csrf_token %}
-        
-        <!-- Budget Section -->
-        <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Budget
-          </h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label
-                for="minBudget"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-              >
-                Budget Minimum (Rp)
-              </label>
-              <input
-                type="number"
-                id="minBudget"
-                name="min_budget"
-                placeholder="Contoh: 3000000"
-                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              />
-            </div>
-            <div>
-              <label
-                for="maxBudget"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-              >
-                Budget Maximum (Rp)
-              </label>
-              <input
-                type="number"
-                id="maxBudget"
-                name="max_budget"
-                placeholder="Contoh: 8000000"
-                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Usage Section -->
-        <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Kegunaan
-          </h3>
-          <select
-            id="usageSelect"
-            name="usage"
-            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-          >
-            <option value="">Semua Kegunaan</option>
-            <option value="Gaming">Gaming</option>
-            <option value="Office/Kerja">Office/Kerja</option>
-            <option value="Design/Video Editing">Design/Video Editing</option>
-            <option value="Programming">Programming</option>
-            <option value="Rendering 3D">Rendering 3D</option>
-          </select>
-        </div>
-
-        <!-- Components Filter Section -->
-        <div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Filter Komponen
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- RAM -->
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
-              <label class="flex items-center cursor-pointer group">
-                <input
-                  type="checkbox"
-                  name="components"
-                  value="RAM"
-                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  RAM
-                </span>
-              </label>
-              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
-                Memory / DDR4 / DDR5
-              </p>
-            </div>
-
-            <!-- CPU -->
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
-              <label class="flex items-center cursor-pointer group">
-                <input
-                  type="checkbox"
-                  name="components"
-                  value="CPU"
-                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  CPU / Processor
-                </span>
-              </label>
-              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
-                Intel / AMD Ryzen
-              </p>
-            </div>
-
-            <!-- GPU -->
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
-              <label class="flex items-center cursor-pointer group">
-                <input
-                  type="checkbox"
-                  name="components"
-                  value="GPU"
-                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  GPU / VGA
-                </span>
-              </label>
-              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
-                NVIDIA / AMD Graphics
-              </p>
-            </div>
-
-            <!-- Motherboard -->
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
-              <label class="flex items-center cursor-pointer group">
-                <input
-                  type="checkbox"
-                  name="components"
-                  value="Motherboard"
-                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  Motherboard
-                </span>
-              </label>
-              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
-                Mainboard / Mobo
-              </p>
-            </div>
-
-            <!-- SSD -->
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
-              <label class="flex items-center cursor-pointer group">
-                <input
-                  type="checkbox"
-                  name="components"
-                  value="SSD"
-                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  SSD
-                </span>
-              </label>
-              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
-                NVMe / SATA SSD
-              </p>
-            </div>
-
-            <!-- HDD -->
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors">
-              <label class="flex items-center cursor-pointer group">
-                <input
-                  type="checkbox"
-                  name="components"
-                  value="HDD"
-                  class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  HDD
-                </span>
-              </label>
-              <p class="mt-2 ml-8 text-xs text-gray-500 dark:text-gray-400">
-                Hard Disk Drive
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Error Message -->
-        <div
-          id="errorMessage"
-          class="hidden bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg"
-        ></div>
-
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 pt-4">
-          <button
-            type="submit"
-            class="flex-1 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-all hover:scale-105 hover:shadow-xl"
-            style="
-              background: linear-gradient(135deg, #000000 0%, #3d0063 100%);
-              box-shadow: 0 4px 15px rgba(61, 0, 99, 0.3);
-            "
-            onmouseover="this.style.background='linear-gradient(135deg, #1a1a1a 0%, #4a0070 100%)'"
-            onmouseout="this.style.background='linear-gradient(135deg, #000000 0%, #3d0063 100%)'"
-          >
-            🔍 Cari Rekomendasi
-          </button>
-          <button
-            type="reset"
-            class="sm:w-auto px-8 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-semibold text-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all"
-            onclick="document.getElementById('errorMessage').classList.add('hidden')"
-          >
-            Reset Filter
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Quick Budget Presets -->
-    <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-      <button
-        type="button"
-        onclick="setQuickBudget(0, 5000000)"
-        class="px-4 py-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
-      >
-        <p class="text-xs text-gray-500 dark:text-gray-400">Budget</p>
-        <p class="font-semibold text-gray-900 dark:text-white">< 5 Juta</p>
-      </button>
-      <button
-        type="button"
-        onclick="setQuickBudget(5000000, 10000000)"
-        class="px-4 py-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
-      >
-        <p class="text-xs text-gray-500 dark:text-gray-400">Budget</p>
-        <p class="font-semibold text-gray-900 dark:text-white">5-10 Juta</p>
-      </button>
-      <button
-        type="button"
-        onclick="setQuickBudget(10000000, 20000000)"
-        class="px-4 py-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
-      >
-        <p class="text-xs text-gray-500 dark:text-gray-400">Budget</p>
-        <p class="font-semibold text-gray-900 dark:text-white">10-20 Juta</p>
-      </button>
-      <button
-        type="button"
-        onclick="setQuickBudget(20000000, 999999999)"
-        class="px-4 py-3 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
-      >
-        <p class="text-xs text-gray-500 dark:text-gray-400">Budget</p>
-        <p class="font-semibold text-gray-900 dark:text-white">> 20 Juta</p>
-      </button>
-    </div>
-  </div>
-</section>
-
-
-    <!-- Recommendations Section -->
-    <section
-      id="recommendationsSection"
-      class="hidden py-16 bg-white dark:bg-gray-800 transition-colors duration-300"
-    >
+    <section id="recommendationsSection" class="hidden py-16 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2
-            class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4"
-          >
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4">
             Rekomendasi Untuk Anda
           </h2>
-          <p
-            id="budgetDisplay"
-            class="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-4"
-          ></p>
+          <p id="budgetDisplay" class="text-lg sm:text-xl text-slate-600 dark:text-slate-400 mb-4"></p>
         </div>
-
-        <div
-          id="recommendationCards"
-          class="grid grid-cols-1 mobile-card-grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
-        >
-          <!-- Recommendation cards will be generated here -->
-        </div>
+        <div id="recommendationCards" class="grid grid-cols-1 mobile-card-grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          </div>
       </div>
     </section>
 
-    <!-- About Section -->
-   <section
-  id="fitur"
-  class="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-20 transition-colors duration-300 overflow-hidden"
->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header Section -->
-    <div class="text-center mb-16 fade-in-on-scroll">
-      <div class="inline-block mb-4">
-        <span class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-semibold">
-          Platform Terlengkap
-        </span>
-      </div>
-      <h2
-        class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight"
-      >
-        Fitur Unggulan Kami
-      </h2>
-      <p
-        class="text-gray-600 dark:text-gray-300 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed"
-      >
-        Platform rekomendasi hardware paling komprehensif di Indonesia. Temukan komponen PC terbaik dengan teknologi AI, perbandingan mendalam, dan database terlengkap untuk keputusan yang tepat.
-      </p>
-    </div>
-
-    <!-- Hero Feature Card -->
-    <div class="mb-20 animate-slide-up">
-      <div
-    class="rounded-3xl shadow-2xl overflow-hidden"
-      style="background: linear-gradient(135deg, #000000 0%, #3d0063 100%);"
-> 
-
-        <div class="grid lg:grid-cols-2 gap-8 p-8 sm:p-12 items-center">
-          <div class="text-white space-y-6">
-            <div class="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-              
-            </div>
-            <h3 class="text-3xl sm:text-4xl font-bold leading-tight">
-              Rekomendasi Hardware Berbasis Kecerdasan Buatan
-            </h3>
-            <p class="text-lg text-blue-100 leading-relaxed">
-              Sistem AI kami menganalisis ribuan kombinasi hardware untuk memberikan rekomendasi yang paling sesuai dengan kebutuhan gaming, rendering, productivity, atau penggunaan sehari-hari Anda. Hemat waktu dan dapatkan performa optimal dengan budget yang Anda miliki.
-            </p>
-            <div class="flex flex-wrap gap-4">
-              <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                  <span class="text-xl">✓</span>
+    <section id="fitur" class="bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 py-20 transition-colors duration-300 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-on-scroll">
+                <div class="inline-block mb-4">
+                    <span class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-4 py-2 rounded-full text-sm font-semibold border border-indigo-200 dark:border-indigo-800">Platform Terlengkap</span>
                 </div>
-                <span class="font-semibold">Smart Matching</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                  <span class="text-xl">✓</span>
+                <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight">Fitur Unggulan Kami</h2>
+                <p class="text-slate-600 dark:text-slate-300 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">Platform rekomendasi hardware paling komprehensif di Indonesia. Temukan komponen PC terbaik dengan teknologi AI, perbandingan mendalam, dan database terlengkap untuk keputusan yang tepat.</p>
+            </div>
+
+            <div class="mb-20 animate-slide-up">
+                <div class="rounded-3xl shadow-2xl overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-indigo-950 z-0"></div>
+                    <div class="grid lg:grid-cols-2 gap-8 p-8 sm:p-12 items-center relative z-10">
+                        <div class="text-white space-y-6">
+                            <h3 class="text-3xl sm:text-4xl font-bold leading-tight">Rekomendasi Hardware Berbasis Kecerdasan Buatan</h3>
+                            <p class="text-lg text-indigo-100 leading-relaxed">Sistem AI kami menganalisis ribuan kombinasi hardware untuk memberikan rekomendasi yang paling sesuai dengan kebutuhan gaming, rendering, productivity, atau penggunaan sehari-hari Anda.</p>
+                            <div class="flex flex-wrap gap-4">
+                                <div class="flex items-center gap-2"><div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20"><span class="text-xl text-indigo-300">✓</span></div><span class="font-semibold">Smart Matching</span></div>
+                                <div class="flex items-center gap-2"><div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20"><span class="text-xl text-indigo-300">✓</span></div><span class="font-semibold">Budget Optimizer</span></div>
+                                <div class="flex items-center gap-2"><div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20"><span class="text-xl text-indigo-300">✓</span></div><span class="font-semibold">Performance Analysis</span></div>
+                            </div>
+                        </div>
+                        <div class="hidden lg:block">
+                            <div class="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 space-y-4">
+                                <div class="flex items-center justify-between bg-slate-900/50 p-4 rounded-lg border border-slate-700/50"><span class="font-semibold text-white">Gaming PC</span><span class="text-emerald-400">95% Match</span></div>
+                                <div class="flex items-center justify-between bg-slate-900/50 p-4 rounded-lg border border-slate-700/50"><span class="font-semibold text-white">Workstation</span><span class="text-amber-400">88% Match</span></div>
+                                <div class="flex items-center justify-between bg-slate-900/50 p-4 rounded-lg border border-slate-700/50"><span class="font-semibold text-white">Budget Build</span><span class="text-sky-400">92% Match</span></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <span class="font-semibold">Budget Optimizer</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                  <span class="text-xl">✓</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-blue-500 transform hover:-translate-y-2">
+                    <div class="mb-6"><div class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors">💾</div></div>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Database Hardware Terlengkap</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Akses lebih dari <strong>50.000+ komponen hardware</strong> dari berbagai brand ternama.</p>
                 </div>
-                <span class="font-semibold">Performance Analysis</span>
-              </div>
-            </div>
-          </div>
-          <div class="hidden lg:block">
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <div class="space-y-4">
-                <div class="flex items-center justify-between bg-white/20 p-4 rounded-lg">
-                  <span class="font-semibold">Gaming PC</span>
-                  <span class="text-green-300">95% Match</span>
+                <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-emerald-500 transform hover:-translate-y-2">
+                    <div class="mb-6"><div class="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/40 transition-colors">⚖️</div></div>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Perbandingan Multi-Dimensi</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Bandingkan hingga <strong>6 komponen sekaligus</strong> dengan analisis mendalam.</p>
                 </div>
-                <div class="flex items-center justify-between bg-white/20 p-4 rounded-lg">
-                  <span class="font-semibold">Workstation</span>
-                  <span class="text-yellow-300">88% Match</span>
+                <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-violet-500 transform hover:-translate-y-2">
+                    <div class="mb-6"><div class="w-16 h-16 bg-violet-50 dark:bg-violet-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-violet-100 dark:group-hover:bg-violet-900/40 transition-colors">🖥️</div></div>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">PC Build Simulator Pro</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Rakit PC impian Anda secara virtual dengan <strong>compatibility checker otomatis</strong>.</p>
                 </div>
-                <div class="flex items-center justify-between bg-white/20 p-4 rounded-lg">
-                  <span class="font-semibold">Budget Build</span>
-                  <span class="text-blue-300">92% Match</span>
+                 <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-amber-500 transform hover:-translate-y-2">
+                    <div class="mb-6"><div class="w-16 h-16 bg-amber-50 dark:bg-amber-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-amber-100 dark:group-hover:bg-amber-900/40 transition-colors">📊</div></div>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Advanced Price Tracker</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Monitor harga dari <strong>20+ marketplace</strong> dengan notifikasi real-time.</p>
                 </div>
-              </div>
+                 <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-rose-500 transform hover:-translate-y-2">
+                    <div class="mb-6"><div class="w-16 h-16 bg-rose-50 dark:bg-rose-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-rose-100 dark:group-hover:bg-rose-900/40 transition-colors">⭐</div></div>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Community Review</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Baca <strong>100.000+ review</strong> verified dari pengguna real dan expert.</p>
+                </div>
+                 <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-indigo-500 transform hover:-translate-y-2">
+                    <div class="mb-6"><div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/40 transition-colors">👥</div></div>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Active Community</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Bergabung dengan <strong>50.000+ PC enthusiast</strong> Indonesia.</p>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Main Features Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-      <!-- Feature 1: Database Lengkap -->
-      <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transform hover:-translate-y-2">
-        <div class="mb-6">
-          <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-            💾
-          </div>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-          Database Hardware Terlengkap
-        </h3>
-        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-          Akses lebih dari <strong>50.000+ komponen hardware</strong> dari berbagai brand ternama seperti Intel, AMD, NVIDIA, ASUS, MSI, Corsair, dan lainnya dengan informasi spesifikasi yang selalu diperbarui.
-        </p>
-        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <li class="flex items-center gap-2">
-            <span class="text-blue-500">▸</span> Spesifikasi teknis lengkap
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-blue-500">▸</span> Update harian produk baru
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-blue-500">▸</span> Informasi ketersediaan stok
-          </li>
-        </ul>
-      </div>
-
-      <!-- Feature 2: Perbandingan -->
-      <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 hover:border-green-500 dark:hover:border-green-500 transform hover:-translate-y-2">
-        <div class="mb-6">
-          <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-            ⚖️
-          </div>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-          Perbandingan Multi-Dimensi
-        </h3>
-        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-          Bandingkan hingga <strong>6 komponen sekaligus</strong> dengan analisis mendalam meliputi performa, efisiensi daya, harga per FPS, thermal performance, dan value for money dalam satu tampilan komprehensif.
-        </p>
-        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <li class="flex items-center gap-2">
-            <span class="text-green-500">▸</span> Benchmark real-world
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-green-500">▸</span> Analisis cost-performance
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-green-500">▸</span> Grafik visual interaktif
-          </li>
-        </ul>
-      </div>
-
-      <!-- Feature 3: PC Builder -->
-      <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transform hover:-translate-y-2">
-        <div class="mb-6">
-          <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-            🖥️
-          </div>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-          PC Build Simulator Pro
-        </h3>
-        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-          Rakit PC impian Anda secara virtual dengan <strong>compatibility checker otomatis</strong>, kalkulasi PSU requirements, bottleneck analysis, dan estimasi performa gaming di berbagai resolusi dan setting.
-        </p>
-        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <li class="flex items-center gap-2">
-            <span class="text-purple-500">▸</span> Auto compatibility check
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-purple-500">▸</span> Bottleneck calculator
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-purple-500">▸</span> FPS estimator per game
-          </li>
-        </ul>
-      </div>
-
-      <!-- Feature 4: Price Tracker -->
-      <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 hover:border-yellow-500 dark:hover:border-yellow-500 transform hover:-translate-y-2">
-        <div class="mb-6">
-          <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-            📊
-          </div>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-          Advanced Price Tracker
-        </h3>
-        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-          Monitor harga dari <strong>20+ marketplace terpercaya</strong> di Indonesia. Dapatkan notifikasi real-time saat harga turun, historical price chart, dan prediksi trend harga menggunakan machine learning.
-        </p>
-        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <li class="flex items-center gap-2">
-            <span class="text-yellow-500">▸</span> Price alert notification
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-yellow-500">▸</span> Historical price data
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-yellow-500">▸</span> Price trend prediction
-          </li>
-        </ul>
-      </div>
-
-      <!-- Feature 5: Review System -->
-      <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-500 transform hover:-translate-y-2">
-        <div class="mb-6">
-          <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-            ⭐
-          </div>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-          Community Review & Expert Opinion
-        </h3>
-        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-          Baca <strong>100.000+ review</strong> verified dari pengguna real dan expert review dari tech reviewer profesional. Sistem rating multi-aspek untuk performa, cooling, noise level, dan value.
-        </p>
-        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <li class="flex items-center gap-2">
-            <span class="text-red-500">▸</span> Verified purchase reviews
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-red-500">▸</span> Expert benchmark results
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-red-500">▸</span> Video review integration
-          </li>
-        </ul>
-      </div>
-
-      <!-- Feature 6: Community -->
-      <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transform hover:-translate-y-2">
-        <div class="mb-6">
-          <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-            👥
-          </div>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-          Active Community Forum
-        </h3>
-        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-          Bergabung dengan <strong>50.000+ PC enthusiast</strong> Indonesia. Tanya jawab, share build, diskusi teknologi terbaru, troubleshooting bantuan, dan dapatkan feedback dari komunitas yang supportif.
-        </p>
-        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <li class="flex items-center gap-2">
-            <span class="text-indigo-500">▸</span> Build showcase gallery
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-indigo-500">▸</span> Expert Q&A sessions
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-indigo-500">▸</span> Weekly tech discussions
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Stats Section -->
-    <div class="bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 rounded-3xl p-8 sm:p-12 mb-16 shadow-2xl">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-        <div class="text-center">
-          <div class="text-4xl sm:text-5xl font-bold text-blue-400 mb-2">50K+</div>
-          <div class="text-gray-300 text-sm sm:text-base">Komponen Hardware</div>
-        </div>
-        <div class="text-center">
-          <div class="text-4xl sm:text-5xl font-bold text-green-400 mb-2">100K+</div>
-          <div class="text-gray-300 text-sm sm:text-base">User Reviews</div>
-        </div>
-        <div class="text-center">
-          <div class="text-4xl sm:text-5xl font-bold text-purple-400 mb-2">1M+</div>
-          <div class="text-gray-300 text-sm sm:text-base">PC Builds Created</div>
-        </div>
-        <div class="text-center">
-          <div class="text-4xl sm:text-5xl font-bold text-yellow-400 mb-2">20+</div>
-          <div class="text-gray-300 text-sm sm:text-base">Marketplace Partners</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Additional Features -->
-    <div class="mb-16">
-      <h3 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">
-        Fitur Tambahan yang Memudahkan Anda
-      </h3>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="flex gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-2xl">
-              🎮
+            <div class="bg-slate-800 dark:bg-slate-800/50 rounded-3xl p-8 sm:p-12 mb-16 shadow-2xl border border-slate-700/50">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center"><div class="text-4xl sm:text-5xl font-bold text-blue-400 mb-2">50K+</div><div class="text-slate-300">Komponen Hardware</div></div>
+                    <div class="text-center"><div class="text-4xl sm:text-5xl font-bold text-emerald-400 mb-2">100K+</div><div class="text-slate-300">User Reviews</div></div>
+                    <div class="text-center"><div class="text-4xl sm:text-5xl font-bold text-violet-400 mb-2">1M+</div><div class="text-slate-300">PC Builds Created</div></div>
+                    <div class="text-center"><div class="text-4xl sm:text-5xl font-bold text-amber-400 mb-2">20+</div><div class="text-slate-300">Marketplace Partners</div></div>
+                </div>
             </div>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Gaming Performance Calculator</h4>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">
-              Cek estimasi FPS untuk 500+ game populer dengan kombinasi hardware yang Anda pilih pada berbagai resolusi dan quality settings.
-            </p>
-          </div>
-        </div>
 
-        <div class="flex gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center text-2xl">
-              🔧
-            </div>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Upgrade Advisor</h4>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">
-              Input PC lama Anda dan dapatkan rekomendasi upgrade yang paling cost-effective untuk meningkatkan performa secara signifikan.
-            </p>
-          </div>
-        </div>
-
-        <div class="flex gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center text-2xl">
-              📱
-            </div>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Mobile App Integration</h4>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">
-              Akses semua fitur melalui aplikasi mobile yang responsif. Scan barcode produk di toko untuk langsung lihat review dan compare harga.
-            </p>
-          </div>
-        </div>
-
-        <div class="flex gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center text-2xl">
-              🛡️
+            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 p-8 sm:p-16 text-center shadow-2xl shadow-violet-900/30">
+                <div class="relative z-10">
+                    <h3 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">Siap Rakit PC Impian Anda?</h3>
+                    <p class="text-xl text-violet-100 mb-8 max-w-2xl mx-auto">Bergabunglah dengan ribuan PC builder yang sudah menggunakan platform kami.</p>
+                    <div class="flex flex-wrap justify-center gap-6 text-white/90 text-sm">
+                        <div class="flex items-center gap-2"><span class="text-lg">✓</span><span>100% Gratis</span></div>
+                        <div class="flex items-center gap-2"><span class="text-lg">✓</span><span>Tidak Perlu Kartu Kredit</span></div>
+                        <div class="flex items-center gap-2"><span class="text-lg">✓</span><span>Akses Semua Fitur</span></div>
+                    </div>
+                </div>
             </div>
         </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Warranty Tracker</h4>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">
-              Simpan dan track garansi semua komponen PC Anda dalam satu tempat. Dapatkan reminder sebelum masa garansi berakhir.
-            </p>
-          </div>
-        </div>
-
-        <div class="flex gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center text-2xl">
-              🔥
-            </div>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Hot Deals Alert</h4>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">
-              Notifikasi instan untuk flash sale, promo terbatas, dan diskon besar-besaran dari berbagai toko online. Jangan sampai ketinggalan!
-            </p>
-          </div>
-        </div>
-
-        <div class="flex gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-          <div class="flex-shrink-0">
-            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center text-2xl">
-              📚
-            </div>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Learning Center</h4>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">
-              Artikel, tutorial, dan video guide lengkap tentang cara merakit PC, overclocking, maintenance, dan troubleshooting untuk pemula hingga advanced.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CTA Section -->
-    <div class="relative">
-      <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-2xl opacity-20"></div>
-      <div class="relative bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 rounded-3xl shadow-2xl overflow-hidden">
-        <div class="absolute top-0 right-0 w-1/2 h-full opacity-10">
-          <div class="absolute top-10 right-10 w-32 h-32 bg-white rounded-full"></div>
-          <div class="absolute bottom-10 right-32 w-24 h-24 bg-white rounded-full"></div>
-          <div class="absolute top-1/2 right-20 w-40 h-40 bg-white rounded-full"></div>
-        </div>
-        
-        <div class="relative p-8 sm:p-12 lg:p-16 text-center">
-          <h3 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
-            Siap Rakit PC Impian Anda?
-          </h3>
-          <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Bergabunglah dengan ribuan PC builder yang sudah menggunakan platform kami untuk menemukan hardware terbaik dengan harga terbaik.
-          </p>
-          
-         
-          
-          <div class="flex flex-wrap justify-center gap-6 text-white/90 text-sm">
-            <div class="flex items-center gap-2">
-              <span class="text-lg">✓</span>
-              <span>100% Gratis</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-lg">✓</span>
-              <span>Tidak Perlu Kartu Kredit</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-lg">✓</span>
-              <span>Akses Semua Fitur</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-        <!-- Contact Info -->
-        <section
-          id="kontak"
-          class="bg-gray-50 dark:bg-gray-900 py-16 transition-colors duration-300"
-        ></section>
-        <div class="mt-12 text-center animate-fade-in">
-          <div
-            class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg inline-block max-w-full"
-          >
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
-              Mari Berkolaborasi!
-            </h3>
-            <p class="text-sm sm:text-base text-gray-600 mb-6">
-              Tertarik untuk berkolaborasi atau ingin tahu lebih lanjut tentang
-              proyek-proyek saya?
-            </p>
-            <div
-              class="flex flex-col mobile-social-links sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4"
-            >
-              <a
-                href="mumtazalvin350@gmail.com"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-4 sm:px-6 py-3 rounded-lg transition duration-300 flex items-center justify-center touch-button"
-              >
-                <span class="mr-2"></span> Email
-              </a>
-              <a
-                href="https://www.linkedin.com/in/alvin-mumtaz-2a8587221/"
-                class="bg-blue-700 hover:bg-blue-800 text-white px-4 sm:px-6 py-3 rounded-lg transition duration-300 flex items-center justify-center touch-button"
-              >
-                <span class="mr-2"></span> LinkedIn
-              </a>
-              <a
-                href="https://github.com/AlvinMumtaz"
-                class="bg-gray-800 hover:bg-gray-900 text-white px-4 sm:px-6 py-3 rounded-lg transition duration-300 flex items-center justify-center touch-button"
-              >
-                <span class="mr-2"></span> GitHub
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          class="grid grid-cols-1 mobile-footer-grid md:grid-cols-4 gap-6 sm:gap-8"
-        >
-          <div>
-            <div class="text-xl sm:text-2xl font-bold mb-4">ByteBudget</div>
-            <p class="text-sm sm:text-base text-gray-300">
-              Platform terpercaya untuk menemukan komponen PC terbaik sesuai
-              budget Anda.
-            </p>
-          </div>
-
-          <div>
-            <h4 class="text-base sm:text-lg font-semibold mb-4">Kategori</h4>
-            <ul class="space-y-2 text-sm sm:text-base text-gray-300">
-              <li>
-                <a
-                  href="processor.html"
-                  class="hover:text-white transition touch-button"
-                  >Processor</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition touch-button"
-                  >RAM</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition touch-button"
-                  >VGA</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition touch-button"
-                  >PSU</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition touch-button"
-                  >Storage</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 class="text-base sm:text-lg font-semibold mb-4">Perusahaan</h4>
-            <ul class="space-y-2 text-sm sm:text-base text-gray-300">
-              <li>
-                <a href="#" class="hover:text-white transition touch-button"
-                  >Tentang Kami</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition touch-button"
-                  >Karir</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition touch-button"
-                  >Blog</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition touch-button"
-                  >Press</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 class="text-base sm:text-lg font-semibold mb-4">Kontak</h4>
-            <ul class="space-y-2 text-sm sm:text-base text-gray-300">
-              <li>📧 mumtazalvin350@gmail.com</li>
-              <li>📞 +62 813-3631-0913</li>
-              <li>📍 J, Indonesia</li>
-            </ul>
-          </div>
+    <section id="kontak" class="py-16 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 p-8 sm:p-12 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700">
+                <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4">Mari Berkolaborasi!</h3>
+                <p class="text-slate-600 dark:text-slate-300 mb-8 max-w-lg mx-auto">Tertarik untuk berkolaborasi atau ingin tahu lebih lanjut tentang proyek-proyek saya?</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="mailto:mumtazalvin350@gmail.com" class="flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-lg font-medium transition-all hover:shadow-lg hover:-translate-y-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        Email Me
+                    </a>
+                    <a href="https://www.linkedin.com/in/alvin-mumtaz-2a8587221/" target="_blank" class="flex items-center justify-center gap-2 bg-[#0077b5] hover:bg-[#006396] text-white px-6 py-3 rounded-lg font-medium transition-all hover:shadow-lg hover:-translate-y-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://github.com/AlvinMumtaz" target="_blank" class="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-6 py-3 rounded-lg font-medium transition-all hover:shadow-lg hover:-translate-y-1 border border-slate-700 dark:border-slate-500">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        GitHub
+                    </a>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div
-          class="border-t border-gray-800 mt-8 pt-8 text-center text-sm sm:text-base text-gray-400"
-        >
-          <p>&copy; 2024 ByteBudget. All rights reserved.</p>
+    <footer class="bg-slate-950 text-slate-300 py-12 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-2xl font-bold text-white mb-4">ByteBudget</div>
+                    <p class="text-sm text-slate-400">Platform terpercaya untuk menemukan komponen PC terbaik sesuai budget Anda.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Kategori</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-violet-400 transition">Processor</a></li>
+                        <li><a href="#" class="hover:text-violet-400 transition">RAM</a></li>
+                        <li><a href="#" class="hover:text-violet-400 transition">VGA</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Perusahaan</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-violet-400 transition">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-violet-400 transition">Karir</a></li>
+                        <li><a href="#" class="hover:text-violet-400 transition">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li>📧 mumtazalvin350@gmail.com</li>
+                        <li>📍 Indonesia</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-12 pt-8 text-center text-sm text-slate-500">
+                <p>&copy; 2024 ByteBudget. All rights reserved.</p>
+            </div>
         </div>
-      </div>
     </footer>
 
-    <!-- Mobile Menu JavaScript -->
-<script>
-  // SEMUA JAVASCRIPT DALAM SATU DOMContentLoaded
-document.addEventListener("DOMContentLoaded", function () {
-  // ===== THEME TOGGLE =====
-  const themeToggle = document.getElementById('themeToggle');
-  const sunIcon = document.getElementById('sunIcon');
-  const moonIcon = document.getElementById('moonIcon');
-  const body = document.body;
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // --- Dark Mode Logic ---
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const html = document.documentElement;
 
-  // Check for saved theme preference or default to 'dark'
-  const currentTheme = localStorage.getItem('theme') || 'dark';
-  
-  // Apply theme on page load
-  if (currentTheme === 'light') {
-    body.classList.remove('bg-gray-900', 'text-gray-100');
-    body.classList.add('bg-gray-50', 'text-gray-900');
-    sunIcon.classList.remove('hidden');
-    moonIcon.classList.add('hidden');
-    applyLightMode();
-  } else {
-    body.classList.remove('bg-gray-50', 'text-gray-900');
-    body.classList.add('bg-gray-900', 'text-gray-100');
-    sunIcon.classList.add('hidden');
-    moonIcon.classList.remove('hidden');
-    applyDarkMode();
-  }
-
-  // Toggle theme
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      if (body.classList.contains('bg-gray-900')) {
-        // Switch to Light Mode
-        body.classList.remove('bg-gray-900', 'text-gray-100');
-        body.classList.add('bg-gray-50', 'text-gray-900');
-        sunIcon.classList.remove('hidden');
-        moonIcon.classList.add('hidden');
-        localStorage.setItem('theme', 'light');
-        applyLightMode();
-      } else {
-        // Switch to Dark Mode
-        body.classList.remove('bg-gray-50', 'text-gray-900');
-        body.classList.add('bg-gray-900', 'text-gray-100');
-        sunIcon.classList.add('hidden');
-        moonIcon.classList.remove('hidden');
-        localStorage.setItem('theme', 'dark');
-        applyDarkMode();
-      }
-    });
-  }
-
-  function applyLightMode() {
-    // ===== NAVBAR =====
-    const navbar = document.querySelector('nav');
-    if (navbar) {
-      navbar.classList.remove('bg-gray-800', 'border-gray-700');
-      navbar.classList.add('bg-white', 'border-gray-200');
-    }
-
-    document.querySelectorAll('nav a').forEach(link => {
-      link.classList.remove('text-gray-200', 'hover:text-purple-400');
-      link.classList.add('text-gray-700', 'hover:text-blue-600');
-    });
-
-    document.querySelectorAll('nav .text-2xl').forEach(logo => {
-      logo.classList.remove('text-white');
-      logo.classList.add('text-gray-900');
-    });
-
-    // ===== MOBILE MENU =====
-    const mobileMenuContainer = document.querySelector('#mobileMenu > div');
-    if (mobileMenuContainer) {
-      mobileMenuContainer.classList.remove('bg-gray-800', 'border-gray-700');
-      mobileMenuContainer.classList.add('bg-white', 'border-gray-200');
-    }
-
-    document.querySelectorAll('#mobileMenu a').forEach(link => {
-      link.classList.remove('text-gray-200', 'hover:text-purple-400', 'hover:bg-gray-700');
-      link.classList.add('text-gray-700', 'hover:text-blue-600', 'hover:bg-gray-50');
-    });
-
-    const mobileCategoryBtn = document.getElementById('mobileCategoryBtn');
-    if (mobileCategoryBtn) {
-      mobileCategoryBtn.classList.remove('text-gray-200', 'hover:text-purple-400');
-      mobileCategoryBtn.classList.add('text-gray-700', 'hover:text-blue-600');
-    }
-
-    document.querySelectorAll('#mobileCategoryMenu a').forEach(link => {
-      link.classList.remove('text-gray-300', 'hover:text-purple-400');
-      link.classList.add('text-gray-600', 'hover:text-blue-600');
-    });
-
-    // ===== DESKTOP DROPDOWN =====
-    const desktopDropdown = document.querySelector('.group > div');
-    if (desktopDropdown) {
-      desktopDropdown.classList.remove('bg-gray-800', 'border-gray-700');
-      desktopDropdown.classList.add('bg-white', 'border-gray-200');
-    }
-
-    document.querySelectorAll('.group > div a').forEach(link => {
-      link.classList.remove('text-gray-200', 'hover:bg-purple-700', 'hover:text-white');
-      link.classList.add('text-gray-700', 'hover:bg-blue-50', 'hover:text-blue-600');
-    });
-
-    // ===== HERO SECTION =====
-    const heroSection = document.querySelector('.relative.h-\\[20vh\\]');
-    if (heroSection) {
-      heroSection.classList.remove('bg-gray-800');
-      heroSection.classList.add('bg-white');
-    }
-
-    document.querySelectorAll('.relative.h-\\[20vh\\] h1').forEach(title => {
-      title.classList.remove('text-white');
-      title.classList.add('text-gray-900');
-    });
-
-    document.querySelectorAll('.relative.h-\\[20vh\\] p').forEach(desc => {
-      desc.classList.remove('text-gray-300');
-      desc.classList.add('text-gray-600');
-    });
-
-    // ===== FEATURES SECTION =====
-    const featuresSection = document.querySelector('section.py-16');
-    if (featuresSection) {
-      featuresSection.classList.remove('bg-gray-800');
-      featuresSection.classList.add('bg-white');
-    }
-
-    document.querySelectorAll('section.py-16 > div > div > div').forEach(card => {
-      card.classList.remove('bg-gray-700', 'border-gray-600', 'hover:border-purple-500');
-      card.classList.add('bg-gray-50', 'border-gray-200', 'hover:border-blue-500');
-    });
-
-    document.querySelectorAll('section.py-16 svg').forEach(icon => {
-      icon.classList.remove('text-purple-400');
-      icon.classList.add('text-blue-600');
-    });
-
-    document.querySelectorAll('section.py-16 h3').forEach(title => {
-      title.classList.remove('text-white');
-      title.classList.add('text-gray-900');
-    });
-
-    document.querySelectorAll('section.py-16 p').forEach(desc => {
-      if (!desc.classList.contains('max-w-2xl')) {
-        desc.classList.remove('text-gray-300');
-        desc.classList.add('text-gray-600');
-      }
-    });
-
-    const sectionTitle = document.querySelector('section.py-16 h2');
-    if (sectionTitle) {
-      sectionTitle.classList.remove('text-white');
-      sectionTitle.classList.add('text-gray-900');
-    }
-
-    const sectionDesc = document.querySelector('section.py-16 p.max-w-2xl');
-    if (sectionDesc) {
-      sectionDesc.classList.remove('text-gray-300');
-      sectionDesc.classList.add('text-gray-600');
-    }
-
-    // ===== RECOMMENDATIONS SECTION =====
-    const recommendationsSection = document.getElementById('recommendationsSection');
-    if (recommendationsSection) {
-      recommendationsSection.classList.remove('bg-gray-800');
-      recommendationsSection.classList.add('bg-white');
-    }
-
-    document.querySelectorAll('#recommendationsSection h2').forEach(title => {
-      title.classList.remove('text-white');
-      title.classList.add('text-gray-900');
-    });
-
-    document.querySelectorAll('#recommendationsSection p').forEach(p => {
-      p.classList.remove('text-gray-300');
-      p.classList.add('text-gray-600');
-    });
-
-    // ===== FITUR/ABOUT SECTION =====
-    const fiturSection = document.getElementById('fitur');
-    if (fiturSection) {
-      fiturSection.classList.remove('from-gray-900', 'to-gray-800');
-      fiturSection.classList.add('from-gray-50', 'to-white');
-    }
-
-    document.querySelectorAll('#fitur .bg-white, #fitur .bg-gray-800').forEach(card => {
-      if (!card.classList.contains('bg-gradient-to-br') && !card.classList.contains('bg-gradient-to-r')) {
-        card.classList.remove('bg-gray-800', 'border-gray-700');
-        card.classList.add('bg-white', 'border-gray-100');
-      }
-    });
-
-    document.querySelectorAll('#fitur h3, #fitur h4').forEach(title => {
-      if (!title.closest('.bg-gradient-to-br') && !title.closest('.bg-gradient-to-r')) {
-        title.classList.remove('text-white');
-        title.classList.add('text-gray-900');
-      }
-    });
-
-    document.querySelectorAll('#fitur p').forEach(p => {
-      if (!p.closest('.bg-gradient-to-br') && !p.closest('.bg-gradient-to-r')) {
-        p.classList.remove('text-gray-300', 'text-gray-400');
-        p.classList.add('text-gray-600');
-      }
-    });
-
-    document.querySelectorAll('#fitur .bg-blue-900').forEach(badge => {
-      badge.classList.remove('bg-blue-900', 'text-blue-300');
-      badge.classList.add('bg-blue-100', 'text-blue-600');
-    });
-
-    // Icon Backgrounds
-    const iconMap = {
-      'bg-blue-900': 'bg-blue-100',
-      'bg-green-900': 'bg-green-100',
-      'bg-purple-900': 'bg-purple-100',
-      'bg-yellow-900': 'bg-yellow-100',
-      'bg-red-900': 'bg-red-100',
-      'bg-indigo-900': 'bg-indigo-100'
-    };
-
-    Object.keys(iconMap).forEach(darkClass => {
-      document.querySelectorAll(`#fitur .${darkClass}`).forEach(icon => {
-        icon.classList.remove(darkClass);
-        icon.classList.add(iconMap[darkClass]);
-      });
-    });
-
-    const statsSection = document.querySelector('#fitur .bg-gradient-to-r');
-    if (statsSection) {
-      statsSection.classList.remove('from-gray-700', 'to-gray-800');
-      statsSection.classList.add('from-gray-800', 'to-gray-900');
-    }
-
-    // ===== KONTAK SECTION =====
-    // Section background tetap berubah, tapi card di dalamnya tetap putih
-    const kontakSection = document.getElementById('kontak');
-    if (kontakSection) {
-      kontakSection.classList.remove('bg-gray-900');
-      kontakSection.classList.add('bg-gray-50');
-    }
-    
-    // Contact card & text TIDAK DIUBAH - tetap dengan styling asli
-
-    // ===== PC COMPONENT FINDER SECTION =====
-    const pcComponentSection = document.getElementById('pccomponentfinder');
-    if (pcComponentSection) {
-      pcComponentSection.classList.remove('bg-gray-900');
-      pcComponentSection.classList.add('bg-gray-50');
-    }
-
-    document.querySelectorAll('#pccomponentfinder h2, #pccomponentfinder h3').forEach(title => {
-      title.classList.remove('text-white');
-      title.classList.add('text-gray-900');
-    });
-
-    document.querySelectorAll('#pccomponentfinder > div > div.text-center p').forEach(p => {
-      p.classList.remove('text-gray-300');
-      p.classList.add('text-gray-600');
-    });
-
-    document.querySelectorAll('#pccomponentfinder .bg-white, #pccomponentfinder .bg-gray-800').forEach(container => {
-      container.classList.remove('bg-gray-800', 'border-gray-700');
-      container.classList.add('bg-white', 'border-gray-200');
-    });
-
-    document.querySelectorAll('#pccomponentfinder label').forEach(label => {
-      label.classList.remove('text-gray-300', 'text-gray-100');
-      label.classList.add('text-gray-700', 'text-gray-900');
-    });
-
-    document.querySelectorAll('#pccomponentfinder input, #pccomponentfinder select').forEach(input => {
-      input.classList.remove('border-gray-600', 'bg-gray-700', 'text-white');
-      input.classList.add('border-gray-300', 'bg-white', 'text-gray-900');
-    });
-
-    document.querySelectorAll('#pccomponentfinder input[type="checkbox"]').forEach(checkbox => {
-      checkbox.classList.remove('bg-gray-600', 'border-gray-500');
-      checkbox.classList.add('bg-gray-100', 'border-gray-300');
-    });
-
-    document.querySelectorAll('#pccomponentfinder .bg-gray-700').forEach(box => {
-      box.classList.remove('bg-gray-700');
-      box.classList.add('bg-gray-50');
-    });
-
-    document.querySelectorAll('#pccomponentfinder span').forEach(span => {
-      if (span.classList.contains('text-gray-100')) {
-        span.classList.remove('text-gray-100');
-        span.classList.add('text-gray-900');
-      }
-    });
-
-    document.querySelectorAll('#pccomponentfinder .text-gray-400').forEach(text => {
-      text.classList.remove('text-gray-400');
-      text.classList.add('text-gray-500');
-    });
-
-    document.querySelectorAll('#pccomponentfinder #errorMessage').forEach(msg => {
-      msg.classList.remove('bg-red-900', 'border-red-600', 'text-red-300');
-      msg.classList.add('bg-red-100', 'border-red-400', 'text-red-700');
-    });
-
-    document.querySelectorAll('#pccomponentfinder button[type="reset"]').forEach(btn => {
-      btn.classList.remove('bg-gray-700', 'text-gray-200', 'hover:bg-gray-600');
-      btn.classList.add('bg-gray-200', 'text-gray-800', 'hover:bg-gray-300');
-    });
-
-    document.querySelectorAll('#pccomponentfinder button[onclick^="setQuickBudget"]').forEach(btn => {
-      btn.classList.remove('bg-gray-800', 'border-gray-700');
-      btn.classList.add('bg-white', 'border-gray-200');
-      
-      btn.querySelectorAll('p').forEach(p => {
-        if (p.classList.contains('text-gray-400')) {
-          p.classList.remove('text-gray-400');
-          p.classList.add('text-gray-500');
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        } else {
+            html.classList.remove('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
         }
-        if (p.classList.contains('text-white')) {
-          p.classList.remove('text-white');
-          p.classList.add('text-gray-900');
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    localStorage.theme = 'light';
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    html.classList.add('dark');
+                    localStorage.theme = 'dark';
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            });
         }
-      });
-    });
 
-    // ===== SEARCH SECTION =====
-    const searchSection = document.getElementById('mulaisekarang');
-    if (searchSection) {
-      searchSection.classList.remove('bg-gray-900');
-      searchSection.classList.add('bg-gray-50');
-    }
-
-    document.querySelectorAll('#mulaisekarang h2').forEach(title => {
-      title.classList.remove('text-white');
-      title.classList.add('text-gray-900');
-    });
-
-    document.querySelectorAll('#mulaisekarang > div > div.text-center p').forEach(p => {
-      p.classList.remove('text-gray-300');
-      p.classList.add('text-gray-600');
-    });
-
-    document.querySelectorAll('#mulaisekarang .bg-white, #mulaisekarang .bg-gray-800').forEach(container => {
-      container.classList.remove('bg-gray-800', 'border-gray-700');
-      container.classList.add('bg-white', 'border-gray-200');
-    });
-
-    document.querySelectorAll('#mulaisekarang label').forEach(label => {
-      label.classList.remove('text-gray-300');
-      label.classList.add('text-gray-700');
-    });
-
-    document.querySelectorAll('#mulaisekarang input, #mulaisekarang select, #mulaisekarang textarea').forEach(input => {
-      input.classList.remove('border-gray-600', 'bg-gray-700', 'text-white', 'focus:border-purple-500', 'focus:ring-purple-500');
-      input.classList.add('border-gray-300', 'bg-white', 'text-gray-900', 'focus:border-blue-500', 'focus:ring-blue-500');
-    });
-
-    document.querySelectorAll('#mulaisekarang .flex.items-center span').forEach(span => {
-      span.classList.remove('text-gray-300');
-      span.classList.add('text-gray-700');
-    });
-
-    document.querySelectorAll('#mulaisekarang input[type="checkbox"]').forEach(checkbox => {
-      checkbox.classList.remove('bg-gray-700', 'border-gray-600', 'text-purple-500', 'focus:ring-purple-500');
-      checkbox.classList.add('bg-gray-100', 'border-gray-300', 'text-blue-600', 'focus:ring-blue-500');
-    });
-
-    document.querySelectorAll('#mulaisekarang button').forEach(btn => {
-      if (btn.classList.contains('bg-purple-600')) {
-        btn.classList.remove('bg-purple-600', 'hover:bg-purple-700', 'focus:ring-purple-500');
-        btn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'focus:ring-blue-500');
-      }
-    });
-
-    // ===== FOOTER =====
-    // Footer TIDAK DIUBAH - tetap dengan styling asli (always dark)
-
-    // ===== ALL HEADINGS =====
-    document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(heading => {
-      if (!heading.closest('.bg-gradient-to-br') && !heading.closest('.bg-gradient-to-r')) {
-        heading.classList.remove('text-white', 'text-gray-100');
-        if (!heading.classList.contains('text-gray-900')) {
-          heading.classList.add('text-gray-900');
+        // --- Mobile Menu Logic ---
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const hamburger = mobileMenuBtn;
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                mobileMenu.classList.toggle("active");
+                hamburger.classList.toggle("active");
+            });
         }
-      }
-    });
-
-    // ===== ALL PARAGRAPHS =====
-    document.querySelectorAll('p').forEach(p => {
-      if (!p.closest('.bg-gradient-to-br') && !p.closest('.bg-gradient-to-r')) {
-        p.classList.remove('text-gray-300', 'text-gray-200', 'text-gray-100');
-        if (!p.classList.contains('text-gray-600')) {
-          p.classList.add('text-gray-600');
-        }
-      }
-    });
-  }
-
-  function applyDarkMode() {
-    // ===== NAVBAR =====
-    const navbar = document.querySelector('nav');
-    if (navbar) {
-      navbar.classList.remove('bg-white', 'border-gray-200');
-      navbar.classList.add('bg-gray-800', 'border-gray-700');
-    }
-
-    document.querySelectorAll('nav a').forEach(link => {
-      link.classList.remove('text-gray-700', 'hover:text-blue-600');
-      link.classList.add('text-gray-200', 'hover:text-purple-400');
-    });
-
-    document.querySelectorAll('nav .text-2xl').forEach(logo => {
-      logo.classList.remove('text-gray-900');
-      logo.classList.add('text-white');
-    });
-
-    // ===== MOBILE MENU =====
-    const mobileMenuContainer = document.querySelector('#mobileMenu > div');
-    if (mobileMenuContainer) {
-      mobileMenuContainer.classList.remove('bg-white', 'border-gray-200');
-      mobileMenuContainer.classList.add('bg-gray-800', 'border-gray-700');
-    }
-
-    document.querySelectorAll('#mobileMenu a').forEach(link => {
-      link.classList.remove('text-gray-700', 'hover:text-blue-600', 'hover:bg-gray-50');
-      link.classList.add('text-gray-200', 'hover:text-purple-400', 'hover:bg-gray-700');
-    });
-
-    const mobileCategoryBtn = document.getElementById('mobileCategoryBtn');
-    if (mobileCategoryBtn) {
-      mobileCategoryBtn.classList.remove('text-gray-700', 'hover:text-blue-600');
-      mobileCategoryBtn.classList.add('text-gray-200', 'hover:text-purple-400');
-    }
-
-    document.querySelectorAll('#mobileCategoryMenu a').forEach(link => {
-      link.classList.remove('text-gray-600', 'hover:text-blue-600');
-      link.classList.add('text-gray-300', 'hover:text-purple-400');
-    });
-
-    // ===== DESKTOP DROPDOWN =====
-    const desktopDropdown = document.querySelector('.group > div');
-    if (desktopDropdown) {
-      desktopDropdown.classList.remove('bg-white', 'border-gray-200');
-      desktopDropdown.classList.add('bg-gray-800', 'border-gray-700');
-    }
-
-    document.querySelectorAll('.group > div a').forEach(link => {
-      link.classList.remove('text-gray-700', 'hover:bg-blue-50', 'hover:text-blue-600');
-      link.classList.add('text-gray-200', 'hover:bg-purple-700', 'hover:text-white');
-    });
-
-    // ===== HERO SECTION =====
-    const heroSection = document.querySelector('.relative.h-\\[20vh\\]');
-    if (heroSection) {
-      heroSection.classList.remove('bg-white');
-      heroSection.classList.add('bg-gray-800');
-    }
-
-    document.querySelectorAll('.relative.h-\\[20vh\\] h1').forEach(title => {
-      title.classList.remove('text-gray-900');
-      title.classList.add('text-white');
-    });
-
-    document.querySelectorAll('.relative.h-\\[20vh\\] p').forEach(desc => {
-      desc.classList.remove('text-gray-600');
-      desc.classList.add('text-gray-300');
-    });
-
-    // ===== FEATURES SECTION =====
-    const featuresSection = document.querySelector('section.py-16');
-    if (featuresSection) {
-      featuresSection.classList.remove('bg-white');
-      featuresSection.classList.add('bg-gray-800');
-    }
-
-    document.querySelectorAll('section.py-16 > div > div > div').forEach(card => {
-      card.classList.remove('bg-gray-50', 'border-gray-200', 'hover:border-blue-500');
-      card.classList.add('bg-gray-700', 'border-gray-600', 'hover:border-purple-500');
-    });
-
-    document.querySelectorAll('section.py-16 svg').forEach(icon => {
-      icon.classList.remove('text-blue-600');
-      icon.classList.add('text-purple-400');
-    });
-
-    document.querySelectorAll('section.py-16 h3').forEach(title => {
-      title.classList.remove('text-gray-900');
-      title.classList.add('text-white');
-    });
-
-    document.querySelectorAll('section.py-16 p').forEach(desc => {
-      if (!desc.classList.contains('max-w-2xl')) {
-        desc.classList.remove('text-gray-600');
-        desc.classList.add('text-gray-300');
-      }
-    });
-
-    const sectionTitle = document.querySelector('section.py-16 h2');
-    if (sectionTitle) {
-      sectionTitle.classList.remove('text-gray-900');
-      sectionTitle.classList.add('text-white');
-    }
-
-    const sectionDesc = document.querySelector('section.py-16 p.max-w-2xl');
-    if (sectionDesc) {
-      sectionDesc.classList.remove('text-gray-600');
-      sectionDesc.classList.add('text-gray-300');
-    }
-
-    // ===== RECOMMENDATIONS SECTION =====
-    const recommendationsSection = document.getElementById('recommendationsSection');
-    if (recommendationsSection) {
-      recommendationsSection.classList.remove('bg-white');
-      recommendationsSection.classList.add('bg-gray-800');
-    }
-
-    document.querySelectorAll('#recommendationsSection h2').forEach(title => {
-      title.classList.remove('text-gray-900');
-      title.classList.add('text-white');
-    });
-
-    document.querySelectorAll('#recommendationsSection p').forEach(p => {
-      p.classList.remove('text-gray-600');
-      p.classList.add('text-gray-300');
-    });
-
-    // ===== FITUR/ABOUT SECTION =====
-    const fiturSection = document.getElementById('fitur');
-    if (fiturSection) {
-      fiturSection.classList.remove('from-gray-50', 'to-white');
-      fiturSection.classList.add('from-gray-900', 'to-gray-800');
-    }
-
-    document.querySelectorAll('#fitur .bg-white, #fitur .bg-gray-800').forEach(card => {
-      if (!card.classList.contains('bg-gradient-to-br') && !card.classList.contains('bg-gradient-to-r')) {
-        card.classList.remove('bg-white', 'border-gray-100');
-        card.classList.add('bg-gray-800', 'border-gray-700');
-      }
-    });
-
-    document.querySelectorAll('#fitur h3, #fitur h4').forEach(title => {
-      if (!title.closest('.bg-gradient-to-br') && !title.closest('.bg-gradient-to-r')) {
-        title.classList.remove('text-gray-900');
-        title.classList.add('text-white');
-      }
-    });
-
-    document.querySelectorAll('#fitur p').forEach(p => {
-      if (!p.closest('.bg-gradient-to-br') && !p.closest('.bg-gradient-to-r')) {
-        p.classList.remove('text-gray-600');
-        p.classList.add('text-gray-300');
-      }
-    });
-
-    document.querySelectorAll('#fitur .bg-blue-100').forEach(badge => {
-      badge.classList.remove('bg-blue-100', 'text-blue-600');
-      badge.classList.add('bg-blue-900', 'text-blue-300');
-    });
-
-    // Icon Backgrounds
-    const iconMap = {
-      'bg-blue-100': 'bg-blue-900',
-      'bg-green-100': 'bg-green-900',
-      'bg-purple-100': 'bg-purple-900',
-      'bg-yellow-100': 'bg-yellow-900',
-      'bg-red-100': 'bg-red-900',
-      'bg-indigo-100': 'bg-indigo-900'
-    };
-
-    Object.keys(iconMap).forEach(lightClass => {
-      document.querySelectorAll(`#fitur .${lightClass}`).forEach(icon => {
-        icon.classList.remove(lightClass);
-        icon.classList.add(iconMap[lightClass]);
-      });
-    });
-
-    const statsSection = document.querySelector('#fitur .bg-gradient-to-r');
-    if (statsSection) {
-      statsSection.classList.remove('from-gray-800', 'to-gray-900');
-      statsSection.classList.add('from-gray-700', 'to-gray-800');
-    }
-
-    // ===== KONTAK SECTION =====
-    // Section background tetap berubah, tapi card di dalamnya tetap putih
-    const kontakSection = document.getElementById('kontak');
-    if (kontakSection) {
-      kontakSection.classList.remove('bg-gray-50');
-      kontakSection.classList.add('bg-gray-900');
-    }
-    
-    // Contact card & text TIDAK DIUBAH - tetap dengan styling asli
-
-    // ===== PC COMPONENT FINDER SECTION =====
-    const pcComponentSection = document.getElementById('pccomponentfinder');
-    if (pcComponentSection) {
-      pcComponentSection.classList.remove('bg-gray-50');
-      pcComponentSection.classList.add('bg-gray-900');
-    }
-
-    document.querySelectorAll('#pccomponentfinder h2, #pccomponentfinder h3').forEach(title => {
-      title.classList.remove('text-gray-900');
-      title.classList.add('text-white');
-    });
-
-    document.querySelectorAll('#pccomponentfinder > div > div.text-center p').forEach(p => {
-      p.classList.remove('text-gray-600');
-      p.classList.add('text-gray-300');
-    });
-
-    document.querySelectorAll('#pccomponentfinder .bg-white, #pccomponentfinder .bg-gray-800').forEach(container => {
-      container.classList.remove('bg-white', 'border-gray-200');
-      container.classList.add('bg-gray-800', 'border-gray-700');
-    });
-
-    document.querySelectorAll('#pccomponentfinder label').forEach(label => {
-      label.classList.remove('text-gray-700', 'text-gray-900');
-      label.classList.add('text-gray-300', 'text-gray-100');
-    });
-
-    document.querySelectorAll('#pccomponentfinder input, #pccomponentfinder select').forEach(input => {
-      input.classList.remove('border-gray-300', 'bg-white', 'text-gray-900');
-      input.classList.add('border-gray-600', 'bg-gray-700', 'text-white');
-    });
-
-    document.querySelectorAll('#pccomponentfinder input[type="checkbox"]').forEach(checkbox => {
-      checkbox.classList.remove('bg-gray-100', 'border-gray-300');
-      checkbox.classList.add('bg-gray-600', 'border-gray-500');
-    });
-
-    document.querySelectorAll('#pccomponentfinder .bg-gray-50').forEach(box => {
-      box.classList.remove('bg-gray-50');
-      box.classList.add('bg-gray-700');
-    });
-
-    document.querySelectorAll('#pccomponentfinder span').forEach(span => {
-      if (span.classList.contains('text-gray-900')) {
-        span.classList.remove('text-gray-900');
-        span.classList.add('text-gray-100');
-      }
-    });
-
-    document.querySelectorAll('#pccomponentfinder .text-gray-500').forEach(text => {
-      text.classList.remove('text-gray-500');
-      text.classList.add('text-gray-400');
-    });
-
-    document.querySelectorAll('#pccomponentfinder #errorMessage').forEach(msg => {
-      msg.classList.remove('bg-red-100', 'border-red-400', 'text-red-700');
-      msg.classList.add('bg-red-900', 'border-red-600', 'text-red-300');
-    });
-
-    document.querySelectorAll('#pccomponentfinder button[type="reset"]').forEach(btn => {
-      btn.classList.remove('bg-gray-200', 'text-gray-800', 'hover:bg-gray-300');
-      btn.classList.add('bg-gray-700', 'text-gray-200', 'hover:bg-gray-600');
-    });
-
-    document.querySelectorAll('#pccomponentfinder button[onclick^="setQuickBudget"]').forEach(btn => {
-      btn.classList.remove('bg-white', 'border-gray-200');
-      btn.classList.add('bg-gray-800', 'border-gray-700');
-      
-      btn.querySelectorAll('p').forEach(p => {
-        if (p.classList.contains('text-gray-500')) {
-          p.classList.remove('text-gray-500');
-          p.classList.add('text-gray-400');
-        }
-        if (p.classList.contains('text-gray-900')) {
-          p.classList.remove('text-gray-900');
-          p.classList.add('text-white');
-        }
-      });
-    });
-
-    // ===== SEARCH SECTION =====
-    const searchSection = document.getElementById('mulaisekarang');
-    if (searchSection) {
-      searchSection.classList.remove('bg-gray-50');
-      searchSection.classList.add('bg-gray-900');
-    }
-
-    document.querySelectorAll('#mulaisekarang h2').forEach(title => {
-      title.classList.remove('text-gray-900');
-      title.classList.add('text-white');
-    });
-
-    document.querySelectorAll('#mulaisekarang > div > div.text-center p').forEach(p => {
-      p.classList.remove('text-gray-600');
-      p.classList.add('text-gray-300');
-    });
-
-    document.querySelectorAll('#mulaisekarang .bg-white, #mulaisekarang .dark\\:bg-gray-800').forEach(container => {
-      container.classList.remove('bg-white', 'border-gray-200');
-      container.classList.add('bg-gray-800', 'border-gray-700');
-    });
-
-    document.querySelectorAll('#mulaisekarang label').forEach(label => {
-      label.classList.remove('text-gray-700');
-      label.classList.add('text-gray-300');
-    });
-
-    document.querySelectorAll('#mulaisekarang input, #mulaisekarang select, #mulaisekarang textarea').forEach(input => {
-      input.classList.remove('border-gray-300', 'bg-white', 'text-gray-900', 'focus:border-blue-500', 'focus:ring-blue-500');
-      input.classList.add('border-gray-600', 'bg-gray-700', 'text-white', 'focus:border-purple-500', 'focus:ring-purple-500');
-    });
-
-    document.querySelectorAll('#mulaisekarang .flex.items-center span').forEach(span => {
-      span.classList.remove('text-gray-700');
-      span.classList.add('text-gray-300');
-    });
-
-    document.querySelectorAll('#mulaisekarang input[type="checkbox"]').forEach(checkbox => {
-      checkbox.classList.remove('bg-gray-100', 'border-gray-300', 'text-blue-600', 'focus:ring-blue-500');
-      checkbox.classList.add('bg-gray-700', 'border-gray-600', 'text-purple-500', 'focus:ring-purple-500');
-    });
-
-    document.querySelectorAll('#mulaisekarang button').forEach(btn => {
-      if (btn.classList.contains('bg-blue-600')) {
-        btn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'focus:ring-blue-500');
-        btn.classList.add('bg-purple-600', 'hover:bg-purple-700', 'focus:ring-purple-500');
-      }
-    });
-
-    // ===== FOOTER =====
-    // Footer TIDAK DIUBAH - tetap dengan styling asli (always dark)
-
-    // ===== ALL HEADINGS =====
-    document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(heading => {
-      if (!heading.closest('.bg-gradient-to-br') && !heading.closest('.bg-gradient-to-r')) {
-        heading.classList.remove('text-gray-900', 'text-gray-800');
-        if (!heading.classList.contains('text-white')) {
-          heading.classList.add('text-white');
-        }
-      }
-    });
-
-    // ===== ALL PARAGRAPHS =====
-    document.querySelectorAll('p').forEach(p => {
-      if (!p.closest('.bg-gradient-to-br') && !p.closest('.bg-gradient-to-r')) {
-        p.classList.remove('text-gray-600', 'text-gray-700', 'text-gray-900');
-        if (!p.classList.contains('text-gray-300')) {
-          p.classList.add('text-gray-300');
-        }
-      }
-    });
-  }
-
-  // ===== MOBILE MENU TOGGLE =====
-  const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-  const mobileMenu = document.getElementById("mobileMenu");
-  const mobileCategoryBtn = document.getElementById("mobileCategoryBtn");
-  const mobileCategoryMenu = document.getElementById("mobileCategoryMenu");
-  const mobileCategoryIcon = document.getElementById("mobileCategoryIcon");
-  const hamburger = mobileMenuBtn;
-
-  if (mobileMenuBtn) {
-    mobileMenuBtn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      mobileMenu.classList.toggle("active");
-      hamburger.classList.toggle("active");
-    });
-  }
-
-  if (mobileCategoryBtn) {
-    mobileCategoryBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      mobileCategoryMenu.classList.toggle("hidden");
-      mobileCategoryIcon.classList.toggle("rotate-180");
-    });
-  }
-
-  document.addEventListener("click", function (e) {
-    if (mobileMenu && !mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-      mobileMenu.classList.remove("active");
-      hamburger.classList.remove("active");
-    }
-  });
-
-  const mobileLinks = mobileMenu.querySelectorAll("a");
-  mobileLinks.forEach((link) => {
-    link.addEventListener("click", function () {
-      mobileMenu.classList.remove("active");
-      hamburger.classList.remove("active");
-    });
-  });
-
-  // ===== TOUCH EVENTS =====
-  let touchStartY = 0;
-  let touchEndY = 0;
-
-  document.addEventListener("touchstart", function (e) {
-    touchStartY = e.changedTouches[0].screenY;
-  });
-
-  document.addEventListener("touchend", function (e) {
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
-  });
-
-  function handleSwipe() {
-    if (touchEndY < touchStartY - 50) {
-      if (mobileMenu.classList.contains("active")) {
-        mobileMenu.classList.remove("active");
-        hamburger.classList.remove("active");
-      }
-    }
-  }
-
-  // ===== SMOOTH SCROLLING =====
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute("href"));
-      if (target) {
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
+        
+        document.addEventListener("click", function (e) {
+            if (mobileMenu && !mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileMenu.classList.remove("active");
+                if(hamburger) hamburger.classList.remove("active");
+            }
         });
-        if (mobileMenu) {
-          mobileMenu.classList.remove("active");
-          if (hamburger) hamburger.classList.remove("active");
-        }
-      }
-    });
-  });
 
-  // ===== IMAGE OPTIMIZATION =====
-  if (window.innerWidth <= 640) {
-    const images = document.querySelectorAll("img");
-    images.forEach((img) => {
-      img.loading = "lazy";
-    });
-  }
-
-  // ===== ORIENTATION CHANGES =====
-  window.addEventListener("orientationchange", function () {
-    setTimeout(function () {
-      if (mobileMenu) {
-        mobileMenu.classList.remove("active");
-        if (hamburger) hamburger.classList.remove("active");
-      }
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty("--vh", `${vh}px`);
-    }, 100);
-  });
-
-  // ===== VIEWPORT HEIGHT =====
-  const vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty("--vh", `${vh}px`);
-
-  // ===== SCRAPER BUTTON =====
-  const runScraperBtn = document.getElementById("runScraperBtn");
-  if (runScraperBtn) {
-    runScraperBtn.addEventListener("click", function () {
-      updateScraperStatus("Menjalankan scraping...", "info");
-      fetch("{% url 'run_scraper' %}")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.status === "success") {
-            updateScraperStatus(data.message, "success");
-          } else {
-            updateScraperStatus(data.message, "error");
-          }
+        // --- Smooth Scroll ---
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener("click", function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute("href"));
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                    if (mobileMenu) {
+                        mobileMenu.classList.remove("active");
+                        if (hamburger) hamburger.classList.remove("active");
+                    }
+                }
+            });
         });
-    });
-  }
-});
+      });
 
-// ===== FUNCTIONS OUTSIDE DOMContentLoaded =====
-function updateScraperStatus(message, type = "info") {
-  const status = document.getElementById("scraperStatus");
-  if (status) {
-    status.classList.remove("hidden");
-    if (type === "success") {
-      status.className = "mt-4 text-sm font-medium px-4 py-3 rounded-lg border bg-green-100 border-green-400 text-green-700 shadow-sm";
-      status.innerHTML = "✅ " + message;
-    } else if (type === "error") {
-      status.className = "mt-4 text-sm font-medium px-4 py-3 rounded-lg border bg-red-100 border-red-400 text-red-700 shadow-sm";
-      status.innerHTML = "❌ " + message;
-    } else {
-      status.className = "mt-4 text-sm font-medium px-4 py-3 rounded-lg border bg-blue-100 border-blue-400 text-blue-700 shadow-sm";
-      status.innerHTML = "⏳ " + message;
-    }
-  }
-}
-
-function setQuickBudget(min, max) {
-  document.getElementById("minBudget").value = min;
-  document.getElementById("maxBudget").value = max;
-}
-</script>
+      // Function to set Quick Budget in PC Component Finder
+      function setQuickBudget(min, max) {
+        document.getElementById("minBudget").value = min;
+        document.getElementById("maxBudget").value = max;
+      }
+    </script>
   </body>
 </html>
