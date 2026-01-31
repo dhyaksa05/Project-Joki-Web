@@ -1,889 +1,153 @@
-{% load humanize %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title|default:"Hasil Rekomendasi" }}</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} - ByteBudget</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Fungsi untuk mendapatkan nama file dari path
-        function getBasename(path) {
-            if (!path) return '';
-            const parts = path.split(/[\\/]/);
-            return parts[parts.length - 1];
-        }
-
-        // Fungsi untuk memuat gambar
-        function loadProductImages() {
-            document.querySelectorAll('[data-product-id]').forEach(container => {
-                const productId = container.getAttribute('data-product-id');
-                const imageUrl = container.getAttribute('data-image-url');
-                const localImage = container.getAttribute('data-local-image');
-                const imageContainer = document.getElementById(`image-container-${productId}`);
-                
-                if (!imageContainer) return;
-                
-                let imgSrc = '';
-                
-                // Coba image_url terlebih dahulu
-                if (imageUrl && imageUrl.trim() !== '') {
-                    imgSrc = imageUrl;
-                } 
-                // Jika tidak ada, coba local_image
-                else if (localImage && localImage.trim() !== '') {
-                    const filename = getBasename(localImage);
-                    imgSrc = `/local-image/?filename=${encodeURIComponent(filename)}`;
-                }
-                
-                if (imgSrc) {
-                    const img = document.createElement('img');
-                    img.src = imgSrc;
-                    img.alt = container.closest('.bg-white').querySelector('h3')?.textContent || 'Product Image';
-                    img.className = 'w-full h-full object-cover hover:scale-105 transition duration-300';
-                    
-                    img.onload = function() {
-                        imageContainer.innerHTML = '';
-                        imageContainer.appendChild(img);
-                    };
-                    
-                    img.onerror = function() {
-                        if (imageUrl && localImage && localImage.trim() !== '') {
-                            const localImg = document.createElement('img');
-                            const filename = getBasename(localImage);
-                            localImg.src = `/local-image/?filename=${encodeURIComponent(filename)}`;
-                            localImg.alt = container.closest('.bg-white').querySelector('h3')?.textContent || 'Product Image';
-                            localImg.className = 'w-full h-full object-cover hover:scale-105 transition duration-300';
-                            
-                            localImg.onload = function() {
-                                imageContainer.innerHTML = '';
-                                imageContainer.appendChild(localImg);
-                            };
-                            
-                            localImg.onerror = function() {
-                                showPlaceholder(imageContainer, 'Gambar tidak tersedia');
-                            };
-                        } else {
-                            showPlaceholder(imageContainer, 'Gambar tidak tersedia');
-                        }
-                    };
-                } else {
-                    showPlaceholder(imageContainer, 'Tidak ada gambar');
-                }
-            });
-        }
-
-        function showPlaceholder(container, message) {
-            container.innerHTML = `
-                <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <span class="text-gray-500 text-sm">${message}</span>
-                </div>
-            `;
-        }
-
-        // Fungsi untuk sort produk
-        function sortProducts(level, sortBy) {
-            const container = document.querySelector(`.${level}-level .grid`);
-            if (!container) return;
-            
-            const products = Array.from(container.children);
-            
-            products.sort((a, b) => {
-                const aRating = parseFloat(a.querySelector('.rating-badge')?.textContent?.replace('/5', '') || 0);
-                const bRating = parseFloat(b.querySelector('.rating-badge')?.textContent?.replace('/5', '') || 0);
-                
-                const aPriceText = a.querySelector('.product-price')?.textContent || '';
-                const bPriceText = b.querySelector('.product-price')?.textContent || '';
-                
-                const aPrice = parseFloat(aPriceText.replace(/[^\d]/g, '') || 0);
-                const bPrice = parseFloat(bPriceText.replace(/[^\d]/g, '') || 0);
-                
-                if (sortBy === 'rating') {
-                    return bRating - aRating;
-                } else if (sortBy === 'price_high') {
-                    return bPrice - aPrice;
-                } else if (sortBy === 'price_low') {
-                    return aPrice - bPrice;
-                }
-                return 0;
-            });
-            
-            container.innerHTML = '';
-            products.forEach(product => container.appendChild(product));
-        }
-
-        // Fungsi untuk toggle level
-        window.toggleLevel = function(level) {
-            const section = document.querySelector(`.${level}-level-section`);
-            if (section) {
-                const isHidden = section.style.display === 'none';
-                section.style.display = isHidden ? 'block' : 'none';
-                
-                document.querySelectorAll(`[onclick*="toggleLevel('${level}')"]`).forEach(btn => {
-                    btn.textContent = isHidden ? 
-                        `🔽 ${level.charAt(0).toUpperCase() + level.slice(1)} Level` : 
-                        `🔼 ${level.charAt(0).toUpperCase() + level.slice(1)} Level`;
-                });
-            }
-        };
-
-        // Jalankan saat DOM siap
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load gambar
-            loadProductImages();
-            
-            // Tambahkan tombol sort untuk setiap level
-            ['high', 'medium', 'recommended', 'low'].forEach(level => {
-                const header = document.querySelector(`.${level}-level h2`);
-                if (header) {
-                    const sortDiv = document.createElement('div');
-                    sortDiv.className = 'flex gap-2 mt-2 flex-wrap';
-                    sortDiv.innerHTML = `
-                        <button onclick="sortProducts('${level}', 'rating')" class="text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-2 py-1 rounded transition">
-                            ⭐ Rating Tinggi
-                        </button>
-                        <button onclick="sortProducts('${level}', 'price_high')" class="text-xs bg-green-100 hover:bg-green-200 text-green-800 px-2 py-1 rounded transition">
-                            💰 Harga Tertinggi
-                        </button>
-                        <button onclick="sortProducts('${level}', 'price_low')" class="text-xs bg-purple-100 hover:bg-purple-200 text-purple-800 px-2 py-1 rounded transition">
-                            💸 Harga Terendah
-                        </button>
-                    `;
-                    header.parentNode.insertBefore(sortDiv, header.nextSibling);
-                }
-            });
-            
-            // Tambahkan tombol toggle untuk setiap section
-            ['high', 'medium', 'recommended', 'low'].forEach(level => {
-                const section = document.querySelector(`.${level}-level-section`);
-                if (section) {
-                    const header = section.querySelector('h2');
-                    if (header) {
-                        const toggleDiv = document.createElement('div');
-                        toggleDiv.className = 'flex gap-2 mt-2 mb-4 flex-wrap';
-                        const colorMap = {
-                            'high': 'yellow',
-                            'medium': 'green', 
-                            'recommended': 'blue',
-                            'low': 'gray'
-                        };
-                        const color = colorMap[level] || 'gray';
-                        toggleDiv.innerHTML = `
-                            <button onclick="toggleLevel('${level}')" class="text-xs bg-${color}-100 hover:bg-${color}-200 text-${color}-800 px-2 py-1 rounded transition">
-                                🔽 ${level.charAt(0).toUpperCase() + level.slice(1)} Level
-                            </button>
-                        `;
-                        header.parentNode.insertBefore(toggleDiv, header.nextSibling);
-                    }
-                }
-            });
-            
-            // Handler untuk tombol detail produk database
-            document.querySelectorAll('.database-detail-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const productId = this.getAttribute('data-product-id');
-                    showDatabaseProductDetail(productId);
-                });
-            });
-        });
-        
-        function showDatabaseProductDetail(productId) {
-            alert(`Detail untuk produk database ID: ${productId}\n\nFitur ini bisa dikembangkan dengan modal atau halaman detail.`);
-        }
-    </script>
-    <style>
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .pc-badge {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-        }
-        .laptop-badge {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-        .high-level {
-            border: 2px solid #fbbf24;
-            position: relative;
-        }
-        .high-level::before {
-            content: "⭐⭐⭐⭐⭐ HIGH LEVEL";
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            white-space: nowrap;
-            z-index: 10;
-        }
-        .medium-level {
-            border: 2px solid #10b981;
-            position: relative;
-        }
-        .medium-level::before {
-            content: "⭐⭐⭐⭐ MEDIUM LEVEL";
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            white-space: nowrap;
-            z-index: 10;
-        }
-        .recommended-level {
-            border: 2px solid #3b82f6;
-            position: relative;
-        }
-        .recommended-level::before {
-            content: "⭐⭐⭐ RECOMMENDED";
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            white-space: nowrap;
-            z-index: 10;
-        }
-        .low-level {
-            border: 2px solid #9ca3af;
-            position: relative;
-        }
-        .low-level::before {
-            content: "⭐⭐ LOW LEVEL";
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #9ca3af, #6b7280);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            white-space: nowrap;
-            z-index: 10;
-        }
-        .database-badge {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            color: white;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>tailwind.config={darkMode:"class",theme:{extend:{animation:{"fade-in":"fadeIn 1s"},keyframes:{fadeIn:{"0%":{opacity:"0"},"100%":{opacity:"1"}}}}}}</script>
+    <style>::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#0f172a}::-webkit-scrollbar-thumb{background:#7c3aed;border-radius:5px}</style>
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-
-        <!-- Header dengan Badge Tipe Produk -->
-        <div class="text-center mb-8">
-            <div class="flex justify-center mb-3">
-                {% if product_type == 'pc' %}
-                <span class="pc-badge px-4 py-1 rounded-full font-medium">PC COMPONENTS</span>
-                {% elif product_type == 'laptop' %}
-                <span class="laptop-badge px-4 py-1 rounded-full font-medium">LAPTOP</span>
-                {% endif %}
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-bold text-blue-700 mb-2">{{ page_title|default:"Hasil Rekomendasi Perangkat Keras" }}</h1>
-            <p class="text-gray-600">Berdasarkan kebutuhan dan budget yang kamu masukkan</p>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
+    
+    <nav class="shadow-lg sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <a href="{% url 'home' %}" class="text-2xl font-bold text-violet-600">ByteBudget</a>
+            <button id="themeToggle" class="p-2">🌓</button>
         </div>
+    </nav>
 
-        <!-- Data Input -->
-        <div class="bg-white rounded-lg shadow p-4 sm:p-6 mb-6">
-            <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-3">Data Input Anda</h2>
-            
-            {% if product_type == 'pc' %}
-            <!-- Data Input untuk PC -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <p><strong>💰 Budget Range:</strong> 
-                    {% if min_budget and max_budget %}
-                    Rp {{ min_budget|intcomma }} - Rp {{ max_budget|intcomma }}
-                    {% else %}
-                    <span class="text-gray-500">Tidak diisi</span>
-                    {% endif %}
-                </p>
-                <p><strong>🎯 Penggunaan:</strong> {{ usage|default:"Tidak dipilih"|title }}</p>
-                <p class="sm:col-span-2"><strong>🛠️ Komponen PC:</strong>
-                    {% for c in komponen %}
-                    <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs sm:text-sm mr-2 mt-1">{{ c }}</span>
-                    {% empty %}
-                    <span class="text-gray-500">Semua komponen</span>
-                    {% endfor %}
-                </p>
-            </div>
-            
-            {% elif product_type == 'laptop' %}
-            <!-- Data Input untuk Laptop -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <p><strong>💰 Budget:</strong> 
-                    {% if budget %}
-                    Rp {{ budget|intcomma }}
-                    <span class="text-xs text-gray-500 ml-2">
-                        (Range: Rp {{ budget_range_min|intcomma }} - Rp {{ budget_range_max|intcomma }})
-                    </span>
-                    {% else %}
-                    <span class="text-gray-500">Tidak diisi</span>
-                    {% endif %}
-                </p>
-                <p><strong>🎯 Kegunaan Utama:</strong> {{ usage|default:"Tidak dipilih"|title }}</p>
-                <p class="sm:col-span-2"><strong>📝 Kebutuhan Spesifik:</strong>
-                    {% if custom_usage %}
-                    {{ custom_usage }}
-                    {% else %}
-                    <span class="text-gray-500">Tidak ada input spesifik</span>
-                    {% endif %}
-                </p>
-                <p class="sm:col-span-2"><strong>🔧 Fitur Tambahan:</strong>
-                    {% for c in komponen %}
-                    <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs sm:text-sm mr-2 mt-1">{{ c }}</span>
-                    {% empty %}
-                    <span class="text-gray-500">Tidak ada fitur tambahan</span>
-                    {% endfor %}
-                </p>
-            </div>
-            
-            {% else %}
-            <!-- Fallback -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <p><strong>💰 Budget:</strong> {{ budget|default:"Tidak diisi" }}</p>
-                <p><strong>🎯 Kegunaan:</strong> {{ usage|default:"Tidak dipilih"|title }}</p>
-                <p class="sm:col-span-2"><strong>🛠️ Komponen:</strong>
-                    {% for c in komponen %}
-                    <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs sm:text-sm mr-2 mt-1">{{ c }}</span>
-                    {% empty %}
-                    <span class="text-gray-500">Tidak ada komponen dipilih</span>
-                    {% endfor %}
-                </p>
-            </div>
-            {% endif %}
-        </div>
-
-        <!-- Level Distribution Info -->
-        {% if json_recommendations %}
-        <div class="mb-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-100">
-            <h3 class="text-lg font-semibold text-blue-800 mb-3">📊 Distribusi Level Produk</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="bg-yellow-100 border border-yellow-300 rounded-lg p-3 text-center">
-                    <div class="text-2xl font-bold text-yellow-700">{{ high_level_products|length }}</div>
-                    <div class="text-sm font-medium text-yellow-800">High Level</div>
-                    <div class="text-xs text-yellow-600">⭐⭐⭐⭐⭐</div>
-                </div>
-                <div class="bg-green-100 border border-green-300 rounded-lg p-3 text-center">
-                    <div class="text-2xl font-bold text-green-700">{{ medium_level_products|length }}</div>
-                    <div class="text-sm font-medium text-green-800">Medium Level</div>
-                    <div class="text-xs text-green-600">⭐⭐⭐⭐</div>
-                </div>
-                <div class="bg-blue-100 border border-blue-300 rounded-lg p-3 text-center">
-                    <div class="text-2xl font-bold text-blue-700">{{ recommended_products|length }}</div>
-                    <div class="text-sm font-medium text-blue-800">Recommended</div>
-                    <div class="text-xs text-blue-600">⭐⭐⭐</div>
-                </div>
-                <div class="bg-gray-100 border border-gray-300 rounded-lg p-3 text-center">
-                    <div class="text-2xl font-bold text-gray-700">{{ low_level_products|length }}</div>
-                    <div class="text-sm font-medium text-gray-800">Low Level</div>
-                    <div class="text-xs text-gray-600">⭐⭐</div>
-                </div>
-            </div>
-            <p class="text-sm text-blue-600 mt-3 text-center">
-                Total: {{ json_recommendations|length }} produk • Berdasarkan rating Tokopedia
-            </p>
-        </div>
-        {% endif %}
-
-        <!-- HIGH LEVEL Products -->
-        {% if high_level_products %}
-        <div class="mb-8 high-level-section">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl sm:text-2xl font-bold text-yellow-700">
-                    ⭐⭐⭐⭐⭐ HIGH LEVEL
-                </h2>
-                <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-lg text-sm font-medium">
-                    Rating ≥ 4.5 • {{ high_level_products|length }} produk
-                </span>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {% for product in high_level_products %}
-                <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition overflow-hidden high-level">
-                    <div class="h-40 sm:h-48 bg-gray-200 overflow-hidden relative" 
-                         data-product-id="{{ product.id }}"
-                         data-image-url="{{ product.image_url|default:'' }}"
-                         data-local-image="{{ product.local_image|default:'' }}">
-                        
-                        <div id="image-container-{{ product.id }}" class="w-full h-full"></div>
-                        
-                        <div class="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-bold rating-badge">
-                            {{ product.display_rating|default:product.rating|floatformat:1 }}/5
-                        </div>
-                    </div>
-                    
-                    <div class="p-3 sm:p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm sm:text-base" title="{{ product.name }}">
-                            {{ product.name }}
-                        </h3>
-                        
-                        <div class="mb-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-base sm:text-lg font-bold text-green-600 product-price">Rp {{ product.price|intcomma }}</span>
-                                {% if product.original_price %}
-                                <span class="text-xs text-gray-500 line-through">Rp {{ product.original_price|intcomma }}</span>
-                                {% endif %}
-                            </div>
-                        </div>
-                        
-                        <div class="text-xs sm:text-sm text-gray-600 space-y-1 mb-2">
-                            {% if product.shop_name %}
-                            <p class="truncate"><strong>🏪 Toko:</strong> {{ product.shop_name }}</p>
-                            {% endif %}
-                            {% if product.shop_city %}
-                            <p><strong>📍 Kota:</strong> {{ product.shop_city }}</p>
-                            {% endif %}
-                            {% if product.review_count %}
-                            <p><strong>📝 Ulasan:</strong> {{ product.review_count }}</p>
-                            {% endif %}
-                        </div>
-                        
-                        {% if product.url %}
-                        <a href="{{ product.url }}" target="_blank" rel="noopener noreferrer"
-                           class="w-full bg-yellow-500 hover:bg-yellow-600 text-white text-center py-2 px-3 rounded transition font-medium text-sm block">
-                            🛒 Beli Sekarang
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- MEDIUM LEVEL Products -->
-        {% if medium_level_products %}
-        <div class="mb-8 medium-level-section">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl sm:text-2xl font-bold text-green-700">
-                    ⭐⭐⭐⭐ MEDIUM LEVEL
-                </h2>
-                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-lg text-sm font-medium">
-                    Rating 4.0 - 4.4 • {{ medium_level_products|length }} produk
-                </span>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {% for product in medium_level_products %}
-                <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden medium-level">
-                    <div class="h-40 sm:h-48 bg-gray-200 overflow-hidden relative" 
-                         data-product-id="medium-{{ forloop.counter }}"
-                         data-image-url="{{ product.image_url|default:'' }}"
-                         data-local-image="{{ product.local_image|default:'' }}">
-                        
-                        <div id="image-container-medium-{{ forloop.counter }}" class="w-full h-full"></div>
-                        
-                        <div class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs font-bold rating-badge">
-                            {{ product.display_rating|default:product.rating|floatformat:1 }}/5
-                        </div>
-                    </div>
-                    
-                    <div class="p-3 sm:p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm sm:text-base" title="{{ product.name }}">
-                            {{ product.name }}
-                        </h3>
-                        
-                        <div class="mb-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-base sm:text-lg font-bold text-green-600 product-price">Rp {{ product.price|intcomma }}</span>
-                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-bold">
-                                    {{ product.display_rating|default:product.rating|floatformat:1 }}/5
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <div class="text-xs sm:text-sm text-gray-600 space-y-1 mb-2">
-                            {% if product.shop_name %}
-                            <p class="truncate"><strong>🏪 Toko:</strong> {{ product.shop_name }}</p>
-                            {% endif %}
-                            {% if product.review_count %}
-                            <p><strong>📝 Ulasan:</strong> {{ product.review_count }}</p>
-                            {% endif %}
-                        </div>
-                        
-                        {% if product.url %}
-                        <a href="{{ product.url }}" target="_blank" rel="noopener noreferrer"
-                           class="w-full bg-green-500 hover:bg-green-600 text-white text-center py-2 px-3 rounded transition font-medium text-sm block">
-                            🛒 Beli Sekarang
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- RECOMMENDED LEVEL Products -->
-        {% if recommended_products %}
-        <div class="mb-8 recommended-level-section">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl sm:text-2xl font-bold text-blue-700">
-                    ⭐⭐⭐ RECOMMENDED
-                </h2>
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg text-sm font-medium">
-                    Rating 3.0 - 3.9 • {{ recommended_products|length }} produk
-                </span>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {% for product in recommended_products %}
-                <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden recommended-level">
-                    <div class="h-40 sm:h-48 bg-gray-200 overflow-hidden relative" 
-                         data-product-id="recommended-{{ forloop.counter }}"
-                         data-image-url="{{ product.image_url|default:'' }}"
-                         data-local-image="{{ product.local_image|default:'' }}">
-                        
-                        <div id="image-container-recommended-{{ forloop.counter }}" class="w-full h-full"></div>
-                        
-                        <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-xs font-bold rating-badge">
-                            {{ product.display_rating|default:product.rating|floatformat:1 }}/5
-                        </div>
-                    </div>
-                    
-                    <div class="p-3 sm:p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm sm:text-base" title="{{ product.name }}">
-                            {{ product.name }}
-                        </h3>
-                        
-                        <div class="mb-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-base sm:text-lg font-bold text-green-600 product-price">Rp {{ product.price|intcomma }}</span>
-                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">
-                                    {{ product.display_rating|default:product.rating|floatformat:1 }}/5
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <div class="text-xs sm:text-sm text-gray-600 space-y-1 mb-2">
-                            {% if product.shop_name %}
-                            <p class="truncate"><strong>🏪 Toko:</strong> {{ product.shop_name }}</p>
-                            {% endif %}
-                            {% if product.review_count %}
-                            <p><strong>📝 Ulasan:</strong> {{ product.review_count }}</p>
-                            {% endif %}
-                            {% if product.shop_city %}
-                            <p><strong>📍 Kota:</strong> {{ product.shop_city }}</p>
-                            {% endif %}
-                        </div>
-                        
-                        {% if product.url %}
-                        <a href="{{ product.url }}" target="_blank" rel="noopener noreferrer"
-                           class="w-full bg-blue-500 hover:bg-blue-600 text-white text-center py-2 px-3 rounded transition font-medium text-sm block">
-                            🛒 Beli Sekarang
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- LOW LEVEL Products -->
-        {% if low_level_products %}
-        <div class="mb-8 low-level-section">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl sm:text-2xl font-bold text-gray-700">
-                    ⭐⭐ LOW LEVEL
-                </h2>
-                <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-lg text-sm font-medium">
-                    Rating < 3.0 • {{ low_level_products|length }} produk
-                </span>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {% for product in low_level_products %}
-                <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden low-level">
-                    <div class="h-40 sm:h-48 bg-gray-200 overflow-hidden relative" 
-                         data-product-id="low-{{ forloop.counter }}"
-                         data-image-url="{{ product.image_url|default:'' }}"
-                         data-local-image="{{ product.local_image|default:'' }}">
-                        
-                        <div id="image-container-low-{{ forloop.counter }}" class="w-full h-full"></div>
-                        
-                        <div class="absolute top-2 right-2 bg-gray-500 text-white px-2 py-1 rounded text-xs font-bold rating-badge">
-                            {{ product.display_rating|default:product.rating|floatformat:1 }}/5
-                        </div>
-                    </div>
-                    
-                    <div class="p-3 sm:p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm sm:text-base" title="{{ product.name }}">
-                            {{ product.name }}
-                        </h3>
-                        
-                        <div class="mb-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-base sm:text-lg font-bold text-green-600 product-price">Rp {{ product.price|intcomma }}</span>
-                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs font-bold">
-                                    {{ product.display_rating|default:product.rating|floatformat:1 }}/5
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <div class="text-xs sm:text-sm text-gray-600 space-y-1 mb-2">
-                            {% if product.shop_name %}
-                            <p class="truncate"><strong>🏪 Toko:</strong> {{ product.shop_name }}</p>
-                            {% endif %}
-                            {% if product.review_count %}
-                            <p><strong>📝 Ulasan:</strong> {{ product.review_count }}</p>
-                            {% endif %}
-                            {% if product.shop_city %}
-                            <p><strong>📍 Kota:</strong> {{ product.shop_city }}</p>
-                            {% endif %}
-                        </div>
-                        
-                        {% if product.url %}
-                        <a href="{{ product.url }}" target="_blank" rel="noopener noreferrer"
-                           class="w-full bg-gray-500 hover:bg-gray-600 text-white text-center py-2 px-3 rounded transition font-medium text-sm block">
-                            🛒 Beli Sekarang
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- Jika tidak ada produk sama sekali -->
-        {% if not json_recommendations and not results %}
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-            <div class="text-5xl mb-4">🤔</div>
-            <p class="font-semibold text-yellow-800 mb-2">Tidak ada rekomendasi yang ditemukan</p>
-            <p class="text-yellow-600 mb-4">Silakan coba dengan budget atau kriteria yang berbeda.</p>
-            <a href="{% if product_type == 'pc' %}{% url 'rekomendasi_pc' %}{% else %}{% url 'rekomendasi_laptop' %}{% endif %}" 
-               class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition">
-                Kembali ke Form Pencarian
-            </a>
-        </div>
-        {% endif %}
-
-        <!-- Database Results Section -->
-        {% if results %}
-        <div class="mb-8 mt-12 pt-8 border-t border-gray-300">
-           
-            
-            <!-- Expandable Content -->
-            <div class="mt-4 transition-all duration-500 ease-in-out overflow-hidden {% if not show_database %}max-h-0{% else %}max-h-[5000px]{% endif %}"
-                 id="database-content">
-
-                
-                <!-- Empty State -->
-                {% if results|length == 0 %}
-                <div class="text-center py-8">
-                    <div class="text-5xl mb-4">📭</div>
-                    <p class="text-gray-600 font-medium">Tidak ada produk di database yang sesuai dengan kriteria Anda</p>
-                    <p class="text-gray-500 text-sm mt-2">Coba gunakan budget atau kriteria yang lebih fleksibel</p>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- Tombol Kembali -->
-        <div class="mt-8 pt-6 border-t border-gray-200">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <a href="{% if product_type == 'pc' %}{% url 'rekomendasi_pc' %}{% else %}{% url 'rekomendasi_laptop' %}{% endif %}" 
-                   class="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-6 rounded-lg transition text-center">
-                    🔙 Kembali ke Form
-                </a>
-                
-                <a href="/" 
-                   class="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition text-center">
-                    🏠 Kembali ke Beranda
-                </a>
-            </div>
-        </div>
+    <div class="bg-gradient-to-r from-violet-600 to-indigo-800 py-12 mb-8 text-center text-white">
+        <h1 class="text-3xl font-bold mb-2">Hasil Rekomendasi</h1>
+        <p class="text-lg">
+            {% if product_type == 'pc' %} Budget: Rp {{ min_budget }} - {{ max_budget }}
+            {% else %} Budget: Rp {{ budget }} {% endif %}
+            {% if usage %} | {{ usage }} {% endif %}
+        </p>
     </div>
-</body>
-<script>
-// Fungsi untuk toggle database section
-function toggleDatabaseSection() {
-    const content = document.getElementById('database-content');
-    const arrow = document.getElementById('database-arrow');
-    const header = document.getElementById('database-header');
-    
-    if (content.classList.contains('max-h-0')) {
-        // Expand
-        content.classList.remove('max-h-0');
-        content.classList.add('max-h-[5000px]');
-        arrow.innerHTML = '🔼';
-        header.classList.add('bg-purple-100', 'border-purple-300');
-        
-        // Update URL parameter tanpa reload
-        updateUrlParam('show_database', 'true');
-    } else {
-        // Collapse
-        content.classList.remove('max-h-[5000px]');
-        content.classList.add('max-h-0');
-        arrow.innerHTML = '🔽';
-        header.classList.remove('bg-purple-100', 'border-purple-300');
-        
-        // Update URL parameter
-        updateUrlParam('show_database', 'false');
-    }
-}
 
-// Fungsi untuk update URL parameter
-function updateUrlParam(key, value) {
-    const url = new URL(window.location.href);
-    url.searchParams.set(key, value);
-    window.history.replaceState({}, '', url);
-}
-
-// Fungsi untuk sort database products
-function sortDatabase(sortBy) {
-    const container = document.getElementById('database-products');
-    const products = Array.from(container.getElementsByClassName('database-product'));
-    
-    products.sort((a, b) => {
-        const aPrice = parseInt(a.getAttribute('data-price')) || 0;
-        const bPrice = parseInt(b.getAttribute('data-price')) || 0;
-        const aStock = parseInt(a.getAttribute('data-stock')) || 0;
-        const bStock = parseInt(b.getAttribute('data-stock')) || 0;
+    <div class="max-w-7xl mx-auto px-4 pb-16">
         
-        if (sortBy === 'harga_asc') {
-            return aPrice - bPrice;
-        } else if (sortBy === 'harga_desc') {
-            return bPrice - aPrice;
-        } else if (sortBy === 'stok') {
-            return bStock - aStock;
-        }
-        return 0;
-    });
-    
-    // Clear and re-append
-    container.innerHTML = '';
-    products.forEach(product => container.appendChild(product));
-    
-    // Show notification
-    showSortNotification(sortBy);
-}
+        {% if show_chart %}
+        {{ chart_labels|json_script:"chart-labels-data" }}
+        {{ chart_scores|json_script:"chart-scores-data" }}
 
-// Fungsi untuk show notification
-function showSortNotification(sortBy) {
-    const messages = {
-        'harga_asc': 'Diurutkan berdasarkan harga terendah',
-        'harga_desc': 'Diurutkan berdasarkan harga tertinggi',
-        'stok': 'Diurutkan berdasarkan stok terbanyak'
-    };
-    
-    // Create notification
-    const notification = document.createElement('div');
-    notification.className = 'fixed bottom-4 right-4 bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
-    notification.innerHTML = `
-        <div class="flex items-center gap-2">
-            <span>✅</span>
-            <span>${messages[sortBy] || 'Diurutkan'}</span>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 animate-fade-in">
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow border border-violet-200 dark:border-slate-800">
+                <h3 class="text-sm text-slate-500 dark:text-slate-400">Total Data Scanned</h3>
+                <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ eval_metrics.total_scanned }}</p>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow border border-violet-200 dark:border-slate-800">
+                <h3 class="text-sm text-slate-500 dark:text-slate-400">Items Evaluated</h3>
+                <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ eval_metrics.total_filtered }}</p>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow border border-emerald-200 dark:border-emerald-900/30">
+                <h3 class="text-sm text-emerald-600 dark:text-emerald-400">Algorithm Precision</h3>
+                <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{{ eval_metrics.precision_score }}%</p>
+                <p class="text-xs text-slate-400">Relevant items / Total</p>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow border border-indigo-200 dark:border-indigo-900/30">
+                <h3 class="text-sm text-indigo-600 dark:text-indigo-400">Avg. Similarity</h3>
+                <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ eval_metrics.avg_similarity }}%</p>
+                <p class="text-xs text-slate-400">Mean TF-IDF Score</p>
+            </div>
         </div>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Remove after 3 seconds
-    setTimeout(() => {
-        notification.classList.add('animate-fade-out');
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
 
-// Fungsi untuk add to cart (placeholder)
-function addToCart(productId, productName) {
-    alert(`Produk "${productName}" telah ditambahkan ke keranjang!\n\nID: ${productId}\n\n(Fitur keranjang belanja bisa dikembangkan lebih lanjut)`);
-}
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 mb-12 border border-slate-200 dark:border-slate-800">
+            <h2 class="text-xl font-bold mb-4">📊 Visualisasi Kecocokan (TF-IDF)</h2>
+            <div class="h-[300px] w-full"><canvas id="similarityChart"></canvas></div>
+        </div>
+        
+        {% if grouped_recs.best %}
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-violet-600 dark:text-violet-400 mb-6 border-l-4 border-violet-500 pl-4">
+                ⭐ Rekomendasi Terbaik (Sesuai Budget)
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for item in grouped_recs.best %} {% include "partials/card_produk_fix.html" with item=item %} {% endfor %}
+            </div>
+        </div>
+        {% endif %}
 
-// Initialize
-document.addEventListener('DOMContentLoaded', function() {
-    // Auto-expand if show_database = true
-    const content = document.getElementById('database-content');
-    const arrow = document.getElementById('database-arrow');
-    const header = document.getElementById('database-header');
-    
-    if (content && arrow && header) {
-        content.classList.remove('max-h-0');
-        content.classList.add('max-h-[5000px]');
-        arrow.innerHTML = '🔼';
-        header.classList.add('bg-purple-100', 'border-purple-300');
-    }
-    
-    // Add fade-in animation for database products
-    const products = document.querySelectorAll('.database-product');
-    products.forEach((product, index) => {
-        product.style.animationDelay = `${index * 0.05}s`;
-        product.classList.add('animate-fade-in-up');
-    });
-});
+        {% if grouped_recs.budget %}
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-6 border-l-4 border-emerald-500 pl-4">
+                💰 Pilihan Hemat (Budget Friendly)
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for item in grouped_recs.budget %} {% include "partials/card_produk_fix.html" with item=item %} {% endfor %}
+            </div>
+        </div>
+        {% endif %}
 
-// Tambahkan style untuk animasi
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-    
-    @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-    }
-    
-    .animate-fade-in-up {
-        animation: fadeInUp 0.5s ease-out forwards;
-    }
-    
-    .animate-fade-in {
-        animation: fadeIn 0.3s ease-out forwards;
-    }
-    
-    .animate-fade-out {
-        animation: fadeOut 0.3s ease-out forwards;
-    }
-    
-    .database-product {
-        opacity: 0;
-    }
-    
-    #database-content {
-        transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    #database-header {
-        transition: all 0.3s ease;
-    }
-`;
-document.head.appendChild(style);
-</script>
+        {% if grouped_recs.high %}
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-rose-600 dark:text-rose-400 mb-6 border-l-4 border-rose-500 pl-4">
+                🚀 High Performance
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for item in grouped_recs.high %} {% include "partials/card_produk_fix.html" with item=item %} {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if grouped_recs.standard %}
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-600 dark:text-slate-400 mb-6 border-l-4 border-slate-500 pl-4">
+                📋 Rekomendasi Lainnya
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for item in grouped_recs.standard %} {% include "partials/card_produk_fix.html" with item=item %} {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="text-center py-12 border border-slate-700 rounded-lg">
+            <p>Data tidak ditemukan. Coba perluas range budget Anda.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('themeToggle');
+            if(themeToggle) themeToggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
+                localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+                window.location.reload();
+            });
+
+            const labelsData = document.getElementById('chart-labels-data');
+            const scoresData = document.getElementById('chart-scores-data');
+            
+            if (labelsData && scoresData) {
+                const ctx = document.getElementById('similarityChart');
+                if(ctx) {
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: JSON.parse(labelsData.textContent),
+                            datasets: [{
+                                label: 'Match %',
+                                data: JSON.parse(scoresData.textContent),
+                                backgroundColor: 'rgba(124, 58, 237, 0.8)',
+                                borderRadius: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            scales: {
+                                y: { beginAtZero: true, grid: { color: '#334155' } },
+                                x: { display: false }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
 </html>

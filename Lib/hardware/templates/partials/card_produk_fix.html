@@ -1,0 +1,44 @@
+{% load static %}
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative group">
+    
+    <div class="relative h-48 bg-white p-4 flex items-center justify-center border-b border-slate-100 dark:border-slate-800">
+        <img src="{{ item.image|default:'#' }}" 
+             alt="{{ item.name }}" 
+             class="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
+             data-fallback="{% static 'images/default_laptop.png' %}"
+             onerror="this.src=this.dataset.fallback; this.onerror=null;">
+        
+        {% if item.similarity_score %}
+        <div class="absolute top-2 right-2 bg-slate-900/90 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm z-10">
+            {{ item.similarity_score }}% Match
+        </div>
+        {% endif %}
+
+        {% if item.level_name %}
+        <div class="absolute bottom-2 left-2 {{ item.level_class }} text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">
+            {{ item.level_name }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="p-4 flex flex-col flex-1">
+        <h3 class="font-bold text-slate-900 dark:text-white text-sm mb-2 line-clamp-2 min-h-[2.5rem]" title="{{ item.name }}">
+            {{ item.name }}
+        </h3>
+        <div class="mt-auto">
+            <p class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 mb-2">
+                Rp {{ item.price_int|default:item.price }}
+            </p>
+            
+            <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-3">
+                <span class="text-yellow-500 font-bold flex items-center gap-1">★ {{ item.rating|default:"-" }}</span>
+                <span>|</span>
+                <span class="truncate">{{ item.location|default:"Online" }}</span>
+            </div>
+
+            <a href="{{ item.link }}" target="_blank" class="block w-full text-center bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium py-2 rounded-lg transition-colors shadow-md relative z-20 cursor-pointer">
+                Lihat di Tokopedia
+            </a>
+        </div>
+    </div>
+</div>
