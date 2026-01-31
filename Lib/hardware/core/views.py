@@ -12,6 +12,8 @@ import subprocess
 import sys
 import urllib.parse
 import re
+import datetime # Wajib import ini
+from datetime import timezone, timedelta # Import tambahan buat WIB
 from .utils import text_preprocessing 
 
 def home(request): return render(request, "index.html")
@@ -22,7 +24,26 @@ def vga(request): return render(request, "vga.html")
 def psu(request): return render(request, "psu.html")
 def ssd(request): return render(request, "ssd.html")
 
-# === 1. FUNGSI LOAD DATA (FIX LINK & GAMBAR) ===
+# === FUNGSI BARU: CEK TANGGAL SCRAPING (VERSI WIB) ===
+def get_last_scrape_info():
+    try:
+        json_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'tokopedia_products_latest.json')
+        if os.path.exists(json_path):
+            timestamp = os.path.getmtime(json_path)
+            
+            # Buat Timezone WIB (UTC + 7 Jam)
+            wib = timezone(timedelta(hours=7))
+            
+            # Convert timestamp file ke waktu WIB
+            date_obj = datetime.datetime.fromtimestamp(timestamp, tz=wib)
+            
+            # Format: 31-01-2026 14:30 WIB
+            return date_obj.strftime("%d-%m-%Y %H:%M") + " WIB"
+    except:
+        return "Tidak diketahui"
+    return "Belum ada data"
+
+# === 1. FUNGSI LOAD DATA ===
 def load_tokopedia_data(product_type="all"):
     try:
         json_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'tokopedia_products_latest.json')
@@ -61,7 +82,7 @@ def load_tokopedia_data(product_type="all"):
         return clean_products
     except: return []
 
-# === 2. FUNGSI FILTER (STRICT) ===
+# === 2. FUNGSI FILTER ===
 def filter_products_by_criteria(products, product_type, min_budget=None, max_budget=None, usage=None, components=None):
     if not products: return []
     filtered_products = []
@@ -144,7 +165,7 @@ def determine_level(price, budget):
     elif ratio > 1.15: return "🚀 High Performance", "bg-rose-600", "high"
     return "Standard", "bg-slate-500", "standard"
 
-# === 3. FUNGSI UTAMA + EVALUASI MODEL ===
+# === 3. FUNGSI UTAMA ===
 def process_recommendation(request, data_type, page_type):
     min_budget = request.POST.get("min_budget", "0")
     max_budget = request.POST.get("max_budget", "0")
@@ -169,13 +190,12 @@ def process_recommendation(request, data_type, page_type):
     chart_labels, chart_scores = [], []
     has_data = False
 
-    # --- VARIABEL EVALUASI MODEL ---
     eval_metrics = {
-        'total_scanned': len(all_data), # Total data scraping
-        'total_filtered': len(raw_recs), # Data yang lolos filter
-        'precision_score': 0, # Presisi algoritma
-        'avg_similarity': 0, # Rata-rata kemiripan
-        'relevant_items': 0 # Item yang dianggap relevan (>10% match)
+        'total_scanned': len(all_data),
+        'total_filtered': len(raw_recs),
+        'precision_score': 0,
+        'avg_similarity': 0,
+        'relevant_items': 0
     }
 
     if raw_recs:
@@ -195,10 +215,8 @@ def process_recommendation(request, data_type, page_type):
                 score_val = round(scores[i] * 100, 2)
                 p['similarity_score'] = score_val
                 
-                # Hitung untuk Evaluasi
                 total_score += score_val
-                if score_val > 10.0: # Threshold Relevansi 10%
-                    relevant_count += 1
+                if score_val > 10.0: relevant_count += 1
 
                 lvl_name, lvl_class, lvl_key = determine_level(p.get('price_int', 0), target)
                 p['level_name'] = lvl_name
@@ -211,7 +229,6 @@ def process_recommendation(request, data_type, page_type):
                     chart_labels.append(p.get('name', '')[:20] + "...")
                     chart_scores.append(p['similarity_score'])
             
-            # --- HITUNG METRIK FINAL ---
             eval_metrics['relevant_items'] = relevant_count
             if len(raw_recs) > 0:
                 eval_metrics['precision_score'] = round((relevant_count / len(raw_recs)) * 100, 2)
@@ -222,13 +239,16 @@ def process_recommendation(request, data_type, page_type):
                 if grouped_recs[k]: has_data = True
         except: pass
 
+    last_scraped_date = get_last_scrape_info()
+
     context = {
         'grouped_recs': grouped_recs,
-        'eval_metrics': eval_metrics, # Kirim data evaluasi ke HTML
+        'eval_metrics': eval_metrics,
         'product_type': page_type,
         'min_budget': min_budget, 'max_budget': max_budget, 'budget': budget, 'usage': usage,
         'chart_labels': json.dumps(chart_labels), 'chart_scores': json.dumps(chart_scores),
         'show_chart': has_data,
+        'last_scraped': last_scraped_date,
         'page_title': f"Rekomendasi {page_type.title()}"
     }
     return render(request, 'hasil.html', context)

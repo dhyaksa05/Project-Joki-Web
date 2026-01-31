@@ -20,11 +20,19 @@
 
     <div class="bg-gradient-to-r from-violet-600 to-indigo-800 py-12 mb-8 text-center text-white">
         <h1 class="text-3xl font-bold mb-2">Hasil Rekomendasi</h1>
-        <p class="text-lg">
+        <p class="text-lg mb-2">
             {% if product_type == 'pc' %} Budget: Rp {{ min_budget }} - {{ max_budget }}
             {% else %} Budget: Rp {{ budget }} {% endif %}
             {% if usage %} | {{ usage }} {% endif %}
         </p>
+        
+        <div class="inline-block bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm border border-white/20 mt-2">
+            <p class="text-sm font-light flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Data diambil pada: <span class="font-bold text-yellow-300">{{ last_scraped }}</span>
+                <span class="text-xs opacity-75 ml-1">(Harga dapat berubah sewaktu-waktu)</span>
+            </p>
+        </div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 pb-16">
