@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page_title|default:"Hasil Rekomendasi" }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <script>
         // Fungsi untuk mendapatkan nama file dari path
         function getBasename(path) {
@@ -126,6 +127,352 @@
                 });
             }
         };
+
+        // ====== TF-IDF & CONTENT-BASED FILTERING FUNCTIONS ======
+        
+        // Fungsi untuk menghitung TF-IDF
+        function calculateTFIDF(products) {
+            // Extract text dari nama produk
+            const documents = products.map(p => p.name.toLowerCase());
+            
+            // Tokenize
+            const tokenizedDocs = documents.map(doc => 
+                doc.split(/\s+/).filter(word => word.length > 2)
+            );
+            
+            // Hitung Document Frequency
+            const df = {};
+            const totalDocs = tokenizedDocs.length;
+            
+            tokenizedDocs.forEach(tokens => {
+                const uniqueTokens = [...new Set(tokens)];
+                uniqueTokens.forEach(token => {
+                    df[token] = (df[token] || 0) + 1;
+                });
+            });
+            
+            // Hitung TF-IDF untuk setiap dokumen
+            const tfidfVectors = tokenizedDocs.map(tokens => {
+                const tf = {};
+                tokens.forEach(token => {
+                    tf[token] = (tf[token] || 0) + 1;
+                });
+                
+                const tfidf = {};
+                Object.keys(tf).forEach(token => {
+                    const termFreq = tf[token] / tokens.length;
+                    const inverseDocFreq = Math.log(totalDocs / (df[token] || 1));
+                    tfidf[token] = termFreq * inverseDocFreq;
+                });
+                
+                return tfidf;
+            });
+            
+            return { tfidfVectors, df, vocabulary: Object.keys(df) };
+        }
+        
+        // Fungsi untuk menghitung cosine similarity
+        function cosineSimilarity(vec1, vec2, vocabulary) {
+            let dotProduct = 0;
+            let norm1 = 0;
+            let norm2 = 0;
+            
+            vocabulary.forEach(term => {
+                const v1 = vec1[term] || 0;
+                const v2 = vec2[term] || 0;
+                dotProduct += v1 * v2;
+                norm1 += v1 * v1;
+                norm2 += v2 * v2;
+            });
+            
+            if (norm1 === 0 || norm2 === 0) return 0;
+            return dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
+        }
+        
+        // Fungsi untuk membuat visualisasi TF-IDF
+        function createTFIDFVisualization(products) {
+            if (!products || products.length === 0) return;
+            
+            const { tfidfVectors, vocabulary } = calculateTFIDF(products);
+            
+            // Ambil top 15 terms berdasarkan average TF-IDF
+            const termScores = {};
+            vocabulary.forEach(term => {
+                const scores = tfidfVectors.map(vec => vec[term] || 0);
+                termScores[term] = scores.reduce((a, b) => a + b, 0) / scores.length;
+            });
+            
+            const topTerms = Object.entries(termScores)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 15);
+            
+            // Bar chart TF-IDF scores
+            const trace = {
+                x: topTerms.map(t => t[1]),
+                y: topTerms.map(t => t[0]),
+                type: 'bar',
+                orientation: 'h',
+                marker: {
+                    color: topTerms.map((_, i) => `rgba(59, 130, 246, ${0.9 - i * 0.05})`),
+                    line: {
+                        color: 'rgb(29, 78, 216)',
+                        width: 1.5
+                    }
+                },
+                text: topTerms.map(t => t[1].toFixed(4)),
+                textposition: 'auto',
+                hovertemplate: '<b>%{y}</b><br>TF-IDF Score: %{x:.4f}<extra></extra>'
+            };
+            
+            const layout = {
+                title: {
+                    text: '📊 Top 15 Keywords (TF-IDF Score)',
+                    font: { size: 18, color: '#1e40af' }
+                },
+                xaxis: { 
+                    title: 'TF-IDF Score',
+                    gridcolor: '#e5e7eb'
+                },
+                yaxis: { 
+                    title: 'Keywords',
+                    automargin: true
+                },
+                margin: { l: 120, r: 40, t: 60, b: 60 },
+                plot_bgcolor: '#f9fafb',
+                paper_bgcolor: 'white',
+                height: 500
+            };
+            
+            Plotly.newPlot('tfidf-chart', [trace], layout, { responsive: true });
+        }
+        
+        // Fungsi untuk membuat similarity heatmap
+        function createSimilarityHeatmap(products) {
+            if (!products || products.length === 0) return;
+            
+            const { tfidfVectors, vocabulary } = calculateTFIDF(products);
+            
+            // Hitung similarity matrix (max 20 products untuk performa)
+            const maxProducts = Math.min(products.length, 20);
+            const similarityMatrix = [];
+            const labels = [];
+            
+            for (let i = 0; i < maxProducts; i++) {
+                const row = [];
+                labels.push(products[i].name.substring(0, 30) + '...');
+                for (let j = 0; j < maxProducts; j++) {
+                    const sim = cosineSimilarity(
+                        tfidfVectors[i], 
+                        tfidfVectors[j], 
+                        vocabulary
+                    );
+                    row.push(sim);
+                }
+                similarityMatrix.push(row);
+            }
+            
+            const trace = {
+                z: similarityMatrix,
+                x: labels,
+                y: labels,
+                type: 'heatmap',
+                colorscale: [
+                    [0, '#eff6ff'],
+                    [0.5, '#60a5fa'],
+                    [1, '#1e40af']
+                ],
+                hoverongaps: false,
+                hovertemplate: 'Similarity: %{z:.3f}<extra></extra>',
+                showscale: true,
+                colorbar: {
+                    title: 'Similarity',
+                    titleside: 'right'
+                }
+            };
+            
+            const layout = {
+                title: {
+                    text: '🔥 Content Similarity Heatmap (Top 20 Products)',
+                    font: { size: 18, color: '#1e40af' }
+                },
+                xaxis: { 
+                    tickangle: -45,
+                    automargin: true,
+                    showticklabels: false
+                },
+                yaxis: { 
+                    automargin: true,
+                    showticklabels: false
+                },
+                margin: { l: 40, r: 40, t: 80, b: 40 },
+                height: 600,
+                plot_bgcolor: 'white',
+                paper_bgcolor: 'white'
+            };
+            
+            Plotly.newPlot('similarity-heatmap', [trace], layout, { responsive: true });
+        }
+        
+        // Fungsi untuk membuat distribusi normalisasi
+        function createNormalizationDistribution(products) {
+            if (!products || products.length === 0) return;
+            
+            // Ekstrak harga
+            const prices = products.map(p => p.price);
+            const ratings = products.map(p => p.rating || 0);
+            
+            // Normalisasi Min-Max
+            const minPrice = Math.min(...prices);
+            const maxPrice = Math.max(...prices);
+            const normalizedPrices = prices.map(p => (p - minPrice) / (maxPrice - minPrice));
+            
+            const minRating = Math.min(...ratings);
+            const maxRating = Math.max(...ratings);
+            const normalizedRatings = ratings.map(r => (r - minRating) / (maxRating - minRating));
+            
+            // Histogram harga
+            const tracePrice = {
+                x: normalizedPrices,
+                type: 'histogram',
+                name: 'Normalized Price',
+                marker: {
+                    color: 'rgba(34, 197, 94, 0.7)',
+                    line: {
+                        color: 'rgb(22, 163, 74)',
+                        width: 1
+                    }
+                },
+                nbinsx: 20
+            };
+            
+            // Histogram rating
+            const traceRating = {
+                x: normalizedRatings,
+                type: 'histogram',
+                name: 'Normalized Rating',
+                marker: {
+                    color: 'rgba(234, 179, 8, 0.7)',
+                    line: {
+                        color: 'rgb(202, 138, 4)',
+                        width: 1
+                    }
+                },
+                nbinsx: 20
+            };
+            
+            const layout = {
+                title: {
+                    text: '📈 Distribusi Data Normalisasi (Min-Max)',
+                    font: { size: 18, color: '#1e40af' }
+                },
+                barmode: 'overlay',
+                xaxis: { 
+                    title: 'Normalized Value (0-1)',
+                    gridcolor: '#e5e7eb'
+                },
+                yaxis: { 
+                    title: 'Frequency',
+                    gridcolor: '#e5e7eb'
+                },
+                margin: { l: 60, r: 40, t: 60, b: 60 },
+                plot_bgcolor: '#f9fafb',
+                paper_bgcolor: 'white',
+                height: 400,
+                showlegend: true,
+                legend: {
+                    x: 0.7,
+                    y: 0.95
+                }
+            };
+            
+            Plotly.newPlot('normalization-dist', [tracePrice, traceRating], layout, { responsive: true });
+        }
+        
+        // Fungsi untuk membuat feature importance chart
+        function createFeatureImportance(products) {
+            if (!products || products.length === 0) return;
+            
+            const { tfidfVectors, vocabulary } = calculateTFIDF(products);
+            
+            // Hitung variance untuk setiap feature
+            const featureVariances = {};
+            vocabulary.forEach(term => {
+                const values = tfidfVectors.map(vec => vec[term] || 0);
+                const mean = values.reduce((a, b) => a + b, 0) / values.length;
+                const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / values.length;
+                featureVariances[term] = variance;
+            });
+            
+            // Top 12 features by variance
+            const topFeatures = Object.entries(featureVariances)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 12);
+            
+            const trace = {
+                labels: topFeatures.map(f => f[0]),
+                values: topFeatures.map(f => f[1]),
+                type: 'pie',
+                hole: 0.4,
+                marker: {
+                    colors: [
+                        '#3b82f6', '#10b981', '#f59e0b', '#ef4444',
+                        '#8b5cf6', '#ec4899', '#14b8a6', '#f97316',
+                        '#6366f1', '#84cc16', '#06b6d4', '#a855f7'
+                    ]
+                },
+                textinfo: 'label+percent',
+                textposition: 'outside',
+                hovertemplate: '<b>%{label}</b><br>Variance: %{value:.4f}<br>%{percent}<extra></extra>'
+            };
+            
+            const layout = {
+                title: {
+                    text: '🎯 Feature Importance (Variance-based)',
+                    font: { size: 18, color: '#1e40af' }
+                },
+                margin: { l: 40, r: 40, t: 60, b: 40 },
+                height: 450,
+                showlegend: true,
+                legend: {
+                    orientation: 'v',
+                    x: 1.1,
+                    y: 0.5
+                },
+                paper_bgcolor: 'white'
+            };
+            
+            Plotly.newPlot('feature-importance', [trace], layout, { responsive: true });
+        }
+        
+        // Fungsi toggle analytics section
+        window.toggleAnalytics = function() {
+            const section = document.getElementById('analytics-section');
+            const btn = document.getElementById('analytics-toggle-btn');
+            
+            if (section.classList.contains('hidden')) {
+                section.classList.remove('hidden');
+                btn.innerHTML = '🔼 Sembunyikan Analytics';
+                
+                // Load visualizations
+                setTimeout(() => {
+                    initializeAnalytics();
+                }, 100);
+            } else {
+                section.classList.add('hidden');
+                btn.innerHTML = '📊 Tampilkan Analytics & Visualisasi';
+            }
+        };
+        
+        // Initialize analytics
+        function initializeAnalytics() {
+            const products = window.productsData || [];
+            if (products.length === 0) return;
+            
+            createTFIDFVisualization(products);
+            createSimilarityHeatmap(products);
+            createNormalizationDistribution(products);
+            createFeatureImportance(products);
+        }
 
         // Jalankan saat DOM siap
         document.addEventListener('DOMContentLoaded', function() {
@@ -286,6 +633,19 @@
             background: linear-gradient(135deg, #8b5cf6, #7c3aed);
             color: white;
         }
+        
+        /* Analytics Card Styles */
+        .analytics-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .analytics-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen">
@@ -373,6 +733,284 @@
             </div>
             {% endif %}
         </div>
+
+        <!-- ====== ANALYTICS & VISUALIZATION SECTION ====== -->
+        {% if json_recommendations %}
+        <div class="mb-6">
+            <button 
+                id="analytics-toggle-btn"
+                onclick="toggleAnalytics()" 
+                class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition transform hover:scale-105 flex items-center justify-center gap-2">
+                <span>📊 Tampilkan Analytics & Visualisasi</span>
+            </button>
+        </div>
+
+        <div id="analytics-section" class="hidden mb-8">
+            <div class="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-purple-800 mb-2 flex items-center gap-2">
+                    <span>🧠</span>
+                    <span>Content-Based Filtering Analytics</span>
+                </h2>
+                <p class="text-purple-700 text-sm">
+                    Menggunakan TF-IDF (Term Frequency-Inverse Document Frequency) untuk analisis konten dan normalisasi data
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- TF-IDF Chart -->
+                <div class="analytics-card p-6">
+                    <div id="tfidf-chart"></div>
+                    <p class="text-xs text-gray-600 mt-3 text-center">
+                        💡 Keywords dengan skor TF-IDF tinggi menunjukkan kata-kata yang paling diskriminatif dalam produk
+                    </p>
+                </div>
+
+                <!-- Feature Importance -->
+                <div class="analytics-card p-6">
+                    <div id="feature-importance"></div>
+                    <p class="text-xs text-gray-600 mt-3 text-center">
+                        💡 Distribusi pentingnya fitur berdasarkan variance di seluruh produk
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 mb-6">
+                <!-- Normalization Distribution -->
+                <div class="analytics-card p-6">
+                    <div id="normalization-dist"></div>
+                    <p class="text-xs text-gray-600 mt-3 text-center">
+                        💡 Distribusi data setelah normalisasi Min-Max (0-1) untuk harga dan rating
+                    </p>
+                </div>
+
+                <!-- Similarity Heatmap -->
+                <div class="analytics-card p-6">
+                    <div id="similarity-heatmap"></div>
+                    <p class="text-xs text-gray-600 mt-3 text-center">
+                        💡 Heatmap menunjukkan kemiripan konten antar produk (semakin gelap = semakin mirip)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Methodology Info -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <span>📚</span>
+                    <span>Metodologi</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-blue-700 mb-2">🔢 TF-IDF (Term Frequency-Inverse Document Frequency)</h4>
+                        <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                            <li><strong>TF:</strong> Frekuensi kata dalam dokumen</li>
+                            <li><strong>IDF:</strong> log(Total Dokumen / Dokumen yang mengandung kata)</li>
+                            <li><strong>TF-IDF:</strong> TF × IDF</li>
+                            <li>Mengidentifikasi kata-kata penting yang unik untuk setiap produk</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-green-700 mb-2">🎯 Content-Based Filtering</h4>
+                        <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                            <li>Cosine Similarity untuk mengukur kemiripan antar produk</li>
+                            <li>Min-Max Normalization untuk harga dan rating</li>
+                            <li>Feature variance untuk menentukan pentingnya atribut</li>
+                            <li>Rekomendasi berdasarkan konten yang serupa</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-4 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                    <p class="text-sm text-blue-800">
+                        <strong>💡 Fun Fact:</strong> TF-IDF adalah algoritma klasik yang masih digunakan di mesin pencari modern dan sistem rekomendasi. 
+                        Cosine Similarity mengukur sudut antar vektor, bukan jaraknya - sempurna untuk membandingkan dokumen teks!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Store products data for JavaScript -->
+        <script>
+            // Data dummy untuk testing - Ganti dengan data real dari Django template
+            window.productsData = [
+                {
+                    id: 1,
+                    name: "Intel Core i7-13700K Processor 16-Core 3.4GHz",
+                    price: 5500000,
+                    rating: 4.8,
+                    shop_name: "Tech Store Official",
+                    review_count: 245
+                },
+                {
+                    id: 2,
+                    name: "NVIDIA GeForce RTX 4070 Ti 12GB GDDR6X",
+                    price: 12500000,
+                    rating: 4.9,
+                    shop_name: "GPU Center",
+                    review_count: 189
+                },
+                {
+                    id: 3,
+                    name: "Corsair Vengeance DDR5 32GB (2x16GB) 5600MHz",
+                    price: 2800000,
+                    rating: 4.7,
+                    shop_name: "Memory Kingdom",
+                    review_count: 156
+                },
+                {
+                    id: 4,
+                    name: "Samsung 970 EVO Plus NVMe SSD 1TB",
+                    price: 1750000,
+                    rating: 4.8,
+                    shop_name: "Storage Hub",
+                    review_count: 312
+                },
+                {
+                    id: 5,
+                    name: "MSI MPG B760 Gaming Plus WiFi Motherboard",
+                    price: 3200000,
+                    rating: 4.6,
+                    shop_name: "Mobo Paradise",
+                    review_count: 98
+                },
+                {
+                    id: 6,
+                    name: "Cooler Master MasterLiquid 240L RGB V2",
+                    price: 1250000,
+                    rating: 4.5,
+                    shop_name: "Cooling Expert",
+                    review_count: 203
+                },
+                {
+                    id: 7,
+                    name: "Seasonic Focus GX-850 80+ Gold Modular PSU",
+                    price: 2100000,
+                    rating: 4.9,
+                    shop_name: "Power Supply Pro",
+                    review_count: 267
+                },
+                {
+                    id: 8,
+                    name: "NZXT H510 Elite Mid Tower Case RGB",
+                    price: 1850000,
+                    rating: 4.7,
+                    shop_name: "Case Gallery",
+                    review_count: 134
+                },
+                {
+                    id: 9,
+                    name: "AMD Ryzen 9 7950X 16-Core 4.5GHz Processor",
+                    price: 8500000,
+                    rating: 4.9,
+                    shop_name: "AMD Official Store",
+                    review_count: 178
+                },
+                {
+                    id: 10,
+                    name: "Western Digital Black SN850X 2TB NVMe SSD",
+                    price: 3500000,
+                    rating: 4.8,
+                    shop_name: "WD Authorized",
+                    review_count: 221
+                },
+                {
+                    id: 11,
+                    name: "Gigabyte AORUS GeForce RTX 4080 16GB",
+                    price: 18500000,
+                    rating: 4.8,
+                    shop_name: "Gigabyte Store",
+                    review_count: 145
+                },
+                {
+                    id: 12,
+                    name: "Kingston Fury Beast DDR5 64GB (2x32GB) 6000MHz",
+                    price: 5200000,
+                    rating: 4.7,
+                    shop_name: "Kingston Official",
+                    review_count: 92
+                },
+                {
+                    id: 13,
+                    name: "ASUS ROG Strix B650E-F Gaming WiFi",
+                    price: 4800000,
+                    rating: 4.8,
+                    shop_name: "ASUS ROG Center",
+                    review_count: 167
+                },
+                {
+                    id: 14,
+                    name: "be quiet! Dark Rock Pro 4 CPU Cooler",
+                    price: 1450000,
+                    rating: 4.9,
+                    shop_name: "Silent PC Store",
+                    review_count: 189
+                },
+                {
+                    id: 15,
+                    name: "Thermaltake Toughpower GF3 1000W 80+ Gold",
+                    price: 2800000,
+                    rating: 4.6,
+                    shop_name: "Thermaltake Shop",
+                    review_count: 156
+                },
+                {
+                    id: 16,
+                    name: "Fractal Design Meshify 2 Compact Case",
+                    price: 1650000,
+                    rating: 4.7,
+                    shop_name: "Fractal Official",
+                    review_count: 198
+                },
+                {
+                    id: 17,
+                    name: "Intel Core i5-13600K 14-Core 3.5GHz",
+                    price: 4200000,
+                    rating: 4.8,
+                    shop_name: "Intel Store",
+                    review_count: 289
+                },
+                {
+                    id: 18,
+                    name: "Crucial P5 Plus 1TB NVMe PCIe 4.0 SSD",
+                    price: 1580000,
+                    rating: 4.6,
+                    shop_name: "Crucial Store",
+                    review_count: 234
+                },
+                {
+                    id: 19,
+                    name: "EVGA GeForce RTX 4060 Ti 8GB GDDR6",
+                    price: 7200000,
+                    rating: 4.5,
+                    shop_name: "EVGA Authorized",
+                    review_count: 176
+                },
+                {
+                    id: 20,
+                    name: "G.Skill Trident Z5 RGB 32GB DDR5 6400MHz",
+                    price: 3400000,
+                    rating: 4.7,
+                    shop_name: "G.Skill Official",
+                    review_count: 143
+                }
+            ];
+            
+            /* 
+            UNTUK DJANGO TEMPLATE, GANTI BAGIAN INI DENGAN:
+            
+            window.productsData = [
+                {% for product in json_recommendations %}
+                {
+                    id: {{ product.id|default:forloop.counter }},
+                    name: "{{ product.name|escapejs }}",
+                    price: {{ product.price|default:0 }},
+                    rating: {{ product.rating|default:0 }},
+                    shop_name: "{{ product.shop_name|default:""|escapejs }}",
+                    review_count: {{ product.review_count|default:0 }}
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ];
+            */
+        </script>
+        {% endif %}
 
         <!-- Level Distribution Info -->
         {% if json_recommendations %}

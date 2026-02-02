@@ -15,7 +15,13 @@
             animation: {
               "fade-in": "fadeIn 1s ease-in-out",
               "slide-up": "slideUp 0.8s ease-out",
+              "slide-in-left": "slideInLeft 0.8s ease-out",
+              "slide-in-right": "slideInRight 0.8s ease-out",
               "bounce-subtle": "bounceSubtle 2s infinite",
+              "glow": "glow 2s ease-in-out infinite alternate",
+              "float": "float 3s ease-in-out infinite",
+              "scale-in": "scaleIn 0.5s ease-out",
+              "rotate-slow": "rotateSlow 20s linear infinite",
             },
             keyframes: {
               fadeIn: {
@@ -26,9 +32,33 @@
                 "0%": { transform: "translateY(30px)", opacity: "0" },
                 "100%": { transform: "translateY(0)", opacity: "1" },
               },
+              slideInLeft: {
+                "0%": { transform: "translateX(-50px)", opacity: "0" },
+                "100%": { transform: "translateX(0)", opacity: "1" },
+              },
+              slideInRight: {
+                "0%": { transform: "translateX(50px)", opacity: "0" },
+                "100%": { transform: "translateX(0)", opacity: "1" },
+              },
               bounceSubtle: {
                 "0%, 100%": { transform: "translateY(0)" },
                 "50%": { transform: "translateY(-5px)" },
+              },
+              glow: {
+                "0%": { boxShadow: "0 0 20px rgba(124, 58, 237, 0.3)" },
+                "100%": { boxShadow: "0 0 30px rgba(124, 58, 237, 0.6)" },
+              },
+              float: {
+                "0%, 100%": { transform: "translateY(0px)" },
+                "50%": { transform: "translateY(-20px)" },
+              },
+              scaleIn: {
+                "0%": { transform: "scale(0.8)", opacity: "0" },
+                "100%": { transform: "scale(1)", opacity: "1" },
+              },
+              rotateSlow: {
+                "0%": { transform: "rotate(0deg)" },
+                "100%": { transform: "rotate(360deg)" },
               },
             },
           },
@@ -40,9 +70,9 @@
     <style>
       /* Custom Scrollbar */
       ::-webkit-scrollbar { width: 10px; }
-      ::-webkit-scrollbar-track { background: #0f172a; } /* Slate-900 */
-      ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 5px; } /* Violet-600 */
-      ::-webkit-scrollbar-thumb:hover { background: #6d28d9; } /* Violet-700 */
+      ::-webkit-scrollbar-track { background: #0f172a; }
+      ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7c3aed, #6366f1); border-radius: 5px; }
+      ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #6d28d9, #4f46e5); }
 
       /* Animations */
       @keyframes waveMove {
@@ -60,73 +90,163 @@
       .hamburger.active .line1 { transform: rotate(45deg) translate(5px, 5px); }
       .hamburger.active .line2 { opacity: 0; }
       .hamburger.active .line3 { transform: rotate(-45deg) translate(7px, -6px); }
+
+      /* Gradient Text */
+      .gradient-text {
+        background: linear-gradient(135deg, #7c3aed 0%, #6366f1 50%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Glass Effect */
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Card Hover Effect */
+      .card-hover {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .card-hover:hover {
+        transform: translateY(-8px) scale(1.02);
+      }
+
+      /* Navbar Blur */
+      .navbar-blur {
+        backdrop-filter: blur(20px) saturate(180%);
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+      .dark .navbar-blur {
+        background-color: rgba(15, 23, 42, 0.9);
+      }
+
+      /* Scroll Reveal Animation */
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+      .scroll-reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Parallax Effect */
+      .parallax-slow {
+        transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
     </style>
   </head>
 
   <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
     
-    <nav class="shadow-lg sticky top-0 z-50 transition-all duration-300 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+    <!-- Navbar dengan Glass Effect -->
+    <nav class="navbar-blur shadow-lg sticky top-0 z-50 transition-all duration-300 border-b border-slate-200/50 dark:border-slate-800/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <div class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400">
+                    <div class="text-2xl sm:text-3xl font-black gradient-text tracking-tight">
                         ByteBudget
                     </div>
                 </div>
 
-                <div class="flex justify-between items-center h-16">
-                    <div class="hidden md:flex items-center justify-center space-x-8 flex-1">
-                        <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 transition font-medium">Beranda</a>
-                        <a href="#tentang" class="text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 transition font-medium">Tentang Kami</a>
-                        <a href="#kontak" class="text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 transition font-medium">Kontak</a>
-                    </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="index.html" class="px-4 py-2 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 transition-all font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Beranda</a>
+                    <a href="#tentang" class="px-4 py-2 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 transition-all font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Tentang</a>
+                    <a href="#kontak" class="px-4 py-2 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 transition-all font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Kontak</a>
                 </div>
 
-                <div class="flex items-center space-x-2 relative z-[60]">
-                    <button id="themeToggle" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-lg transition-all cursor-pointer">
+                <!-- Theme Toggle & Mobile Menu -->
+                <div class="flex items-center space-x-2">
+                    <button id="themeToggle" class="text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2.5 rounded-xl transition-all hover:scale-105">
                         <svg id="sunIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         <svg id="moonIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
-                    <button id="mobileMenuBtn" class="md:hidden text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 hamburger cursor-pointer rounded-lg">
+                    <button id="mobileMenuBtn" class="md:hidden text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2.5 hamburger rounded-xl transition-all">
                         <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path class="hamburger-line line1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"/><path class="hamburger-line line2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"/><path class="hamburger-line line3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"/></svg>
                     </button>
                 </div>
             </div>
 
+            <!-- Mobile Menu -->
             <div id="mobileMenu" class="md:hidden mobile-menu">
-                <div class="px-2 pt-2 pb-3 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 shadow-lg">
-                    <a href="#" class="block px-3 py-3 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition">Beranda</a>
-                    <a href="#tentang" class="block px-3 py-3 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition">Tentang Kami</a>
-                    <a href="#kontak" class="block px-3 py-3 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition">Kontak</a>
+                <div class="px-2 pt-2 pb-4 space-y-1">
+                    <a href="#" class="block px-4 py-3 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-xl transition font-medium">Beranda</a>
+                    <a href="#tentang" class="block px-4 py-3 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-xl transition font-medium">Tentang</a>
+                    <a href="#kontak" class="block px-4 py-3 text-slate-700 dark:text-slate-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-xl transition font-medium">Kontak</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section class="relative h-[70vh] flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0" style="background: linear-gradient(135deg, #020617 0%, #1e1b4b 100%); z-index: 10;"></div>
-        <div class="absolute inset-0 bg-slate-950/40 z-10"></div>
-        <div class="relative max-w-4xl px-4 py-8 sm:py-16 text-center z-20">
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg animate-fade-in opacity-0" style="animation: fadeIn 1s ease-out forwards 0.3s">
-                Temukan Rekomendasi Komponen PC <span class="text-indigo-400 animate-pulse">Sesuai Budget Anda</span>
+    <!-- Hero Section dengan Improved Design -->
+    <section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+        <!-- Animated Background -->
+        <div class="absolute inset-0" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);"></div>
+        
+        <!-- Floating Shapes -->
+        <div class="absolute inset-0 overflow-hidden opacity-20">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-violet-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-10 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/20 to-slate-950/40"></div>
+        
+        <!-- Hero Content -->
+        <div class="relative max-w-6xl mx-auto px-4 py-20 text-center z-20">
+            <div class="inline-block mb-6 animate-fade-in">
+                <span class="px-5 py-2 bg-violet-500/10 border border-violet-500/30 rounded-full text-violet-300 text-sm font-semibold backdrop-blur-sm">
+                    🚀 Platform Rekomendasi PC #1 di Indonesia
+                </span>
+            </div>
+            
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white mb-8 leading-tight animate-fade-in" style="animation-delay: 0.2s;">
+                Temukan Komponen PC
+                <br />
+                <span class="gradient-text inline-block mt-2">Terbaik Sesuai Budget</span>
             </h1>
-            <p class="text-lg sm:text-2xl text-slate-200 mb-8 max-w-3xl mx-auto drop-shadow-md animate-slide-up opacity-0" style="animation: slideUp 1s ease-out forwards 0.6s">
-                Website ini akan membantumu menemukan kombinasi terbaik processor, RAM, VGA, dan komponen lainnya untuk build PC impianmu.
+            
+            <p class="text-xl sm:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed animate-slide-up" style="animation-delay: 0.4s;">
+                Platform cerdas yang membantu Anda menemukan kombinasi sempurna processor, RAM, VGA, dan komponen lainnya untuk build PC impian
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up opacity-0" style="animation: slideUp 1s ease-out forwards 0.9s">
-                <button onclick="document.getElementById('mulaisekarang').scrollIntoView({ behavior: 'smooth' })" class="bg-violet-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition hover:bg-violet-700 hover:scale-105 shadow-xl shadow-violet-900/20">
-                    Mulai Sekarang
+            
+            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center animate-slide-up" style="animation-delay: 0.6s;">
+                <button onclick="document.getElementById('mulaisekarang').scrollIntoView({ behavior: 'smooth' })" class="group relative px-10 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-2xl font-bold text-lg transition-all hover:scale-105 shadow-2xl shadow-violet-500/40 hover:shadow-violet-500/60">
+                    <span class="relative z-10">Mulai Sekarang</span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-violet-700 to-indigo-700 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </button>
                 <a href="{% url 'pelajarilebihlanjut' %}#pelajari">
-                    <button class="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition hover:bg-white hover:text-slate-900 backdrop-blur-sm">
+                    <button class="px-10 py-4 border-2 border-white/30 text-white rounded-2xl font-bold text-lg transition-all hover:bg-white hover:text-slate-900 hover:scale-105 backdrop-blur-sm hover:border-white">
                         Pelajari Lebih Lanjut
                     </button>
                 </a>
             </div>
+
+            <!-- Trust Indicators -->
+            <div class="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-1">50K+</div>
+                    <div class="text-sm text-slate-400">Komponen</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-1">100K+</div>
+                    <div class="text-sm text-slate-400">Pengguna</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-1">1M+</div>
+                    <div class="text-sm text-slate-400">PC Builds</div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <div class="relative bg-gradient-to-br from-[#020617] to-[#1e1b4b]">
+    <!-- Wave Transition -->
+    <div class="relative bg-gradient-to-br from-[#0f172a] via-[#1e1b4b] to-[#312e81]">
         <svg class="relative w-full h-[10vh] min-h-[80px] -mb-[1px]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
             <defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/></defs>
             <g class="parallax">
@@ -138,290 +258,689 @@
         </svg>
     </div>
 
-    <section id="mulaisekarang" class="py-16 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">Cari Rekomendasi Laptop Anda</h2>
-                <p class="text-lg text-slate-600 dark:text-slate-400">Masukkan budget dan kebutuhan Anda untuk mendapatkan rekomendasi terbaik</p>
+    <!-- Tentang Kami Section -->
+    <section id="tentang" class="py-32 bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
+        <!-- Background Decoration -->
+        <div class="absolute inset-0 overflow-hidden opacity-10 dark:opacity-5">
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-violet-500 rounded-full filter blur-3xl animate-float"></div>
+            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-500 rounded-full filter blur-3xl animate-float" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Section Header -->
+            <div class="text-center mb-20 scroll-reveal">
+                <div class="inline-block mb-6">
+                    <span class="bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 px-6 py-3 rounded-full text-sm font-black border-2 border-violet-200 dark:border-violet-800">
+                        🎯 Tentang Kami
+                    </span>
+                </div>
+                <h2 class="text-5xl sm:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white mb-8 leading-tight">
+                    Kenapa Pilih <span class="gradient-text">ByteBudget</span>?
+                </h2>
+                <p class="text-xl sm:text-2xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed">
+                    Kami adalah platform rekomendasi PC terdepan di Indonesia yang membantu ribuan pengguna menemukan komponen terbaik untuk kebutuhan mereka
+                </p>
             </div>
-            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 sm:p-10 border border-slate-100 dark:border-slate-800 transition-colors duration-300">
-                <form action="{% url 'rekomendasi_laptop' %}" method="POST" class="space-y-6">
-                    {% csrf_token %}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="budgetInput" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Budget (Rp)</label>
-                            <input type="number" id="budgetInput" name="budget" placeholder="Contoh: 5000000" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors shadow-sm" />
+
+            <!-- Story Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 items-center">
+                <!-- Left: Image/Visual -->
+                <div class="scroll-reveal order-2 lg:order-1">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-3xl transform rotate-3 opacity-20"></div>
+                        <div class="relative bg-white dark:bg-slate-900 p-12 rounded-3xl shadow-2xl border-2 border-slate-200 dark:border-slate-800">
+                            <div class="space-y-8">
+                                <!-- Mission Icon -->
+                                <div class="flex items-center gap-6">
+                                    <div class="flex-shrink-0 w-20 h-20 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-2xl flex items-center justify-center text-4xl shadow-xl animate-float">
+                                        🚀
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Misi Kami</h3>
+                                        <p class="text-slate-600 dark:text-slate-400">Membuat PC building mudah untuk semua orang</p>
+                                    </div>
+                                </div>
+
+                                <!-- Vision Icon -->
+                                <div class="flex items-center gap-6">
+                                    <div class="flex-shrink-0 w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center text-4xl shadow-xl animate-float" style="animation-delay: 0.5s;">
+                                        🎯
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Visi Kami</h3>
+                                        <p class="text-slate-600 dark:text-slate-400">Platform #1 rekomendasi hardware di Indonesia</p>
+                                    </div>
+                                </div>
+
+                                <!-- Value Icon -->
+                                <div class="flex items-center gap-6">
+                                    <div class="flex-shrink-0 w-20 h-20 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center text-4xl shadow-xl animate-float" style="animation-delay: 1s;">
+                                        💎
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Nilai Kami</h3>
+                                        <p class="text-slate-600 dark:text-slate-400">Transparansi, kualitas, dan kepuasan pengguna</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label for="usageSelect" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Kegunaan</label>
-                            <select id="usageSelect" name="usage" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors shadow-sm">
+                    </div>
+                </div>
+
+                <!-- Right: Content -->
+                <div class="scroll-reveal order-1 lg:order-2 space-y-8">
+                    <div>
+                        <h3 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
+                            Dari PC Enthusiast, <br />Untuk PC Enthusiast
+                        </h3>
+                        <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                            ByteBudget lahir dari frustrasi kami sendiri saat mencari komponen PC yang tepat. Terlalu banyak pilihan, informasi yang membingungkan, dan harga yang tidak konsisten membuat proses building PC menjadi nightmare.
+                        </p>
+                        <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                            Kami percaya bahwa setiap orang berhak mendapatkan PC yang sempurna sesuai budget dan kebutuhan mereka tanpa harus menghabiskan waktu berhari-hari untuk research.
+                        </p>
+                        <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Dengan <strong class="text-violet-600 dark:text-violet-400">teknologi AI</strong>, <strong class="text-indigo-600 dark:text-indigo-400">database terlengkap</strong>, dan <strong class="text-purple-600 dark:text-purple-400">komunitas yang aktif</strong>, kami menghadirkan solusi yang Anda butuhkan.
+                        </p>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-3 gap-6 pt-6">
+                        <div class="text-center p-6 bg-violet-50 dark:bg-violet-950/30 rounded-2xl border-2 border-violet-200 dark:border-violet-800">
+                            <div class="text-4xl font-black text-violet-600 dark:text-violet-400 mb-2">3+</div>
+                            <div class="text-sm font-bold text-slate-600 dark:text-slate-400">Tahun Berdiri</div>
+                        </div>
+                        <div class="text-center p-6 bg-indigo-50 dark:bg-indigo-950/30 rounded-2xl border-2 border-indigo-200 dark:border-indigo-800">
+                            <div class="text-4xl font-black text-indigo-600 dark:text-indigo-400 mb-2">50K+</div>
+                            <div class="text-sm font-bold text-slate-600 dark:text-slate-400">Pengguna Aktif</div>
+                        </div>
+                        <div class="text-center p-6 bg-purple-50 dark:bg-purple-950/30 rounded-2xl border-2 border-purple-200 dark:border-purple-800">
+                            <div class="text-4xl font-black text-purple-600 dark:text-purple-400 mb-2">1M+</div>
+                            <div class="text-sm font-bold text-slate-600 dark:text-slate-400">PC Builds</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Values Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="scroll-reveal bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border-2 border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 transition-all card-hover group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-violet-500 to-purple-500 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                        🎓
+                    </div>
+                    <h4 class="text-xl font-black text-slate-900 dark:text-white mb-4">Edukasi</h4>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Kami tidak hanya memberikan rekomendasi, tapi juga mengedukasi pengguna tentang hardware
+                    </p>
+                </div>
+
+                <div class="scroll-reveal bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border-2 border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all card-hover group" style="animation-delay: 0.1s;">
+                    <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                        🤝
+                    </div>
+                    <h4 class="text-xl font-black text-slate-900 dark:text-white mb-4">Komunitas</h4>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Membangun komunitas PC enthusiast yang saling membantu dan berbagi pengalaman
+                    </p>
+                </div>
+
+                <div class="scroll-reveal bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border-2 border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all card-hover group" style="animation-delay: 0.2s;">
+                    <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                        ⚡
+                    </div>
+                    <h4 class="text-xl font-black text-slate-900 dark:text-white mb-4">Inovasi</h4>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Terus berinovasi dengan teknologi AI dan machine learning untuk hasil terbaik
+                    </p>
+                </div>
+
+                <div class="scroll-reveal bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border-2 border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 transition-all card-hover group" style="animation-delay: 0.3s;">
+                    <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                        🔒
+                    </div>
+                    <h4 class="text-xl font-black text-slate-900 dark:text-white mb-4">Kepercayaan</h4>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Data akurat, review verified, dan rekomendasi yang jujur tanpa hidden agenda
+                    </p>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="mt-20 text-center scroll-reveal">
+                <div class="inline-block bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-12 rounded-3xl shadow-2xl">
+                    <h3 class="text-3xl sm:text-4xl font-black text-white mb-6">
+                        Siap Bergabung dengan Kami?
+                    </h3>
+                    <p class="text-xl text-violet-100 mb-8 max-w-2xl mx-auto">
+                        Mulai temukan komponen PC impian Anda sekarang juga!
+                    </p>
+                    <button onclick="document.getElementById('mulaisekarang').scrollIntoView({ behavior: 'smooth' })" class="px-12 py-5 bg-white text-violet-600 rounded-2xl font-black text-xl transition-all hover:scale-110 hover:shadow-2xl shadow-xl">
+                        Mulai Sekarang 🚀
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Laptop Recommendation Section -->
+    <section id="mulaisekarang" class="py-24 bg-slate-50 dark:bg-slate-950">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-block mb-4">
+                    <span class="px-4 py-2 bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 rounded-full text-sm font-bold border border-violet-200 dark:border-violet-800">
+                        💻 Rekomendasi Laptop
+                    </span>
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-6">Cari Laptop Impian Anda</h2>
+                <p class="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Masukkan budget dan kebutuhan Anda untuk mendapatkan rekomendasi laptop terbaik yang sesuai</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 sm:p-12 border border-slate-200/50 dark:border-slate-800/50 card-hover">
+                <form action="{% url 'rekomendasi_laptop' %}" method="POST" class="space-y-8">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label for="budgetInput" class="block text-base font-bold text-slate-800 dark:text-slate-200">
+                                Budget (Rp)
+                            </label>
+                            <input type="number" id="budgetInput" name="budget" placeholder="Contoh: 5000000" class="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all shadow-sm text-lg font-medium placeholder:text-slate-400" />
+                        </div>
+                        <div class="space-y-3">
+                            <label for="usageSelect" class="block text-base font-bold text-slate-800 dark:text-slate-200">
+                                Kegunaan
+                            </label>
+                            <select id="usageSelect" name="usage" class="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all shadow-sm text-lg font-medium">
                                 <option value="">Pilih kegunaan</option>
-                                <option value="Gaming">Gaming</option>
-                                <option value="Office/Kerja">Office/Kerja</option>
-                                <option value="Design/Video Editing">Design/Video Editing</option>
-                                <option value="Programming">Programming</option>
+                                <option value="Gaming">🎮 Gaming</option>
+                                <option value="Office/Kerja">💼 Office/Kerja</option>
+                                <option value="Design/Video Editing">🎨 Design/Video Editing</option>
+                                <option value="Programming">💻 Programming</option>
                             </select>
                         </div>
                     </div>
-                    <div class="text-center pt-2">
-                        <button type="submit" class="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white px-8 py-3.5 rounded-xl font-bold text-lg transition-all hover:scale-[1.02] shadow-lg shadow-violet-500/30">
-                            🔍 Cari Rekomendasi
+                    <div class="text-center pt-4">
+                        <button type="submit" class="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white px-12 py-5 rounded-2xl font-black text-xl transition-all hover:scale-105 shadow-2xl shadow-violet-500/40 hover:shadow-violet-500/60">
+                            🔍 Cari Rekomendasi Laptop
                         </button>
                     </div>
                 </form>
             </div>
-            <div class="flex justify-center mt-8">
-                <a href="{% url 'download_excel' %}" class="flex items-center gap-2 text-violet-600 dark:text-violet-400 font-semibold hover:underline transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                    Download Database (Excel)
-                </a>
-            </div>
-            <div id="scraperStatus" class="mt-4 hidden text-center px-4 py-3 rounded-lg"></div>
+           
+            <div id="scraperStatus" class="mt-6 hidden text-center px-6 py-4 rounded-2xl"></div>
         </div>
     </section>
 
-    <section id="pccomponentfinder" class="py-16 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+    <!-- PC Component Finder -->
+    <section id="pccomponentfinder" class="py-24 bg-white dark:bg-slate-900">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+        <div class="text-center mb-16">
+          <div class="inline-block mb-4">
+              <span class="px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-bold border border-indigo-200 dark:border-indigo-800">
+                  🖥️ Build PC Custom
+              </span>
+          </div>
+          <h2 class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-6">
              Cari Komponen PC Anda
           </h2>
-          <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-400">
-            Filter berdasarkan budget dan komponen yang Anda butuhkan
+          <p class="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+            Filter berdasarkan budget dan komponen yang Anda butuhkan untuk build PC custom
           </p>
         </div>
     
-        <div class="bg-white dark:bg-slate-900 rounded-lg shadow-xl p-6 sm:p-8 transition-colors duration-300 border border-slate-100 dark:border-slate-800">
-          <form action="{% url 'rekomendasi_pc' %}" method="POST" class="space-y-8">
+        <div class="bg-slate-50 dark:bg-slate-950 rounded-3xl shadow-2xl p-8 sm:p-12 border border-slate-200/50 dark:border-slate-800/50">
+          <form action="{% url 'rekomendasi_pc' %}" method="POST" class="space-y-10">
             {% csrf_token %}
             
-            <div class="border-b border-slate-200 dark:border-slate-800 pb-6">
-              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Budget</h3>
+            <!-- Budget Section -->
+            <div class="space-y-6">
+              <h3 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                <span class="w-10 h-10 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-xl flex items-center justify-center text-white text-lg">💰</span>
+                Range Budget
+              </h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label for="minBudget" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Budget Minimum (Rp)</label>
-                  <input type="number" id="minBudget" name="min_budget" placeholder="Contoh: 3000000" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors" />
+                <div class="space-y-3">
+                  <label for="minBudget" class="block text-sm font-bold text-slate-700 dark:text-slate-300">Budget Minimum (Rp)</label>
+                  <input type="number" id="minBudget" name="min_budget" placeholder="Contoh: 3000000" class="w-full px-5 py-4 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all text-base font-medium" />
                 </div>
-                <div>
-                  <label for="maxBudget" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Budget Maximum (Rp)</label>
-                  <input type="number" id="maxBudget" name="max_budget" placeholder="Contoh: 8000000" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors" />
+                <div class="space-y-3">
+                  <label for="maxBudget" class="block text-sm font-bold text-slate-700 dark:text-slate-300">Budget Maximum (Rp)</label>
+                  <input type="number" id="maxBudget" name="max_budget" placeholder="Contoh: 8000000" class="w-full px-5 py-4 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all text-base font-medium" />
                 </div>
               </div>
             </div>
     
-            <div class="border-b border-slate-200 dark:border-slate-800 pb-6">
-              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Kegunaan</h3>
-              <select id="usageSelect" name="usage" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-colors">
+            <!-- Usage Section -->
+            <div class="space-y-6">
+              <h3 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                <span class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center text-white text-lg">🎯</span>
+                Kegunaan
+              </h3>
+              <select name="usage" class="w-full px-5 py-4 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all text-base font-medium">
                 <option value="">Semua Kegunaan</option>
-                <option value="Gaming">Gaming</option>
-                <option value="Office/Kerja">Office/Kerja</option>
-                <option value="Design/Video Editing">Design/Video Editing</option>
-                <option value="Programming">Programming</option>
-                <option value="Rendering 3D">Rendering 3D</option>
+                <option value="Gaming">🎮 Gaming</option>
+                <option value="Office/Kerja">💼 Office/Kerja</option>
+                <option value="Design/Video Editing">🎨 Design/Video Editing</option>
+                <option value="Programming">💻 Programming</option>
+                <option value="Rendering 3D">🎬 Rendering 3D</option>
               </select>
             </div>
     
-            <div>
-              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Filter Komponen</h3>
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
-                  <label class="flex items-center cursor-pointer group">
-                    <input type="checkbox" name="components" value="RAM" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
-                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">RAM</span>
-                  </label>
-                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">Memory / DDR4 / DDR5</p>
-                </div>
-                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
-                  <label class="flex items-center cursor-pointer group">
-                    <input type="checkbox" name="components" value="CPU" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
-                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">CPU / Processor</span>
-                  </label>
-                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">Intel / AMD Ryzen</p>
-                </div>
-                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
-                  <label class="flex items-center cursor-pointer group">
-                    <input type="checkbox" name="components" value="GPU" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
-                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">GPU / VGA</span>
-                  </label>
-                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">NVIDIA / AMD Graphics</p>
-                </div>
-                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
-                  <label class="flex items-center cursor-pointer group">
-                    <input type="checkbox" name="components" value="Motherboard" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
-                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">Motherboard</span>
-                  </label>
-                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">Mainboard / Mobo</p>
-                </div>
-                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
-                  <label class="flex items-center cursor-pointer group">
-                    <input type="checkbox" name="components" value="SSD" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
-                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">SSD</span>
-                  </label>
-                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">NVMe / SATA SSD</p>
-                </div>
-                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 transition-colors border border-slate-100 dark:border-slate-700">
-                  <label class="flex items-center cursor-pointer group">
-                    <input type="checkbox" name="components" value="HDD" class="w-5 h-5 text-violet-600 bg-white border-slate-300 rounded focus:ring-violet-500 dark:focus:ring-violet-600 dark:ring-offset-slate-900 focus:ring-2 dark:bg-slate-700 dark:border-slate-600" />
-                    <span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">HDD</span>
-                  </label>
-                  <p class="mt-2 ml-8 text-xs text-slate-500 dark:text-slate-400">Hard Disk Drive</p>
-                </div>
+            <!-- Components Section -->
+            <div class="space-y-6">
+              <h3 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                <span class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-white text-lg">🔧</span>
+                Pilih Komponen
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                
+                <label class="relative group cursor-pointer">
+                  <input type="checkbox" name="components" value="RAM" class="peer sr-only" />
+                  <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-6 transition-all peer-checked:border-violet-500 peer-checked:bg-violet-50 dark:peer-checked:bg-violet-950/30 peer-checked:shadow-lg peer-checked:shadow-violet-500/20 hover:border-slate-300 dark:hover:border-slate-600">
+                    <div class="flex items-start gap-4">
+                      <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl font-bold peer-checked:scale-110 transition-transform">
+                        🧠
+                      </div>
+                      <div class="flex-1">
+                        <div class="font-black text-slate-900 dark:text-white text-lg mb-1">RAM</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400">Memory DDR4/DDR5</div>
+                      </div>
+                      <div class="flex-shrink-0 w-6 h-6 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-violet-500 peer-checked:bg-violet-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white hidden peer-checked:block" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="relative group cursor-pointer">
+                  <input type="checkbox" name="components" value="CPU" class="peer sr-only" />
+                  <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-6 transition-all peer-checked:border-violet-500 peer-checked:bg-violet-50 dark:peer-checked:bg-violet-950/30 peer-checked:shadow-lg peer-checked:shadow-violet-500/20 hover:border-slate-300 dark:hover:border-slate-600">
+                    <div class="flex items-start gap-4">
+                      <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
+                        ⚡
+                      </div>
+                      <div class="flex-1">
+                        <div class="font-black text-slate-900 dark:text-white text-lg mb-1">CPU</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400">Intel / AMD Ryzen</div>
+                      </div>
+                      <div class="flex-shrink-0 w-6 h-6 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-violet-500 peer-checked:bg-violet-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white hidden peer-checked:block" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="relative group cursor-pointer">
+                  <input type="checkbox" name="components" value="GPU" class="peer sr-only" />
+                  <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-6 transition-all peer-checked:border-violet-500 peer-checked:bg-violet-50 dark:peer-checked:bg-violet-950/30 peer-checked:shadow-lg peer-checked:shadow-violet-500/20 hover:border-slate-300 dark:hover:border-slate-600">
+                    <div class="flex items-start gap-4">
+                      <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
+                        🎮
+                      </div>
+                      <div class="flex-1">
+                        <div class="font-black text-slate-900 dark:text-white text-lg mb-1">GPU</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400">NVIDIA / AMD</div>
+                      </div>
+                      <div class="flex-shrink-0 w-6 h-6 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-violet-500 peer-checked:bg-violet-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white hidden peer-checked:block" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="relative group cursor-pointer">
+                  <input type="checkbox" name="components" value="Motherboard" class="peer sr-only" />
+                  <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-6 transition-all peer-checked:border-violet-500 peer-checked:bg-violet-50 dark:peer-checked:bg-violet-950/30 peer-checked:shadow-lg peer-checked:shadow-violet-500/20 hover:border-slate-300 dark:hover:border-slate-600">
+                    <div class="flex items-start gap-4">
+                      <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
+                        🔌
+                      </div>
+                      <div class="flex-1">
+                        <div class="font-black text-slate-900 dark:text-white text-lg mb-1">Motherboard</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400">Mainboard</div>
+                      </div>
+                      <div class="flex-shrink-0 w-6 h-6 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-violet-500 peer-checked:bg-violet-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white hidden peer-checked:block" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="relative group cursor-pointer">
+                  <input type="checkbox" name="components" value="SSD" class="peer sr-only" />
+                  <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-6 transition-all peer-checked:border-violet-500 peer-checked:bg-violet-50 dark:peer-checked:bg-violet-950/30 peer-checked:shadow-lg peer-checked:shadow-violet-500/20 hover:border-slate-300 dark:hover:border-slate-600">
+                    <div class="flex items-start gap-4">
+                      <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
+                        ⚡
+                      </div>
+                      <div class="flex-1">
+                        <div class="font-black text-slate-900 dark:text-white text-lg mb-1">SSD</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400">NVMe / SATA</div>
+                      </div>
+                      <div class="flex-shrink-0 w-6 h-6 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-violet-500 peer-checked:bg-violet-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white hidden peer-checked:block" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="relative group cursor-pointer">
+                  <input type="checkbox" name="components" value="HDD" class="peer sr-only" />
+                  <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-6 transition-all peer-checked:border-violet-500 peer-checked:bg-violet-50 dark:peer-checked:bg-violet-950/30 peer-checked:shadow-lg peer-checked:shadow-violet-500/20 hover:border-slate-300 dark:hover:border-slate-600">
+                    <div class="flex items-start gap-4">
+                      <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">
+                        💾
+                      </div>
+                      <div class="flex-1">
+                        <div class="font-black text-slate-900 dark:text-white text-lg mb-1">HDD</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400">Hard Disk</div>
+                      </div>
+                      <div class="flex-shrink-0 w-6 h-6 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-violet-500 peer-checked:bg-violet-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white hidden peer-checked:block" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+
               </div>
             </div>
     
-            <div id="errorMessage" class="hidden bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg"></div>
+            <div id="errorMessage" class="hidden bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-6 py-4 rounded-2xl font-medium"></div>
     
-            <div class="flex flex-col sm:flex-row gap-4 pt-4">
-              <button type="submit" class="flex-1 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-all hover:scale-105 hover:shadow-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 shadow-lg shadow-violet-500/20">
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-5 pt-6">
+              <button type="submit" class="flex-1 text-white px-10 py-5 rounded-2xl font-black text-xl transition-all hover:scale-105 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 shadow-2xl shadow-violet-500/40 hover:shadow-violet-500/60">
                 🔍 Cari Rekomendasi
               </button>
-              <button type="reset" class="sm:w-auto px-8 py-3 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-lg font-semibold text-lg hover:bg-slate-300 dark:hover:bg-slate-700 transition-all" onclick="document.getElementById('errorMessage').classList.add('hidden')">
-                Reset Filter
+              <button type="reset" class="sm:w-auto px-10 py-5 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-2xl font-bold text-xl hover:bg-slate-300 dark:hover:bg-slate-700 transition-all hover:scale-105" onclick="document.getElementById('errorMessage').classList.add('hidden')">
+                🔄 Reset Filter
               </button>
             </div>
           </form>
         </div>
     
-        <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <button type="button" onclick="setQuickBudget(0, 5000000)" class="px-4 py-3 bg-white dark:bg-slate-900 rounded-lg shadow hover:shadow-lg transition-all border border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 group">
-            <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors">Budget</p>
-            <p class="font-semibold text-slate-900 dark:text-white">&lt; 5 Juta</p>
+        <!-- Quick Budget Buttons -->
+        <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <button type="button" onclick="setQuickBudget(0, 5000000)" class="group px-6 py-5 bg-white dark:bg-slate-900 rounded-2xl shadow-lg hover:shadow-2xl transition-all border-2 border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 card-hover">
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors mb-1">Budget</p>
+            <p class="font-black text-lg text-slate-900 dark:text-white">&lt; 5 Juta</p>
           </button>
-          <button type="button" onclick="setQuickBudget(5000000, 10000000)" class="px-4 py-3 bg-white dark:bg-slate-900 rounded-lg shadow hover:shadow-lg transition-all border border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 group">
-            <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors">Budget</p>
-            <p class="font-semibold text-slate-900 dark:text-white">5-10 Juta</p>
+          <button type="button" onclick="setQuickBudget(5000000, 10000000)" class="group px-6 py-5 bg-white dark:bg-slate-900 rounded-2xl shadow-lg hover:shadow-2xl transition-all border-2 border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 card-hover">
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors mb-1">Budget</p>
+            <p class="font-black text-lg text-slate-900 dark:text-white">5-10 Juta</p>
           </button>
-          <button type="button" onclick="setQuickBudget(10000000, 20000000)" class="px-4 py-3 bg-white dark:bg-slate-900 rounded-lg shadow hover:shadow-lg transition-all border border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 group">
-            <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors">Budget</p>
-            <p class="font-semibold text-slate-900 dark:text-white">10-20 Juta</p>
+          <button type="button" onclick="setQuickBudget(10000000, 20000000)" class="group px-6 py-5 bg-white dark:bg-slate-900 rounded-2xl shadow-lg hover:shadow-2xl transition-all border-2 border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 card-hover">
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors mb-1">Budget</p>
+            <p class="font-black text-lg text-slate-900 dark:text-white">10-20 Juta</p>
           </button>
-          <button type="button" onclick="setQuickBudget(20000000, 999999999)" class="px-4 py-3 bg-white dark:bg-slate-900 rounded-lg shadow hover:shadow-lg transition-all border border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 group">
-            <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors">Budget</p>
-            <p class="font-semibold text-slate-900 dark:text-white">&gt; 20 Juta</p>
+          <button type="button" onclick="setQuickBudget(20000000, 999999999)" class="group px-6 py-5 bg-white dark:bg-slate-900 rounded-2xl shadow-lg hover:shadow-2xl transition-all border-2 border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 card-hover">
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 group-hover:text-violet-500 transition-colors mb-1">Budget</p>
+            <p class="font-black text-lg text-slate-900 dark:text-white">&gt; 20 Juta</p>
           </button>
         </div>
       </div>
     </section>
 
-    <section id="recommendationsSection" class="hidden py-16 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Recommendations Section -->
+    <section id="recommendationsSection" class="hidden py-24 bg-slate-50 dark:bg-slate-900">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-6">
             Rekomendasi Untuk Anda
           </h2>
-          <p id="budgetDisplay" class="text-lg sm:text-xl text-slate-600 dark:text-slate-400 mb-4"></p>
+          <p id="budgetDisplay" class="text-xl text-slate-600 dark:text-slate-400"></p>
         </div>
-        <div id="recommendationCards" class="grid grid-cols-1 mobile-card-grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          </div>
+        <div id="recommendationCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        </div>
       </div>
     </section>
 
-    <section id="fitur" class="bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 py-20 transition-colors duration-300 overflow-hidden">
+    <!-- Features Section -->
+    <section id="fitur" class="bg-gradient-to-b from-white to-slate-50 dark:from-slate-900 dark:to-slate-950 py-32">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-on-scroll">
-                <div class="inline-block mb-4">
-                    <span class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-4 py-2 rounded-full text-sm font-semibold border border-indigo-200 dark:border-indigo-800">Platform Terlengkap</span>
+            
+            <!-- Section Header -->
+            <div class="text-center mb-20">
+                <div class="inline-block mb-6">
+                    <span class="bg-gradient-to-r from-violet-100 to-indigo-100 dark:from-violet-900/30 dark:to-indigo-900/30 text-violet-700 dark:text-violet-300 px-6 py-3 rounded-full text-sm font-black border-2 border-violet-200 dark:border-violet-800">
+                        ✨ Platform Terlengkap
+                    </span>
                 </div>
-                <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight">Fitur Unggulan Kami</h2>
-                <p class="text-slate-600 dark:text-slate-300 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">Platform rekomendasi hardware paling komprehensif di Indonesia. Temukan komponen PC terbaik dengan teknologi AI, perbandingan mendalam, dan database terlengkap untuk keputusan yang tepat.</p>
+                <h2 class="text-5xl sm:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white mb-8 leading-tight">
+                    Fitur Unggulan Kami
+                </h2>
+                <p class="text-slate-600 dark:text-slate-300 text-xl sm:text-2xl max-w-4xl mx-auto leading-relaxed">
+                    Platform rekomendasi hardware paling komprehensif di Indonesia dengan teknologi AI, database terlengkap, dan komunitas aktif
+                </p>
             </div>
 
-            <div class="mb-20 animate-slide-up">
-                <div class="rounded-3xl shadow-2xl overflow-hidden relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-indigo-950 z-0"></div>
-                    <div class="grid lg:grid-cols-2 gap-8 p-8 sm:p-12 items-center relative z-10">
-                        <div class="text-white space-y-6">
-                            <h3 class="text-3xl sm:text-4xl font-bold leading-tight">Rekomendasi Hardware Berbasis Kecerdasan Buatan</h3>
-                            <p class="text-lg text-indigo-100 leading-relaxed">Sistem AI kami menganalisis ribuan kombinasi hardware untuk memberikan rekomendasi yang paling sesuai dengan kebutuhan gaming, rendering, productivity, atau penggunaan sehari-hari Anda.</p>
-                            <div class="flex flex-wrap gap-4">
-                                <div class="flex items-center gap-2"><div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20"><span class="text-xl text-indigo-300">✓</span></div><span class="font-semibold">Smart Matching</span></div>
-                                <div class="flex items-center gap-2"><div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20"><span class="text-xl text-indigo-300">✓</span></div><span class="font-semibold">Budget Optimizer</span></div>
-                                <div class="flex items-center gap-2"><div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20"><span class="text-xl text-indigo-300">✓</span></div><span class="font-semibold">Performance Analysis</span></div>
+            <!-- AI Feature Highlight -->
+            <div class="mb-24">
+                <div class="rounded-3xl shadow-2xl overflow-hidden relative card-hover">
+                    <div class="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700"></div>
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
+                    
+                    <div class="grid lg:grid-cols-2 gap-12 p-10 sm:p-16 items-center relative z-10">
+                        <div class="text-white space-y-8">
+                            <div class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+                                <span class="text-sm font-bold">🤖 Powered by AI</span>
+                            </div>
+                            <h3 class="text-4xl sm:text-5xl font-black leading-tight">
+                                Rekomendasi Hardware Berbasis Kecerdasan Buatan
+                            </h3>
+                            <p class="text-xl text-violet-100 leading-relaxed">
+                                Sistem AI kami menganalisis ribuan kombinasi hardware untuk memberikan rekomendasi yang paling sesuai dengan kebutuhan gaming, rendering, productivity, atau penggunaan sehari-hari Anda.
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/20">
+                                    <div class="text-3xl mb-2">✓</div>
+                                    <div class="font-bold text-lg">Smart Matching</div>
+                                    <div class="text-sm text-violet-200">AI Algorithm</div>
+                                </div>
+                                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/20">
+                                    <div class="text-3xl mb-2">✓</div>
+                                    <div class="font-bold text-lg">Budget Optimizer</div>
+                                    <div class="text-sm text-violet-200">Best Value</div>
+                                </div>
+                                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/20">
+                                    <div class="text-3xl mb-2">✓</div>
+                                    <div class="font-bold text-lg">Performance</div>
+                                    <div class="text-sm text-violet-200">Deep Analysis</div>
+                                </div>
                             </div>
                         </div>
+                        
                         <div class="hidden lg:block">
-                            <div class="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 space-y-4">
-                                <div class="flex items-center justify-between bg-slate-900/50 p-4 rounded-lg border border-slate-700/50"><span class="font-semibold text-white">Gaming PC</span><span class="text-emerald-400">95% Match</span></div>
-                                <div class="flex items-center justify-between bg-slate-900/50 p-4 rounded-lg border border-slate-700/50"><span class="font-semibold text-white">Workstation</span><span class="text-amber-400">88% Match</span></div>
-                                <div class="flex items-center justify-between bg-slate-900/50 p-4 rounded-lg border border-slate-700/50"><span class="font-semibold text-white">Budget Build</span><span class="text-sky-400">92% Match</span></div>
+                            <div class="space-y-4">
+                                <div class="glass-effect rounded-2xl p-6 transform hover:scale-105 transition-all">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="font-bold text-white text-lg">🎮 Gaming PC</span>
+                                        <span class="px-3 py-1 bg-emerald-500 text-white rounded-full text-sm font-bold">95% Match</span>
+                                    </div>
+                                    <div class="w-full bg-white/20 rounded-full h-2">
+                                        <div class="bg-emerald-400 h-2 rounded-full" style="width: 95%"></div>
+                                    </div>
+                                </div>
+                                <div class="glass-effect rounded-2xl p-6 transform hover:scale-105 transition-all">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="font-bold text-white text-lg">💼 Workstation</span>
+                                        <span class="px-3 py-1 bg-amber-500 text-white rounded-full text-sm font-bold">88% Match</span>
+                                    </div>
+                                    <div class="w-full bg-white/20 rounded-full h-2">
+                                        <div class="bg-amber-400 h-2 rounded-full" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                                <div class="glass-effect rounded-2xl p-6 transform hover:scale-105 transition-all">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="font-bold text-white text-lg">💰 Budget Build</span>
+                                        <span class="px-3 py-1 bg-sky-500 text-white rounded-full text-sm font-bold">92% Match</span>
+                                    </div>
+                                    <div class="w-full bg-white/20 rounded-full h-2">
+                                        <div class="bg-sky-400 h-2 rounded-full" style="width: 92%"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-blue-500 transform hover:-translate-y-2">
-                    <div class="mb-6"><div class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors">💾</div></div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Database Hardware Terlengkap</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Akses lebih dari <strong>50.000+ komponen hardware</strong> dari berbagai brand ternama.</p>
-                </div>
-                <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-emerald-500 transform hover:-translate-y-2">
-                    <div class="mb-6"><div class="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/40 transition-colors">⚖️</div></div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Perbandingan Multi-Dimensi</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Bandingkan hingga <strong>6 komponen sekaligus</strong> dengan analisis mendalam.</p>
-                </div>
-                <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-violet-500 transform hover:-translate-y-2">
-                    <div class="mb-6"><div class="w-16 h-16 bg-violet-50 dark:bg-violet-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-violet-100 dark:group-hover:bg-violet-900/40 transition-colors">🖥️</div></div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">PC Build Simulator Pro</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Rakit PC impian Anda secara virtual dengan <strong>compatibility checker otomatis</strong>.</p>
-                </div>
-                 <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-amber-500 transform hover:-translate-y-2">
-                    <div class="mb-6"><div class="w-16 h-16 bg-amber-50 dark:bg-amber-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-amber-100 dark:group-hover:bg-amber-900/40 transition-colors">📊</div></div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Advanced Price Tracker</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Monitor harga dari <strong>20+ marketplace</strong> dengan notifikasi real-time.</p>
-                </div>
-                 <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-rose-500 transform hover:-translate-y-2">
-                    <div class="mb-6"><div class="w-16 h-16 bg-rose-50 dark:bg-rose-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-rose-100 dark:group-hover:bg-rose-900/40 transition-colors">⭐</div></div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Community Review</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Baca <strong>100.000+ review</strong> verified dari pengguna real dan expert.</p>
-                </div>
-                 <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-800 hover:border-indigo-500 transform hover:-translate-y-2">
-                    <div class="mb-6"><div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center text-3xl shadow-sm group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/40 transition-colors">👥</div></div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Active Community</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Bergabung dengan <strong>50.000+ PC enthusiast</strong> Indonesia.</p>
-                </div>
-            </div>
-
-            <div class="bg-slate-800 dark:bg-slate-800/50 rounded-3xl p-8 sm:p-12 mb-16 shadow-2xl border border-slate-700/50">
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="text-center"><div class="text-4xl sm:text-5xl font-bold text-blue-400 mb-2">50K+</div><div class="text-slate-300">Komponen Hardware</div></div>
-                    <div class="text-center"><div class="text-4xl sm:text-5xl font-bold text-emerald-400 mb-2">100K+</div><div class="text-slate-300">User Reviews</div></div>
-                    <div class="text-center"><div class="text-4xl sm:text-5xl font-bold text-violet-400 mb-2">1M+</div><div class="text-slate-300">PC Builds Created</div></div>
-                    <div class="text-center"><div class="text-4xl sm:text-5xl font-bold text-amber-400 mb-2">20+</div><div class="text-slate-300">Marketplace Partners</div></div>
-                </div>
-            </div>
-
-            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 p-8 sm:p-16 text-center shadow-2xl shadow-violet-900/30">
-                <div class="relative z-10">
-                    <h3 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">Siap Rakit PC Impian Anda?</h3>
-                    <p class="text-xl text-violet-100 mb-8 max-w-2xl mx-auto">Bergabunglah dengan ribuan PC builder yang sudah menggunakan platform kami.</p>
-                    <div class="flex flex-wrap justify-center gap-6 text-white/90 text-sm">
-                        <div class="flex items-center gap-2"><span class="text-lg">✓</span><span>100% Gratis</span></div>
-                        <div class="flex items-center gap-2"><span class="text-lg">✓</span><span>Tidak Perlu Kartu Kredit</span></div>
-                        <div class="flex items-center gap-2"><span class="text-lg">✓</span><span>Akses Semua Fitur</span></div>
+            <!-- Feature Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+                
+                <div class="scroll-reveal group bg-white dark:bg-slate-900 p-10 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-slate-100 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 card-hover">
+                    <div class="mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center text-4xl shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            💾
+                        </div>
                     </div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-4">Database Hardware Terlengkap</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
+                        Akses lebih dari <strong class="text-blue-600 dark:text-blue-400">50.000+ komponen hardware</strong> dari berbagai brand ternama dengan spesifikasi lengkap dan update real-time.
+                    </p>
+                </div>
+
+                <div class="scroll-reveal group bg-white dark:bg-slate-900 p-10 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-slate-100 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 card-hover" style="transition-delay: 0.1s;">
+                    <div class="mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center text-4xl shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            ⚖️
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-4">Perbandingan Multi-Dimensi</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
+                        Bandingkan hingga <strong class="text-emerald-600 dark:text-emerald-400">6 komponen sekaligus</strong> dengan analisis performa, harga, dan efisiensi yang mendalam.
+                    </p>
+                </div>
+
+                <div class="scroll-reveal group bg-white dark:bg-slate-900 p-10 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-slate-100 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-500 card-hover" style="transition-delay: 0.2s;">
+                    <div class="mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-violet-500 to-purple-500 rounded-2xl flex items-center justify-center text-4xl shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            🖥️
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-4">PC Build Simulator Pro</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
+                        Rakit PC impian Anda secara virtual dengan <strong class="text-violet-600 dark:text-violet-400">compatibility checker otomatis</strong> dan simulasi performa.
+                    </p>
+                </div>
+
+                <div class="scroll-reveal group bg-white dark:bg-slate-900 p-10 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-slate-100 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 card-hover" style="transition-delay: 0.3s;">
+                    <div class="mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center text-4xl shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            📊
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-4">Advanced Price Tracker</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
+                        Monitor harga dari <strong class="text-amber-600 dark:text-amber-400">20+ marketplace</strong> dengan notifikasi real-time dan historical price chart.
+                    </p>
+                </div>
+
+                <div class="scroll-reveal group bg-white dark:bg-slate-900 p-10 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-slate-100 dark:border-slate-800 hover:border-rose-500 dark:hover:border-rose-500 card-hover" style="transition-delay: 0.4s;">
+                    <div class="mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-rose-500 to-pink-500 rounded-2xl flex items-center justify-center text-4xl shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            ⭐
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-4">Community Review</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
+                        Baca <strong class="text-rose-600 dark:text-rose-400">100.000+ review</strong> verified dari pengguna real dan expert hardware enthusiast.
+                    </p>
+                </div>
+
+                <div class="scroll-reveal group bg-white dark:bg-slate-900 p-10 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-slate-100 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 card-hover" style="transition-delay: 0.5s;">
+                    <div class="mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-2xl flex items-center justify-center text-4xl shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                            👥
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-4">Active Community</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
+                        Bergabung dengan <strong class="text-indigo-600 dark:text-indigo-400">50.000+ PC enthusiast</strong> Indonesia untuk sharing dan diskusi.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-800 dark:via-slate-900 dark:to-slate-950 rounded-3xl p-12 sm:p-16 mb-20 shadow-2xl border border-slate-700">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-10">
+                    <div class="text-center group">
+                        <div class="text-5xl sm:text-6xl font-black bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform">50K+</div>
+                        <div class="text-slate-300 text-lg font-medium">Komponen Hardware</div>
+                    </div>
+                    <div class="text-center group">
+                        <div class="text-5xl sm:text-6xl font-black bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform">100K+</div>
+                        <div class="text-slate-300 text-lg font-medium">User Reviews</div>
+                    </div>
+                    <div class="text-center group">
+                        <div class="text-5xl sm:text-6xl font-black bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform">1M+</div>
+                        <div class="text-slate-300 text-lg font-medium">PC Builds Created</div>
+                    </div>
+                    <div class="text-center group">
+                        <div class="text-5xl sm:text-6xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform">20+</div>
+                        <div class="text-slate-300 text-lg font-medium">Marketplace Partners</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700"></div>
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
+                
+                <div class="relative z-10 p-12 sm:p-20 text-center">
+                    <h3 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+                        Siap Rakit PC Impian Anda?
+                    </h3>
+                    <p class="text-2xl text-violet-100 mb-10 max-w-3xl mx-auto">
+                        Bergabunglah dengan ribuan PC builder yang sudah menggunakan platform kami
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-8 text-white text-base mb-10">
+                        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                            <span class="text-2xl">✓</span>
+                            <span class="font-bold">100% Gratis</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                            <span class="text-2xl">✓</span>
+                            <span class="font-bold">Tanpa Kartu Kredit</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                            <span class="text-2xl">✓</span>
+                            <span class="font-bold">Akses Semua Fitur</span>
+                        </div>
+                    </div>
+                    <button onclick="document.getElementById('mulaisekarang').scrollIntoView({ behavior: 'smooth' })" class="px-12 py-5 bg-white text-violet-600 rounded-2xl font-black text-xl transition-all hover:scale-110 hover:shadow-2xl shadow-xl">
+                        Mulai Sekarang - Gratis! 🚀
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="kontak" class="py-16 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300">
+    <!-- Contact Section -->
+    <section id="kontak" class="py-24 bg-white dark:bg-slate-900 border-t-2 border-slate-200 dark:border-slate-800">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <div class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 p-8 sm:p-12 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700">
-                <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4">Mari Berkolaborasi!</h3>
-                <p class="text-slate-600 dark:text-slate-300 mb-8 max-w-lg mx-auto">Tertarik untuk berkolaborasi atau ingin tahu lebih lanjut tentang proyek-proyek saya?</p>
-                <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="mailto:mumtazalvin350@gmail.com" class="flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-lg font-medium transition-all hover:shadow-lg hover:-translate-y-1">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <div class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-950 p-12 sm:p-16 rounded-3xl shadow-2xl border-2 border-slate-200 dark:border-slate-700">
+                <div class="mb-8">
+                    <div class="w-20 h-20 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-6 shadow-xl">
+                        💬
+                    </div>
+                    <h3 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-4">Mari Berkolaborasi!</h3>
+                    <p class="text-lg text-slate-600 dark:text-slate-300 max-w-lg mx-auto">
+                        Tertarik untuk berkolaborasi atau ingin tahu lebih lanjut tentang proyek-proyek saya?
+                    </p>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-5">
+                    <a href="mailto:mumtazalvin350@gmail.com" class="group flex items-center justify-center gap-3 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all hover:shadow-xl hover:scale-105 shadow-lg">
+                        <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                         Email Me
                     </a>
-                    <a href="https://www.linkedin.com/in/alvin-mumtaz-2a8587221/" target="_blank" class="flex items-center justify-center gap-2 bg-[#0077b5] hover:bg-[#006396] text-white px-6 py-3 rounded-lg font-medium transition-all hover:shadow-lg hover:-translate-y-1">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    <a href="https://www.linkedin.com/in/alvin-mumtaz-2a8587221/" target="_blank" class="group flex items-center justify-center gap-3 bg-gradient-to-r from-[#0077b5] to-[#006396] hover:from-[#006396] hover:to-[#005582] text-white px-8 py-4 rounded-xl font-bold text-lg transition-all hover:shadow-xl hover:scale-105 shadow-lg">
+                        <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                         LinkedIn
                     </a>
-                    <a href="https://github.com/AlvinMumtaz" target="_blank" class="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-6 py-3 rounded-lg font-medium transition-all hover:shadow-lg hover:-translate-y-1 border border-slate-700 dark:border-slate-500">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <a href="https://github.com/AlvinMumtaz" target="_blank" class="group flex items-center justify-center gap-3 bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-white px-8 py-4 rounded-xl font-bold text-lg transition-all hover:shadow-xl hover:scale-105 shadow-lg border-2 border-slate-700">
+                        <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                         GitHub
                     </a>
                 </div>
@@ -429,39 +948,50 @@
         </div>
     </section>
 
-    <footer class="bg-slate-950 text-slate-300 py-12 border-t border-slate-900">
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-300 py-16 border-t-2 border-slate-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                 <div>
-                    <div class="text-2xl font-bold text-white mb-4">ByteBudget</div>
-                    <p class="text-sm text-slate-400">Platform terpercaya untuk menemukan komponen PC terbaik sesuai budget Anda.</p>
+                    <div class="text-3xl font-black gradient-text mb-6">ByteBudget</div>
+                    <p class="text-slate-400 leading-relaxed">
+                        Platform terpercaya untuk menemukan komponen PC terbaik sesuai budget Anda dengan teknologi AI.
+                    </p>
                 </div>
                 <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">Kategori</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-violet-400 transition">Processor</a></li>
-                        <li><a href="#" class="hover:text-violet-400 transition">RAM</a></li>
-                        <li><a href="#" class="hover:text-violet-400 transition">VGA</a></li>
+                    <h4 class="text-xl font-black text-white mb-6">Kategori</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-400 hover:text-violet-400 transition-colors flex items-center gap-2 group"><span class="group-hover:translate-x-1 transition-transform">→</span> Processor</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-violet-400 transition-colors flex items-center gap-2 group"><span class="group-hover:translate-x-1 transition-transform">→</span> RAM</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-violet-400 transition-colors flex items-center gap-2 group"><span class="group-hover:translate-x-1 transition-transform">→</span> VGA</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">Perusahaan</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-violet-400 transition">Tentang Kami</a></li>
-                        <li><a href="#" class="hover:text-violet-400 transition">Karir</a></li>
-                        <li><a href="#" class="hover:text-violet-400 transition">Blog</a></li>
+                    <h4 class="text-xl font-black text-white mb-6">Perusahaan</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-400 hover:text-violet-400 transition-colors flex items-center gap-2 group"><span class="group-hover:translate-x-1 transition-transform">→</span> Tentang Kami</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-violet-400 transition-colors flex items-center gap-2 group"><span class="group-hover:translate-x-1 transition-transform">→</span> Karir</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-violet-400 transition-colors flex items-center gap-2 group"><span class="group-hover:translate-x-1 transition-transform">→</span> Blog</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">Kontak</h4>
-                    <ul class="space-y-2 text-sm text-slate-400">
-                        <li>📧 mumtazalvin350@gmail.com</li>
-                        <li>📍 Indonesia</li>
+                    <h4 class="text-xl font-black text-white mb-6">Kontak</h4>
+                    <ul class="space-y-3 text-slate-400">
+                        <li class="flex items-center gap-3">
+                            <span class="text-xl">📧</span>
+                            <span>mumtazalvin350@gmail.com</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-xl">📍</span>
+                            <span>Indonesia</span>
+                        </li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-slate-800 mt-12 pt-8 text-center text-sm text-slate-500">
-                <p>&copy; 2024 ByteBudget. All rights reserved.</p>
+            <div class="border-t-2 border-slate-800 pt-8 text-center">
+                <p class="text-slate-500 font-medium">
+                    &copy; 2024 <span class="text-violet-400 font-bold">ByteBudget</span>. All rights reserved.
+                </p>
             </div>
         </div>
     </footer>
@@ -533,6 +1063,50 @@
                     }
                 }
             });
+        });
+
+        // --- Scroll Reveal Animation ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // --- Parallax Effect on Scroll ---
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset;
+                    const parallaxElements = document.querySelectorAll('.parallax-slow');
+                    
+                    parallaxElements.forEach((el, index) => {
+                        const speed = (index + 1) * 0.1;
+                        el.style.transform = `translateY(${scrolled * speed}px)`;
+                    });
+                    
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // --- Add stagger delay to scroll-reveal elements ---
+        document.querySelectorAll('.scroll-reveal').forEach((el, index) => {
+            if (!el.style.animationDelay) {
+                el.style.transitionDelay = `${index * 0.1}s`;
+            }
         });
       });
 
